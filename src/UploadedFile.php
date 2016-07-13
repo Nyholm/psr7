@@ -5,6 +5,7 @@ declare (strict_types = 1);
 namespace Nyholm\Psr7;
 
 use InvalidArgumentException;
+use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -245,7 +246,7 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        return new LazyOpenStream($this->file, 'r+');
+        return new Stream(fopen($this->file, 'r+'));
     }
 
     /**
@@ -276,9 +277,9 @@ class UploadedFile implements UploadedFileInterface
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {
-            copy_to_stream(
+            (new StreamFactory)->copyToStream(
                 $this->getStream(),
-                new LazyOpenStream($targetPath, 'w')
+                new Stream(fopen($targetPath, 'w'))
             );
 
             $this->moved = true;

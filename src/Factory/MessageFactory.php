@@ -26,6 +26,6 @@ class MessageFactory implements \Http\Message\MessageFactory
         $body = null,
         $protocolVersion = '1.1'
     ) {
-        new Response($statusCode, $reasonPhrase, $headers, $body, $protocolVersion);
+        new Response($statusCode, $headers, $body, $protocolVersion, $reasonPhrase);
     }
 }

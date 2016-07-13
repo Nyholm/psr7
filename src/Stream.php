@@ -77,6 +77,14 @@ class Stream implements StreamInterface
         $this->uri = $this->getMetadata('uri');
     }
 
+    /**
+     * Closes the stream when the destructed
+     */
+    public function __destruct()
+    {
+        $this->close();
+    }
+
     public function __toString()
     {
         try {
