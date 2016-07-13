@@ -17,7 +17,7 @@ use Psr\Http\Message\UriInterface;
 class Uri implements UriInterface
 {
     private static $schemes = [
-        'http'  => 80,
+        'http' => 80,
         'https' => 443,
     ];
 
@@ -61,7 +61,6 @@ class Uri implements UriInterface
     private $fragment = '';
 
     /**
-     *
      * @param string $uri
      */
     public function __construct($uri = '')
@@ -75,7 +74,6 @@ class Uri implements UriInterface
             $this->applyParts($parts);
         }
     }
-
 
     public function __toString()
     {
@@ -94,6 +92,7 @@ class Uri implements UriInterface
      * @param string $path
      *
      * @return string
+     *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2.4
      */
     public static function removeDotSegments($path)
@@ -120,7 +119,7 @@ class Uri implements UriInterface
         if (substr($path, 0, 1) === '/' &&
             substr($newPath, 0, 1) !== '/'
         ) {
-            $newPath = '/' . $newPath;
+            $newPath = '/'.$newPath;
         }
 
         // Add the trailing slash if necessary
@@ -138,6 +137,7 @@ class Uri implements UriInterface
      * @param string|UriInterface $rel  Relative URI
      *
      * @return UriInterface
+     *
      * @link http://tools.ietf.org/html/rfc3986#section-5.2
      */
     public static function resolve(UriInterface $base, $rel)
@@ -169,13 +169,13 @@ class Uri implements UriInterface
                     $targetPath = $rel->getPath();
                 } else {
                     if ($targetAuthority != '' && $base->getPath() === '') {
-                        $targetPath = '/' . $rel->getPath();
+                        $targetPath = '/'.$rel->getPath();
                     } else {
                         $lastSlashPos = strrpos($base->getPath(), '/');
                         if ($lastSlashPos === false) {
                             $targetPath = $rel->getPath();
                         } else {
-                            $targetPath = substr($base->getPath(), 0, $lastSlashPos + 1) . $rel->getPath();
+                            $targetPath = substr($base->getPath(), 0, $lastSlashPos + 1).$rel->getPath();
                         }
                     }
                 }
@@ -253,7 +253,7 @@ class Uri implements UriInterface
         $key = strtr($key, self::$replaceQuery);
 
         if ($value !== null) {
-            $result[] = $key . '=' . strtr($value, self::$replaceQuery);
+            $result[] = $key.'='.strtr($value, self::$replaceQuery);
         } else {
             $result[] = $key;
         }
@@ -272,6 +272,7 @@ class Uri implements UriInterface
     {
         $uri = new self();
         $uri->applyParts($parts);
+
         return $uri;
     }
 
@@ -288,11 +289,11 @@ class Uri implements UriInterface
 
         $authority = $this->host;
         if ($this->userInfo != '') {
-            $authority = $this->userInfo . '@' . $authority;
+            $authority = $this->userInfo.'@'.$authority;
         }
 
         if ($this->port !== null) {
-            $authority .= ':' . $this->port;
+            $authority .= ':'.$this->port;
         }
 
         return $authority;
@@ -339,6 +340,7 @@ class Uri implements UriInterface
         $new = clone $this;
         $new->scheme = $scheme;
         $new->port = $new->filterPort($new->port);
+
         return $new;
     }
 
@@ -346,7 +348,7 @@ class Uri implements UriInterface
     {
         $info = $user;
         if ($password != '') {
-            $info .= ':' . $password;
+            $info .= ':'.$password;
         }
 
         if ($this->userInfo === $info) {
@@ -355,6 +357,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->userInfo = $info;
+
         return $new;
     }
 
@@ -368,6 +371,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->host = $host;
+
         return $new;
     }
 
@@ -381,6 +385,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->port = $port;
+
         return $new;
     }
 
@@ -394,6 +399,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->path = $path;
+
         return $new;
     }
 
@@ -407,6 +413,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->query = $query;
+
         return $new;
     }
 
@@ -420,6 +427,7 @@ class Uri implements UriInterface
 
         $new = clone $this;
         $new->fragment = $fragment;
+
         return $new;
     }
 
@@ -450,18 +458,19 @@ class Uri implements UriInterface
             ? $this->filterQueryAndFragment($parts['fragment'])
             : '';
         if (isset($parts['pass'])) {
-            $this->userInfo .= ':' . $parts['pass'];
+            $this->userInfo .= ':'.$parts['pass'];
         }
     }
 
     /**
-     * Create a URI string from its various parts
+     * Create a URI string from its various parts.
      *
      * @param string $scheme
      * @param string $authority
      * @param string $path
      * @param string $query
      * @param string $fragment
+     *
      * @return string
      */
     private static function createUriString($scheme, $authority, $path, $query, $fragment)
@@ -469,24 +478,24 @@ class Uri implements UriInterface
         $uri = '';
 
         if ($scheme != '') {
-            $uri .= $scheme . ':';
+            $uri .= $scheme.':';
         }
 
         if ($authority != '') {
-            $uri .= '//' . $authority;
+            $uri .= '//'.$authority;
         }
 
         if ($path != '') {
             if ($path[0] !== '/') {
                 if ($authority != '') {
                     // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
-                    $path = '/' . $path;
+                    $path = '/'.$path;
                 }
             } elseif (isset($path[1]) && $path[1] === '/') {
                 if ($authority == '') {
                     // If the path is starting with more than one "/" and no authority is present, the
                     // starting slashes MUST be reduced to one.
-                    $path = '/' . ltrim($path, '/');
+                    $path = '/'.ltrim($path, '/');
                 }
             }
 
@@ -494,11 +503,11 @@ class Uri implements UriInterface
         }
 
         if ($query != '') {
-            $uri .= '?' . $query;
+            $uri .= '?'.$query;
         }
 
         if ($fragment != '') {
-            $uri .= '#' . $fragment;
+            $uri .= '#'.$fragment;
         }
 
         return $uri;
@@ -559,7 +568,7 @@ class Uri implements UriInterface
     private function filterPort($port)
     {
         if ($port === null) {
-            return null;
+            return;
         }
 
         $port = (int) $port;
@@ -573,7 +582,7 @@ class Uri implements UriInterface
     }
 
     /**
-     * Filters the path of a URI
+     * Filters the path of a URI.
      *
      * @param string $path
      *
@@ -588,7 +597,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $path
         );
@@ -610,7 +619,7 @@ class Uri implements UriInterface
         }
 
         return preg_replace_callback(
-            '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
+            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
             $str
         );
