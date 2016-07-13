@@ -6,6 +6,11 @@ namespace Nyholm\Psr7;
 
 use Psr\Http\Message\StreamInterface;
 
+/**
+ * 
+ *
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ */
 class Stream implements StreamInterface
 {
     /**
