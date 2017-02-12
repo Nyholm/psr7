@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
@@ -8,8 +8,6 @@ use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 
 /**
- *
- *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class MessageFactory implements \Http\Message\MessageFactory

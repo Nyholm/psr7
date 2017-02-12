@@ -1,7 +1,7 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
-use Nyholm\Psr7;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Uri;
 use Psr\Http\Message\StreamInterface;
@@ -50,7 +50,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $r = new Request('GET', '/', [], '0');
         $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
-        $this->assertSame('0', (string)$r->getBody());
+        $this->assertSame('0', (string) $r->getBody());
     }
 
     public function testConstructorDoesNotReadStreamBody()
@@ -125,14 +125,14 @@ class RequestTest extends \PHPUnit_Framework_TestCase
         $r = new Request('GET', 'http://foo.com/baz?bar=bam', ['Foo' => 'Bar']);
         $this->assertEquals([
             'Host' => ['foo.com'],
-            'Foo'  => ['Bar']
+            'Foo'  => ['Bar'],
         ], $r->getHeaders());
     }
 
     public function testCanGetHeaderAsCsv()
     {
         $r = new Request('GET', 'http://foo.com/baz?bar=bam', [
-            'Foo' => ['a', 'b', 'c']
+            'Foo' => ['a', 'b', 'c'],
         ]);
         $this->assertEquals('a, b, c', $r->getHeaderLine('Foo'));
         $this->assertEquals('', $r->getHeaderLine('Bar'));
@@ -158,7 +158,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $r = new Request('GET', '', [
             'ZOO' => 'zoobar',
-            'zoo' => ['foobar', 'zoobar']
+            'zoo' => ['foobar', 'zoobar'],
         ]);
         $this->assertEquals(['ZOO' => ['zoobar', 'foobar', 'zoobar']], $r->getHeaders());
         $this->assertEquals('zoobar, foobar, zoobar', $r->getHeaderLine('zoo'));

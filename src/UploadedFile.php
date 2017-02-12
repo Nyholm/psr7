@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
@@ -281,7 +281,7 @@ class UploadedFile implements UploadedFileInterface
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
-            (new StreamFactory)->copyToStream(
+            (new StreamFactory())->copyToStream(
                 $stream,
                 Stream::createFromResource(fopen($targetPath, 'w'))
             );

@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
@@ -17,7 +17,7 @@ use Psr\Http\Message\UriInterface;
 class Uri implements UriInterface
 {
     private static $schemes = [
-        'http' => 80,
+        'http'  => 80,
         'https' => 443,
     ];
 
@@ -387,9 +387,9 @@ class Uri implements UriInterface
     /**
      * @param string $scheme
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the scheme is invalid.
+     *
+     * @return string
      */
     private function filterScheme($scheme): string
     {
@@ -403,9 +403,9 @@ class Uri implements UriInterface
     /**
      * @param string $host
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the host is invalid.
+     *
+     * @return string
      */
     private function filterHost($host): string
     {
@@ -419,9 +419,9 @@ class Uri implements UriInterface
     /**
      * @param int|null $port
      *
-     * @return int|null
-     *
      * @throws \InvalidArgumentException If the port is invalid.
+     *
+     * @return int|null
      */
     private function filterPort($port)
     {
@@ -444,9 +444,9 @@ class Uri implements UriInterface
      *
      * @param string $path
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the path is invalid.
+     *
+     * @return string
      */
     private function filterPath($path): string
     {
@@ -466,9 +466,9 @@ class Uri implements UriInterface
      *
      * @param string $str
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException If the query or fragment is invalid.
+     *
+     * @return string
      */
     private function filterQueryAndFragment($str): string
     {

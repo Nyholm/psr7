@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
@@ -47,21 +47,22 @@ class Stream implements StreamInterface
     /** @var array Hash of readable and writable stream types */
     private static $readWriteHash = [
         'read' => [
-            'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
-            'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
+            'r'   => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
+            'rb'  => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
             'c+b' => true, 'rt' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a+' => true,
         ],
         'write' => [
-            'w' => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true,
-            'c+' => true, 'wb' => true, 'w+b' => true, 'r+b' => true,
+            'w'   => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true,
+            'c+'  => true, 'wb' => true, 'w+b' => true, 'r+b' => true,
             'x+b' => true, 'c+b' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a' => true, 'a+' => true,
         ],
     ];
 
     private function __construct()
-    {}
+    {
+    }
 
     /**
      * @param resource $resource
@@ -100,7 +101,7 @@ class Stream implements StreamInterface
     }
 
     /**
-     * Closes the stream when the destructed
+     * Closes the stream when the destructed.
      */
     public function __destruct()
     {
@@ -151,7 +152,7 @@ class Stream implements StreamInterface
         }
 
         if (!isset($this->stream)) {
-            return null;
+            return;
         }
 
         // Clear the stat cache if the stream has a URI
@@ -165,8 +166,6 @@ class Stream implements StreamInterface
 
             return $this->size;
         }
-
-        return;
     }
 
     public function tell(): int
