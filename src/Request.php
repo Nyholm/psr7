@@ -59,9 +59,6 @@ class Request implements RequestInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
@@ -79,15 +76,10 @@ class Request implements RequestInterface
         return $target;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRequestTarget($requestTarget): self
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidArgumentException(
-                'Invalid request target provided; cannot contain whitespace'
-            );
+            throw new InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }
 
         $new = clone $this;
@@ -96,17 +88,11 @@ class Request implements RequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getMethod(): string
     {
         return $this->method;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withMethod($method): self
     {
         $new = clone $this;
@@ -115,17 +101,11 @@ class Request implements RequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUri(): UriInterface
     {
         return $this->uri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withUri(UriInterface $uri, $preserveHost = false): self
     {
         if ($uri === $this->uri) {

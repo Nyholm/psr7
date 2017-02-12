@@ -12,9 +12,6 @@ use Nyholm\Psr7\UploadedFile;
  */
 class UploadedFileFactory implements UploadedFileFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createUploadedFile(
         $file,
         $size = null,

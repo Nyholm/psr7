@@ -47,14 +47,14 @@ class Stream implements StreamInterface
     /** @var array Hash of readable and writable stream types */
     private static $readWriteHash = [
         'read' => [
-            'r'   => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
-            'rb'  => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
+            'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
+            'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
             'c+b' => true, 'rt' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a+' => true,
         ],
         'write' => [
-            'w'   => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true,
-            'c+'  => true, 'wb' => true, 'w+b' => true, 'r+b' => true,
+            'w' => true, 'w+' => true, 'rw' => true, 'r+' => true, 'x+' => true,
+            'c+' => true, 'wb' => true, 'w+b' => true, 'r+b' => true,
             'x+b' => true, 'c+b' => true, 'w+t' => true, 'r+t' => true,
             'x+t' => true, 'c+t' => true, 'a' => true, 'a+' => true,
         ],
@@ -194,8 +194,7 @@ class Stream implements StreamInterface
         if (!$this->seekable) {
             throw new \RuntimeException('Stream is not seekable');
         } elseif (fseek($this->stream, $offset, $whence) === -1) {
-            throw new \RuntimeException('Unable to seek to stream position '
-                .$offset.' with whence '.var_export($whence, true));
+            throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.var_export($whence, true));
         }
     }
 

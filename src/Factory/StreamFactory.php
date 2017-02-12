@@ -13,9 +13,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createStream($body = null)
     {
         if ($body instanceof StreamInterface) {
@@ -29,9 +26,6 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
         return Stream::create($body === null ? '' : $body);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createStreamFromFile($file, $mode = 'r')
     {
         $resource = fopen($file, $mode);
@@ -39,9 +33,6 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
         return Stream::createFromResource($resource);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createStreamFromResource($resource)
     {
         return Stream::createFromResource($resource);

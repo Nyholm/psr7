@@ -12,9 +12,6 @@ use Nyholm\Psr7\ServerRequest;
  */
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createServerRequest(array $server, $method = null, $uri = null)
     {
         if (null === $method && isset($server['REQUEST_METHOD'])) {

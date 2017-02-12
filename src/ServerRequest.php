@@ -138,10 +138,10 @@ class ServerRequest extends Request implements ServerRequestInterface
         foreach (array_keys($files['tmp_name']) as $key) {
             $spec = [
                 'tmp_name' => $files['tmp_name'][$key],
-                'size'     => $files['size'][$key],
-                'error'    => $files['error'][$key],
-                'name'     => $files['name'][$key],
-                'type'     => $files['type'][$key],
+                'size' => $files['size'][$key],
+                'error' => $files['error'][$key],
+                'name' => $files['name'][$key],
+                'type' => $files['type'][$key],
             ];
             $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
         }
@@ -209,25 +209,16 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $uri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getServerParams()
     {
         return $this->serverParams;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUploadedFiles()
     {
         return $this->uploadedFiles;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withUploadedFiles(array $uploadedFiles)
     {
         $new = clone $this;
@@ -236,17 +227,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCookieParams()
     {
         return $this->cookieParams;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withCookieParams(array $cookies)
     {
         $new = clone $this;
@@ -255,17 +240,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueryParams()
     {
         return $this->queryParams;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withQueryParams(array $query)
     {
         $new = clone $this;
@@ -274,17 +253,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParsedBody()
     {
         return $this->parsedBody;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withParsedBody($data)
     {
         $new = clone $this;
@@ -293,17 +266,11 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAttribute($attribute, $default = null)
     {
         if (false === array_key_exists($attribute, $this->attributes)) {
@@ -313,9 +280,6 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $this->attributes[$attribute];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAttribute($attribute, $value)
     {
         $new = clone $this;
@@ -324,9 +288,6 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withoutAttribute($attribute)
     {
         if (false === array_key_exists($attribute, $this->attributes)) {

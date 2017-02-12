@@ -114,25 +114,16 @@ class Response implements ResponseInterface
         $this->protocol = $version;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withStatus($code, $reasonPhrase = ''): self
     {
         $new = clone $this;

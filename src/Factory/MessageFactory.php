@@ -14,9 +14,6 @@ use Nyholm\Psr7\Response;
  */
 class MessageFactory implements \Http\Message\MessageFactory, RequestFactoryInterface, ResponseFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createRequest(
         $method,
         $uri,
@@ -27,9 +24,6 @@ class MessageFactory implements \Http\Message\MessageFactory, RequestFactoryInte
         return new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function createResponse(
         $statusCode = 200,
         $reasonPhrase = null,

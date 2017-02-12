@@ -13,9 +13,6 @@ use Psr\Http\Message\UriInterface;
  */
 class UriFactory implements \Http\Message\UriFactory, UriFactoryInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function createUri($uri = '')
     {
         if ($uri instanceof UriInterface) {

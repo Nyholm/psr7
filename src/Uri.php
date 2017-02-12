@@ -17,46 +17,32 @@ use Psr\Http\Message\UriInterface;
 class Uri implements UriInterface
 {
     private static $schemes = [
-        'http'  => 80,
+        'http' => 80,
         'https' => 443,
     ];
 
     private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
     private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
 
-    /**
-     * @var string Uri scheme.
-     */
+    /** @var string Uri scheme. */
     private $scheme = '';
 
-    /**
-     * @var string Uri user info.
-     */
+    /** @var string Uri user info. */
     private $userInfo = '';
 
-    /**
-     * @var string Uri host.
-     */
+    /** @var string Uri host. */
     private $host = '';
 
-    /**
-     * @var int|null Uri port.
-     */
+    /** @var int|null Uri port. */
     private $port;
 
-    /**
-     * @var string Uri path.
-     */
+    /** @var string Uri path. */
     private $path = '';
 
-    /**
-     * @var string Uri query string.
-     */
+    /** @var string Uri query string. */
     private $query = '';
 
-    /**
-     * @var string Uri fragment.
-     */
+    /** @var string Uri fragment. */
     private $fragment = '';
 
     /**
@@ -74,9 +60,6 @@ class Uri implements UriInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function __toString(): string
     {
         return self::createUriString(
@@ -88,17 +71,11 @@ class Uri implements UriInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getScheme(): string
     {
         return $this->scheme;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthority(): string
     {
         if ($this->host == '') {
@@ -117,57 +94,36 @@ class Uri implements UriInterface
         return $authority;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getUserInfo(): string
     {
         return $this->userInfo;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHost(): string
     {
         return $this->host;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPort()
     {
         return $this->port;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPath(): string
     {
         return $this->path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQuery(): string
     {
         return $this->query;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFragment(): string
     {
         return $this->fragment;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withScheme($scheme): self
     {
         $scheme = $this->filterScheme($scheme);
@@ -183,9 +139,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withUserInfo($user, $password = null): self
     {
         $info = $user;
@@ -203,9 +156,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withHost($host): self
     {
         $host = $this->filterHost($host);
@@ -220,9 +170,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withPort($port): self
     {
         $port = $this->filterPort($port);
@@ -237,9 +184,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withPath($path): self
     {
         $path = $this->filterPath($path);
@@ -254,9 +198,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withQuery($query): self
     {
         $query = $this->filterQueryAndFragment($query);
@@ -271,9 +212,6 @@ class Uri implements UriInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withFragment($fragment): self
     {
         $fragment = $this->filterQueryAndFragment($fragment);
@@ -291,7 +229,7 @@ class Uri implements UriInterface
     /**
      * Apply parse_url parts to a URI.
      *
-     * @param array $parts Array of parse_url parts to apply.
+     * @param array $parts Array of parse_url parts to apply
      */
     private function applyParts(array $parts)
     {
@@ -386,7 +324,7 @@ class Uri implements UriInterface
     /**
      * @param string $scheme
      *
-     * @throws \InvalidArgumentException If the scheme is invalid.
+     * @throws \InvalidArgumentException If the scheme is invalid
      *
      * @return string
      */
@@ -402,7 +340,7 @@ class Uri implements UriInterface
     /**
      * @param string $host
      *
-     * @throws \InvalidArgumentException If the host is invalid.
+     * @throws \InvalidArgumentException If the host is invalid
      *
      * @return string
      */
@@ -418,7 +356,7 @@ class Uri implements UriInterface
     /**
      * @param int|null $port
      *
-     * @throws \InvalidArgumentException If the port is invalid.
+     * @throws \InvalidArgumentException If the port is invalid
      *
      * @return int|null
      */
@@ -430,9 +368,7 @@ class Uri implements UriInterface
 
         $port = (int) $port;
         if (1 > $port || 0xffff < $port) {
-            throw new \InvalidArgumentException(
-                sprintf('Invalid port: %d. Must be between 1 and 65535', $port)
-            );
+            throw new \InvalidArgumentException(sprintf('Invalid port: %d. Must be between 1 and 65535', $port));
         }
 
         return self::isNonStandardPort($this->scheme, $port) ? $port : null;
@@ -443,7 +379,7 @@ class Uri implements UriInterface
      *
      * @param string $path
      *
-     * @throws \InvalidArgumentException If the path is invalid.
+     * @throws \InvalidArgumentException If the path is invalid
      *
      * @return string
      */
@@ -465,7 +401,7 @@ class Uri implements UriInterface
      *
      * @param string $str
      *
-     * @throws \InvalidArgumentException If the query or fragment is invalid.
+     * @throws \InvalidArgumentException If the query or fragment is invalid
      *
      * @return string
      */
