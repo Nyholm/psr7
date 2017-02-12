@@ -61,8 +61,7 @@ class Stream implements StreamInterface
     ];
 
     private function __construct()
-    {
-    }
+    {}
 
     /**
      * @param resource $resource

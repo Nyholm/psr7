@@ -21,9 +21,6 @@ class Request implements RequestInterface
     /** @var string */
     private $method;
 
-    /** @var string */
-    private $methodCaseSensitive;
-
     /** @var null|string */
     private $requestTarget;
 
@@ -48,8 +45,7 @@ class Request implements RequestInterface
             $uri = new Uri($uri);
         }
 
-        $this->method = strtoupper($method);
-        $this->methodCaseSensitive = $method;
+        $this->method = $method;
         $this->uri = $uri;
         $this->setHeaders($headers);
         $this->protocol = $version;
@@ -63,6 +59,9 @@ class Request implements RequestInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
@@ -80,6 +79,9 @@ class Request implements RequestInterface
         return $target;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRequestTarget($requestTarget): self
     {
         if (preg_match('#\s#', $requestTarget)) {
@@ -94,25 +96,36 @@ class Request implements RequestInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getMethod(): string
     {
-        return $this->methodCaseSensitive;
+        return $this->method;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withMethod($method): self
     {
         $new = clone $this;
-        $new->method = strtoupper($method);
-        $new->methodCaseSensitive = $method;
+        $new->method = $method;
 
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUri(): UriInterface
     {
         return $this->uri;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withUri(UriInterface $uri, $preserveHost = false): self
     {
         if ($uri === $this->uri) {
@@ -122,7 +135,7 @@ class Request implements RequestInterface
         $new = clone $this;
         $new->uri = $uri;
 
-        if (!$preserveHost || '' === $this->getHeaderLine('host')) {
+        if (!$preserveHost || !$this->hasHeader('Host')) {
             $new->updateHostFromUri();
         }
 

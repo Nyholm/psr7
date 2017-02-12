@@ -75,6 +75,9 @@ class Uri implements UriInterface
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __toString(): string
     {
         return self::createUriString(
@@ -87,200 +90,16 @@ class Uri implements UriInterface
     }
 
     /**
-     * Removes dot segments from a path and returns the new path.
-     *
-     * @param string $path
-     *
-     * @return string
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-5.2.4
+     * {@inheritdoc}
      */
-    public static function removeDotSegments($path): string
-    {
-        static $noopPaths = ['' => true, '/' => true, '*' => true];
-        static $ignoreSegments = ['.' => true, '..' => true];
-
-        if (isset($noopPaths[$path])) {
-            return $path;
-        }
-
-        $results = [];
-        $segments = explode('/', $path);
-        foreach ($segments as $segment) {
-            if ($segment === '..') {
-                array_pop($results);
-            } elseif (!isset($ignoreSegments[$segment])) {
-                $results[] = $segment;
-            }
-        }
-
-        $newPath = implode('/', $results);
-        // Add the leading slash if necessary
-        if (substr($path, 0, 1) === '/' &&
-            substr($newPath, 0, 1) !== '/'
-        ) {
-            $newPath = '/'.$newPath;
-        }
-
-        // Add the trailing slash if necessary
-        if ($newPath !== '/' && isset($ignoreSegments[end($segments)])) {
-            $newPath .= '/';
-        }
-
-        return $newPath;
-    }
-
-    /**
-     * Resolve a base URI with a relative URI and return a new URI.
-     *
-     * @param UriInterface        $base Base URI
-     * @param string|UriInterface $rel  Relative URI
-     *
-     * @return UriInterface
-     *
-     * @link http://tools.ietf.org/html/rfc3986#section-5.2
-     */
-    public static function resolve(UriInterface $base, $rel): UriInterface
-    {
-        if (!($rel instanceof UriInterface)) {
-            $rel = new self($rel);
-        }
-
-        if ((string) $rel === '') {
-            // we can simply return the same base URI instance for this same-document reference
-            return $base;
-        }
-
-        if ($rel->getScheme() != '') {
-            return $rel->withPath(self::removeDotSegments($rel->getPath()));
-        }
-
-        if ($rel->getAuthority() != '') {
-            $targetAuthority = $rel->getAuthority();
-            $targetPath = self::removeDotSegments($rel->getPath());
-            $targetQuery = $rel->getQuery();
-        } else {
-            $targetAuthority = $base->getAuthority();
-            if ($rel->getPath() === '') {
-                $targetPath = $base->getPath();
-                $targetQuery = $rel->getQuery() != '' ? $rel->getQuery() : $base->getQuery();
-            } else {
-                if ($rel->getPath()[0] === '/') {
-                    $targetPath = $rel->getPath();
-                } else {
-                    if ($targetAuthority != '' && $base->getPath() === '') {
-                        $targetPath = '/'.$rel->getPath();
-                    } else {
-                        $lastSlashPos = strrpos($base->getPath(), '/');
-                        if ($lastSlashPos === false) {
-                            $targetPath = $rel->getPath();
-                        } else {
-                            $targetPath = substr($base->getPath(), 0, $lastSlashPos + 1).$rel->getPath();
-                        }
-                    }
-                }
-                $targetPath = self::removeDotSegments($targetPath);
-                $targetQuery = $rel->getQuery();
-            }
-        }
-
-        return new self(self::createUriString(
-            $base->getScheme(),
-            $targetAuthority,
-            $targetPath,
-            $targetQuery,
-            $rel->getFragment()
-        ));
-    }
-
-    /**
-     * Create a new URI with a specific query string value removed.
-     *
-     * Any existing query string values that exactly match the provided key are
-     * removed.
-     *
-     * @param UriInterface $uri URI to use as a base.
-     * @param string       $key Query string key to remove.
-     *
-     * @return UriInterface
-     */
-    public static function withoutQueryValue(UriInterface $uri, $key): UriInterface
-    {
-        $current = $uri->getQuery();
-        if ($current == '') {
-            return $uri;
-        }
-
-        $decodedKey = rawurldecode($key);
-        $result = array_filter(explode('&', $current), function ($part) use ($decodedKey) {
-            return rawurldecode(explode('=', $part)[0]) !== $decodedKey;
-        });
-
-        return $uri->withQuery(implode('&', $result));
-    }
-
-    /**
-     * Create a new URI with a specific query string value.
-     *
-     * Any existing query string values that exactly match the provided key are
-     * removed and replaced with the given key value pair.
-     *
-     * A value of null will set the query string key without a value, e.g. "key"
-     * instead of "key=value".
-     *
-     * @param UriInterface $uri   URI to use as a base.
-     * @param string       $key   Key to set.
-     * @param string|null  $value Value to set
-     *
-     * @return UriInterface
-     */
-    public static function withQueryValue(UriInterface $uri, $key, $value): UriInterface
-    {
-        $current = $uri->getQuery();
-
-        if ($current == '') {
-            $result = [];
-        } else {
-            $decodedKey = rawurldecode($key);
-            $result = array_filter(explode('&', $current), function ($part) use ($decodedKey) {
-                return rawurldecode(explode('=', $part)[0]) !== $decodedKey;
-            });
-        }
-
-        // Query string separators ("=", "&") within the key or value need to be encoded
-        // (while preventing double-encoding) before setting the query string. All other
-        // chars that need percent-encoding will be encoded by withQuery().
-        $key = strtr($key, self::$replaceQuery);
-
-        if ($value !== null) {
-            $result[] = $key.'='.strtr($value, self::$replaceQuery);
-        } else {
-            $result[] = $key;
-        }
-
-        return $uri->withQuery(implode('&', $result));
-    }
-
-    /**
-     * Create a URI from a hash of parse_url parts.
-     *
-     * @param array $parts
-     *
-     * @return self
-     */
-    public static function fromParts(array $parts): self
-    {
-        $uri = new self();
-        $uri->applyParts($parts);
-
-        return $uri;
-    }
-
     public function getScheme(): string
     {
         return $this->scheme;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAuthority(): string
     {
         if ($this->host == '') {
@@ -299,36 +118,57 @@ class Uri implements UriInterface
         return $authority;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUserInfo(): string
     {
         return $this->userInfo;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getHost(): string
     {
         return $this->host;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPort()
     {
         return $this->port;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getPath(): string
     {
         return $this->path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getQuery(): string
     {
         return $this->query;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFragment(): string
     {
         return $this->fragment;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withScheme($scheme): self
     {
         $scheme = $this->filterScheme($scheme);
@@ -344,6 +184,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withUserInfo($user, $password = null): self
     {
         $info = $user;
@@ -361,6 +204,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withHost($host): self
     {
         $host = $this->filterHost($host);
@@ -375,6 +221,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withPort($port): self
     {
         $port = $this->filterPort($port);
@@ -389,6 +238,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withPath($path): self
     {
         $path = $this->filterPath($path);
@@ -403,6 +255,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withQuery($query): self
     {
         $query = $this->filterQueryAndFragment($query);
@@ -417,6 +272,9 @@ class Uri implements UriInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withFragment($fragment): self
     {
         $fragment = $this->filterQueryAndFragment($fragment);

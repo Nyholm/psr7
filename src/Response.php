@@ -92,10 +92,10 @@ class Response implements ResponseInterface
      * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
      */
     public function __construct(
-        $status = 200,
+        int $status = 200,
         array $headers = [],
         $body = null,
-        $version = '1.1',
+        string $version = '1.1',
         $reason = null
     ) {
         $this->statusCode = (int) $status;
@@ -105,7 +105,7 @@ class Response implements ResponseInterface
         }
 
         $this->setHeaders($headers);
-        if ($reason == '' && isset(self::$phrases[$this->statusCode])) {
+        if ($reason === null && isset(self::$phrases[$this->statusCode])) {
             $this->reasonPhrase = self::$phrases[$status];
         } else {
             $this->reasonPhrase = (string) $reason;
@@ -114,16 +114,25 @@ class Response implements ResponseInterface
         $this->protocol = $version;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getStatusCode(): int
     {
         return $this->statusCode;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getReasonPhrase(): string
     {
         return $this->reasonPhrase;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withStatus($code, $reasonPhrase = ''): self
     {
         $new = clone $this;

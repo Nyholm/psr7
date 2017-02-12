@@ -50,7 +50,7 @@ class RequestTest extends \PHPUnit_Framework_TestCase
     {
         $r = new Request('GET', '/', [], '0');
         $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
-        $this->assertSame('0', (string) $r->getBody());
+        $this->assertSame('0', (string)$r->getBody());
     }
 
     public function testConstructorDoesNotReadStreamBody()

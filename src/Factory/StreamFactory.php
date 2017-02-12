@@ -25,7 +25,7 @@ class StreamFactory implements \Http\Message\StreamFactory
             return Stream::createFromResource($body);
         }
 
-        return Stream::create($body);
+        return Stream::create($body === null ? '' : $body);
     }
 
     /**

@@ -57,16 +57,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($input, (string) $uri);
     }
 
-    /**
-     * @dataProvider getValidUris
-     */
-    public function testFromParts($input)
-    {
-        $uri = Uri::fromParts(parse_url($input));
-
-        $this->assertSame($input, (string) $uri);
-    }
-
     public function getValidUris()
     {
         return [
@@ -218,15 +208,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('0://0:0@0/0?0#0', (string) $uri);
     }
 
-    /**
-     * @dataProvider getResolveTestCases
-     */
-    public function testResolvesUris($base, $rel, $expected)
-    {
-        $uri = new Uri($base);
-        $actual = Uri::resolve($uri, $rel);
-        $this->assertSame($expected, (string) $actual);
-    }
 
     public function getResolveTestCases()
     {
@@ -289,69 +270,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testAddAndRemoveQueryValues()
-    {
-        $uri = new Uri();
-        $uri = Uri::withQueryValue($uri, 'a', 'b');
-        $uri = Uri::withQueryValue($uri, 'c', 'd');
-        $uri = Uri::withQueryValue($uri, 'e', null);
-        $this->assertSame('a=b&c=d&e', $uri->getQuery());
 
-        $uri = Uri::withoutQueryValue($uri, 'c');
-        $this->assertSame('a=b&e', $uri->getQuery());
-        $uri = Uri::withoutQueryValue($uri, 'e');
-        $this->assertSame('a=b', $uri->getQuery());
-        $uri = Uri::withoutQueryValue($uri, 'a');
-        $this->assertSame('', $uri->getQuery());
-    }
-
-    public function testWithQueryValueReplacesSameKeys()
-    {
-        $uri = new Uri();
-        $uri = Uri::withQueryValue($uri, 'a', 'b');
-        $uri = Uri::withQueryValue($uri, 'c', 'd');
-        $uri = Uri::withQueryValue($uri, 'a', 'e');
-        $this->assertSame('c=d&a=e', $uri->getQuery());
-    }
-
-    public function testWithoutQueryValueRemovesAllSameKeys()
-    {
-        $uri = (new Uri())->withQuery('a=b&c=d&a=e');
-        $uri = Uri::withoutQueryValue($uri, 'a');
-        $this->assertSame('c=d', $uri->getQuery());
-    }
-
-    public function testRemoveNonExistingQueryValue()
-    {
-        $uri = new Uri();
-        $uri = Uri::withQueryValue($uri, 'a', 'b');
-        $uri = Uri::withoutQueryValue($uri, 'c');
-        $this->assertSame('a=b', $uri->getQuery());
-    }
-
-    public function testWithQueryValueHandlesEncoding()
-    {
-        $uri = new Uri();
-        $uri = Uri::withQueryValue($uri, 'E=mc^2', 'ein&stein');
-        $this->assertSame('E%3Dmc%5E2=ein%26stein', $uri->getQuery(), 'Decoded key/value get encoded');
-
-        $uri = new Uri();
-        $uri = Uri::withQueryValue($uri, 'E%3Dmc%5e2', 'ein%26stein');
-        $this->assertSame('E%3Dmc%5e2=ein%26stein', $uri->getQuery(), 'Encoded key/value do not get double-encoded');
-    }
-
-    public function testWithoutQueryValueHandlesEncoding()
-    {
-        // It also tests that the case of the percent-encoding does not matter,
-        // i.e. both lowercase "%3d" and uppercase "%5E" can be removed.
-        $uri = (new Uri())->withQuery('E%3dmc%5E2=einstein&foo=bar');
-        $uri = Uri::withoutQueryValue($uri, 'E=mc^2');
-        $this->assertSame('foo=bar', $uri->getQuery(), 'Handles key in decoded form');
-
-        $uri = (new Uri())->withQuery('E%3dmc%5E2=einstein&foo=bar');
-        $uri = Uri::withoutQueryValue($uri, 'E%3Dmc%5e2');
-        $this->assertSame('foo=bar', $uri->getQuery(), 'Handles key in encoded form');
-    }
 
     public function testSchemeIsNormalizedToLowercase()
     {
