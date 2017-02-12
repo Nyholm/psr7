@@ -24,7 +24,7 @@ class MessageFactory implements \Http\Message\MessageFactory, RequestFactoryInte
         $body = null,
         $protocolVersion = '1.1'
     ) {
-        new Request($method, $uri, $headers, $body, $protocolVersion);
+        return new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
     /**
@@ -37,6 +37,6 @@ class MessageFactory implements \Http\Message\MessageFactory, RequestFactoryInte
         $body = null,
         $protocolVersion = '1.1'
     ) {
-        new Response($statusCode, $headers, $body, $protocolVersion, $reasonPhrase);
+        return new Response($statusCode, $headers, $body, $protocolVersion, $reasonPhrase);
     }
 }

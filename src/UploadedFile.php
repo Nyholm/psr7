@@ -246,7 +246,9 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        return Stream::createFromResource($this->file);
+        $resource = fopen($this->file, 'r');
+
+        return Stream::createFromResource($resource);
     }
 
     /**
