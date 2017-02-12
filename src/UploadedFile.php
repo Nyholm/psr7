@@ -274,7 +274,7 @@ class UploadedFile implements UploadedFileInterface
             );
         }
 
-        if ($this->file) {
+        if (null !== $this->file) {
             $this->moved = php_sapi_name() == 'cli'
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
