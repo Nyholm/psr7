@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
@@ -116,16 +117,31 @@ class StreamTest extends \PHPUnit_Framework_TestCase
             try {
                 $fn($stream);
                 $this->fail();
-            } catch (\Exception $e) {}
+            } catch (\Exception $e) {
+            }
         };
 
-        $throws(function ($stream) { $stream->read(10); });
-        $throws(function ($stream) { $stream->write('bar'); });
-        $throws(function ($stream) { $stream->seek(10); });
-        $throws(function ($stream) { $stream->tell(); });
-        $throws(function ($stream) { $stream->eof(); });
-        $throws(function ($stream) { $stream->getSize(); });
-        $throws(function ($stream) { $stream->getContents(); });
+        $throws(function ($stream) {
+            $stream->read(10);
+        });
+        $throws(function ($stream) {
+            $stream->write('bar');
+        });
+        $throws(function ($stream) {
+            $stream->seek(10);
+        });
+        $throws(function ($stream) {
+            $stream->tell();
+        });
+        $throws(function ($stream) {
+            $stream->eof();
+        });
+        $throws(function ($stream) {
+            $stream->getSize();
+        });
+        $throws(function ($stream) {
+            $stream->getContents();
+        });
         $this->assertSame('', (string) $stream);
         $stream->close();
     }

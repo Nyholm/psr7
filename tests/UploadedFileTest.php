@@ -1,7 +1,7 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
-use ReflectionProperty;
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 
@@ -215,13 +215,13 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     public function nonOkErrorStatus()
     {
         return [
-            'UPLOAD_ERR_INI_SIZE'   => [ UPLOAD_ERR_INI_SIZE ],
-            'UPLOAD_ERR_FORM_SIZE'  => [ UPLOAD_ERR_FORM_SIZE ],
-            'UPLOAD_ERR_PARTIAL'    => [ UPLOAD_ERR_PARTIAL ],
-            'UPLOAD_ERR_NO_FILE'    => [ UPLOAD_ERR_NO_FILE ],
-            'UPLOAD_ERR_NO_TMP_DIR' => [ UPLOAD_ERR_NO_TMP_DIR ],
-            'UPLOAD_ERR_CANT_WRITE' => [ UPLOAD_ERR_CANT_WRITE ],
-            'UPLOAD_ERR_EXTENSION'  => [ UPLOAD_ERR_EXTENSION ],
+            'UPLOAD_ERR_INI_SIZE'   => [UPLOAD_ERR_INI_SIZE],
+            'UPLOAD_ERR_FORM_SIZE'  => [UPLOAD_ERR_FORM_SIZE],
+            'UPLOAD_ERR_PARTIAL'    => [UPLOAD_ERR_PARTIAL],
+            'UPLOAD_ERR_NO_FILE'    => [UPLOAD_ERR_NO_FILE],
+            'UPLOAD_ERR_NO_TMP_DIR' => [UPLOAD_ERR_NO_TMP_DIR],
+            'UPLOAD_ERR_CANT_WRITE' => [UPLOAD_ERR_CANT_WRITE],
+            'UPLOAD_ERR_EXTENSION'  => [UPLOAD_ERR_EXTENSION],
         ];
     }
 
@@ -241,7 +241,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     {
         $uploadedFile = new UploadedFile('not ok', 0, $status);
         $this->setExpectedException('RuntimeException', 'upload error');
-        $uploadedFile->moveTo(__DIR__ . '/' . uniqid());
+        $uploadedFile->moveTo(__DIR__.'/'.uniqid());
     }
 
     /**

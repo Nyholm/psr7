@@ -1,6 +1,6 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
@@ -49,6 +49,7 @@ class StreamFactory implements \Http\Message\StreamFactory
                     break;
                 }
             }
+
             return;
         }
 

@@ -1,7 +1,7 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
-use Nyholm\Psr7;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
 
@@ -60,7 +60,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     public function testCanConstructWithHeadersAsArray()
     {
         $r = new Response(200, [
-            'Foo' => ['baz', 'bar']
+            'Foo' => ['baz', 'bar'],
         ]);
         $this->assertSame(['Foo' => ['baz', 'bar']], $r->getHeaders());
         $this->assertSame('baz, bar', $r->getHeaderLine('Foo'));
@@ -237,7 +237,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
     {
         $r1 = new Response(200, ['OWS' => " \t \tFoo\t \t "]);
         $r2 = (new Response())->withHeader('OWS', " \t \tFoo\t \t ");
-        $r3 = (new Response())->withAddedHeader('OWS', " \t \tFoo\t \t ");;
+        $r3 = (new Response())->withAddedHeader('OWS', " \t \tFoo\t \t ");
 
         foreach ([$r1, $r2, $r3] as $r) {
             $this->assertSame(['OWS' => ['Foo']], $r->getHeaders());

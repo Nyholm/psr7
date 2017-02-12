@@ -4,7 +4,6 @@ namespace Tests\Nyholm\Psr7\Integration;
 
 use Http\Psr7Test\StreamIntegrationTest;
 use Nyholm\Psr7\Factory\StreamFactory;
-use Nyholm\Psr7\Stream;
 
 class StreamTest extends StreamIntegrationTest
 {

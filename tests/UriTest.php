@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Uri;
@@ -208,7 +209,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('0://0:0@0/0?0#0', (string) $uri);
     }
 
-
     public function getResolveTestCases()
     {
         return [
@@ -269,8 +269,6 @@ class UriTest extends \PHPUnit_Framework_TestCase
             [self::RFC3986_BASE, '#0',            'http://a/b/c/d;p?q#0'],
         ];
     }
-
-
 
     public function testSchemeIsNormalizedToLowercase()
     {
@@ -423,7 +421,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
 
     public function testAllowsForRelativeUri()
     {
-        $uri = (new Uri)->withPath('foo');
+        $uri = (new Uri())->withPath('foo');
         $this->assertSame('foo', $uri->getPath());
         $this->assertSame('foo', (string) $uri);
     }
@@ -432,7 +430,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     {
         // If the path is rootless and an authority is present, the path MUST
         // be prefixed by "/".
-        $uri = (new Uri)->withPath('foo')->withHost('example.com');
+        $uri = (new Uri())->withPath('foo')->withHost('example.com');
         $this->assertSame('foo', $uri->getPath());
         // concatenating a relative path with a host doesn't work: "//example.comfoo" would be wrong
         $this->assertSame('//example.com/foo', (string) $uri);
@@ -442,7 +440,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
     {
         // If the path is starting with more than one "/" and no authority is
         // present, the starting slashes MUST be reduced to one.
-        $uri = (new Uri)->withPath('//foo');
+        $uri = (new Uri())->withPath('//foo');
         $this->assertSame('//foo', $uri->getPath());
         // URI "//foo" would be interpreted as network reference and thus change the original path to the host
         $this->assertSame('/foo', (string) $uri);

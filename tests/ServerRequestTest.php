@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\ServerRequest;
@@ -16,12 +17,12 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
             'Single file' => [
                 [
                     'file' => [
-                        'name' => 'MyFile.txt',
-                        'type' => 'text/plain',
+                        'name'     => 'MyFile.txt',
+                        'type'     => 'text/plain',
                         'tmp_name' => '/tmp/php/php1h4j1o',
-                        'error' => '0',
-                        'size' => '123'
-                    ]
+                        'error'    => '0',
+                        'size'     => '123',
+                    ],
                 ],
                 [
                     'file' => new UploadedFile(
@@ -30,18 +31,18 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                         UPLOAD_ERR_OK,
                         'MyFile.txt',
                         'text/plain'
-                    )
-                ]
+                    ),
+                ],
             ],
             'Empty file' => [
                 [
                     'image_file' => [
-                        'name' => '',
-                        'type' => '',
+                        'name'     => '',
+                        'type'     => '',
                         'tmp_name' => '',
-                        'error' => '4',
-                        'size' => '0'
-                    ]
+                        'error'    => '4',
+                        'size'     => '0',
+                    ],
                 ],
                 [
                     'image_file' => new UploadedFile(
@@ -50,8 +51,8 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                         UPLOAD_ERR_NO_FILE,
                         '',
                         ''
-                    )
-                ]
+                    ),
+                ],
             ],
             'Already Converted' => [
                 [
@@ -61,7 +62,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                         UPLOAD_ERR_OK,
                         'MyFile.txt',
                         'text/plain'
-                    )
+                    ),
                 ],
                 [
                     'file' => new UploadedFile(
@@ -70,8 +71,8 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                         UPLOAD_ERR_OK,
                         'MyFile.txt',
                         'text/plain'
-                    )
-                ]
+                    ),
+                ],
             ],
             'Already Converted array' => [
                 [
@@ -89,7 +90,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                             UPLOAD_ERR_NO_FILE,
                             '',
                             ''
-                        )
+                        ),
                     ],
                 ],
                 [
@@ -107,26 +108,26 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                             UPLOAD_ERR_NO_FILE,
                             '',
                             ''
-                        )
+                        ),
                     ],
-                ]
+                ],
             ],
             'Multiple files' => [
                 [
                     'text_file' => [
-                        'name' => 'MyFile.txt',
-                        'type' => 'text/plain',
+                        'name'     => 'MyFile.txt',
+                        'type'     => 'text/plain',
                         'tmp_name' => '/tmp/php/php1h4j1o',
-                        'error' => '0',
-                        'size' => '123'
+                        'error'    => '0',
+                        'size'     => '123',
                     ],
                     'image_file' => [
-                        'name' => '',
-                        'type' => '',
+                        'name'     => '',
+                        'type'     => '',
                         'tmp_name' => '',
-                        'error' => '4',
-                        'size' => '0'
-                    ]
+                        'error'    => '4',
+                        'size'     => '0',
+                    ],
                 ],
                 [
                     'text_file' => new UploadedFile(
@@ -142,8 +143,8 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                         UPLOAD_ERR_NO_FILE,
                         '',
                         ''
-                    )
-                ]
+                    ),
+                ],
             ],
             'Nested files' => [
                 [
@@ -172,39 +173,39 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                     'nested' => [
                         'name' => [
                             'other' => 'Flag.txt',
-                            'test' => [
+                            'test'  => [
                                 0 => 'Stuff.txt',
                                 1 => '',
                             ],
                         ],
                         'type' => [
                             'other' => 'text/plain',
-                            'test' => [
+                            'test'  => [
                                 0 => 'text/plain',
                                 1 => '',
                             ],
                         ],
                         'tmp_name' => [
                             'other' => '/tmp/php/hp9hskjhf',
-                            'test' => [
+                            'test'  => [
                                 0 => '/tmp/php/asifu2gp3',
                                 1 => '',
                             ],
                         ],
                         'error' => [
                             'other' => '0',
-                            'test' => [
+                            'test'  => [
                                 0 => '0',
                                 1 => '4',
                             ],
                         ],
                         'size' => [
                             'other' => '421',
-                            'test' => [
+                            'test'  => [
                                 0 => '32',
                                 1 => '0',
-                            ]
-                        ]
+                            ],
+                        ],
                     ],
                 ],
                 [
@@ -247,10 +248,10 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
                                 '',
                                 ''
                             ),
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -274,34 +275,34 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
     public function dataGetUriFromGlobals()
     {
         $server = [
-            'PHP_SELF' => '/blog/article.php',
-            'GATEWAY_INTERFACE' => 'CGI/1.1',
-            'SERVER_ADDR' => 'Server IP: 217.112.82.20',
-            'SERVER_NAME' => 'www.blakesimpson.co.uk',
-            'SERVER_SOFTWARE' => 'Apache/2.2.15 (Win32) JRun/4.0 PHP/5.2.13',
-            'SERVER_PROTOCOL' => 'HTTP/1.0',
-            'REQUEST_METHOD' => 'POST',
-            'REQUEST_TIME' => 'Request start time: 1280149029',
-            'QUERY_STRING' => 'id=10&user=foo',
-            'DOCUMENT_ROOT' => '/path/to/your/server/root/',
-            'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'HTTP_ACCEPT_CHARSET' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+            'PHP_SELF'             => '/blog/article.php',
+            'GATEWAY_INTERFACE'    => 'CGI/1.1',
+            'SERVER_ADDR'          => 'Server IP: 217.112.82.20',
+            'SERVER_NAME'          => 'www.blakesimpson.co.uk',
+            'SERVER_SOFTWARE'      => 'Apache/2.2.15 (Win32) JRun/4.0 PHP/5.2.13',
+            'SERVER_PROTOCOL'      => 'HTTP/1.0',
+            'REQUEST_METHOD'       => 'POST',
+            'REQUEST_TIME'         => 'Request start time: 1280149029',
+            'QUERY_STRING'         => 'id=10&user=foo',
+            'DOCUMENT_ROOT'        => '/path/to/your/server/root/',
+            'HTTP_ACCEPT'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'HTTP_ACCEPT_CHARSET'  => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
             'HTTP_ACCEPT_ENCODING' => 'gzip,deflate',
             'HTTP_ACCEPT_LANGUAGE' => 'en-gb,en;q=0.5',
-            'HTTP_CONNECTION' => 'keep-alive',
-            'HTTP_HOST' => 'www.blakesimpson.co.uk',
-            'HTTP_REFERER' => 'http://previous.url.com',
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6 ( .NET CLR 3.5.30729)',
-            'HTTPS' => '1',
-            'REMOTE_ADDR' => '193.60.168.69',
-            'REMOTE_HOST' => 'Client server\'s host name',
-            'REMOTE_PORT' => '5390',
-            'SCRIPT_FILENAME' => '/path/to/this/script.php',
-            'SERVER_ADMIN' => 'webmaster@blakesimpson.co.uk',
-            'SERVER_PORT' => '80',
-            'SERVER_SIGNATURE' => 'Version signature: 5.123',
-            'SCRIPT_NAME' => '/blog/article.php',
-            'REQUEST_URI' => '/blog/article.php?id=10&user=foo',
+            'HTTP_CONNECTION'      => 'keep-alive',
+            'HTTP_HOST'            => 'www.blakesimpson.co.uk',
+            'HTTP_REFERER'         => 'http://previous.url.com',
+            'HTTP_USER_AGENT'      => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6 ( .NET CLR 3.5.30729)',
+            'HTTPS'                => '1',
+            'REMOTE_ADDR'          => '193.60.168.69',
+            'REMOTE_HOST'          => 'Client server\'s host name',
+            'REMOTE_PORT'          => '5390',
+            'SCRIPT_FILENAME'      => '/path/to/this/script.php',
+            'SERVER_ADMIN'         => 'webmaster@blakesimpson.co.uk',
+            'SERVER_PORT'          => '80',
+            'SERVER_SIGNATURE'     => 'Version signature: 5.123',
+            'SCRIPT_NAME'          => '/blog/article.php',
+            'REQUEST_URI'          => '/blog/article.php?id=10&user=foo',
         ];
 
         return [
@@ -345,58 +346,58 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
     public function testFromGlobals()
     {
         $_SERVER = [
-            'PHP_SELF' => '/blog/article.php',
-            'GATEWAY_INTERFACE' => 'CGI/1.1',
-            'SERVER_ADDR' => 'Server IP: 217.112.82.20',
-            'SERVER_NAME' => 'www.blakesimpson.co.uk',
-            'SERVER_SOFTWARE' => 'Apache/2.2.15 (Win32) JRun/4.0 PHP/5.2.13',
-            'SERVER_PROTOCOL' => 'HTTP/1.0',
-            'REQUEST_METHOD' => 'POST',
-            'REQUEST_TIME' => 'Request start time: 1280149029',
-            'QUERY_STRING' => 'id=10&user=foo',
-            'DOCUMENT_ROOT' => '/path/to/your/server/root/',
-            'HTTP_ACCEPT' => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'HTTP_ACCEPT_CHARSET' => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
+            'PHP_SELF'             => '/blog/article.php',
+            'GATEWAY_INTERFACE'    => 'CGI/1.1',
+            'SERVER_ADDR'          => 'Server IP: 217.112.82.20',
+            'SERVER_NAME'          => 'www.blakesimpson.co.uk',
+            'SERVER_SOFTWARE'      => 'Apache/2.2.15 (Win32) JRun/4.0 PHP/5.2.13',
+            'SERVER_PROTOCOL'      => 'HTTP/1.0',
+            'REQUEST_METHOD'       => 'POST',
+            'REQUEST_TIME'         => 'Request start time: 1280149029',
+            'QUERY_STRING'         => 'id=10&user=foo',
+            'DOCUMENT_ROOT'        => '/path/to/your/server/root/',
+            'HTTP_ACCEPT'          => 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'HTTP_ACCEPT_CHARSET'  => 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
             'HTTP_ACCEPT_ENCODING' => 'gzip,deflate',
             'HTTP_ACCEPT_LANGUAGE' => 'en-gb,en;q=0.5',
-            'HTTP_CONNECTION' => 'keep-alive',
-            'HTTP_HOST' => 'www.blakesimpson.co.uk',
-            'HTTP_REFERER' => 'http://previous.url.com',
-            'HTTP_USER_AGENT' => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6 ( .NET CLR 3.5.30729)',
-            'HTTPS' => '1',
-            'REMOTE_ADDR' => '193.60.168.69',
-            'REMOTE_HOST' => 'Client server\'s host name',
-            'REMOTE_PORT' => '5390',
-            'SCRIPT_FILENAME' => '/path/to/this/script.php',
-            'SERVER_ADMIN' => 'webmaster@blakesimpson.co.uk',
-            'SERVER_PORT' => '80',
-            'SERVER_SIGNATURE' => 'Version signature: 5.123',
-            'SCRIPT_NAME' => '/blog/article.php',
-            'REQUEST_URI' => '/blog/article.php?id=10&user=foo',
+            'HTTP_CONNECTION'      => 'keep-alive',
+            'HTTP_HOST'            => 'www.blakesimpson.co.uk',
+            'HTTP_REFERER'         => 'http://previous.url.com',
+            'HTTP_USER_AGENT'      => 'Mozilla/5.0 (Windows; U; Windows NT 6.0; en-GB; rv:1.9.2.6) Gecko/20100625 Firefox/3.6.6 ( .NET CLR 3.5.30729)',
+            'HTTPS'                => '1',
+            'REMOTE_ADDR'          => '193.60.168.69',
+            'REMOTE_HOST'          => 'Client server\'s host name',
+            'REMOTE_PORT'          => '5390',
+            'SCRIPT_FILENAME'      => '/path/to/this/script.php',
+            'SERVER_ADMIN'         => 'webmaster@blakesimpson.co.uk',
+            'SERVER_PORT'          => '80',
+            'SERVER_SIGNATURE'     => 'Version signature: 5.123',
+            'SCRIPT_NAME'          => '/blog/article.php',
+            'REQUEST_URI'          => '/blog/article.php?id=10&user=foo',
         ];
 
         $_COOKIE = [
-            'logged-in' => 'yes!'
+            'logged-in' => 'yes!',
         ];
 
         $_POST = [
-            'name' => 'Pesho',
+            'name'  => 'Pesho',
             'email' => 'pesho@example.com',
         ];
 
         $_GET = [
-            'id' => 10,
+            'id'   => 10,
             'user' => 'foo',
         ];
 
         $_FILES = [
             'file' => [
-                'name' => 'MyFile.txt',
-                'type' => 'text/plain',
+                'name'     => 'MyFile.txt',
+                'type'     => 'text/plain',
                 'tmp_name' => '/tmp/php/php1h4j1o',
-                'error' => UPLOAD_ERR_OK,
-                'size' => 123,
-            ]
+                'error'    => UPLOAD_ERR_OK,
+                'size'     => 123,
+            ],
         ];
 
         $server = ServerRequest::fromGlobals();
@@ -432,7 +433,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
         $request1 = new ServerRequest('GET', '/');
 
         $files = [
-            'file' => new UploadedFile('test', 123, UPLOAD_ERR_OK)
+            'file' => new UploadedFile('test', 123, UPLOAD_ERR_OK),
         ];
 
         $request2 = $request1->withUploadedFiles($files);
