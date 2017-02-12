@@ -1,5 +1,5 @@
 <?php
-namespace tests\Nyholm\Psr7\Psr7;
+namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Uri;
 
@@ -562,7 +562,7 @@ class UriTest extends \PHPUnit_Framework_TestCase
         //  should not use late static binding to access private static members.
         // If they do, this will fatal.
         $this->assertInstanceOf(
-            '\tests\Nyholm\Psr7\Psr7\ExtendingClassTest',
+            '\Tests\Nyholm\Psr7\ExtendingClassTest',
             new ExtendingClassTest('http://h:9/')
         );
     }

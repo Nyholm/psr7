@@ -1,5 +1,5 @@
 <?php
-namespace tests\Nyholm\Psr7\Psr7;
+namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7;
 use Nyholm\Psr7\Response;
@@ -31,7 +31,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase
 
     public function testConstructorDoesNotReadStreamBody()
     {
-        $body = $this->getMock(StreamInterface::class);
+        $body = $this->getMockBuilder(StreamInterface::class)->getMock();
         $body->expects($this->never())
             ->method('__toString');
 

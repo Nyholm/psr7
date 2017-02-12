@@ -1,5 +1,5 @@
 <?php
-namespace tests\Nyholm\Psr7\Psr7;
+namespace Tests\Nyholm\Psr7;
 
 use ReflectionProperty;
 use Nyholm\Psr7\Stream;
