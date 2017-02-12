@@ -260,7 +260,7 @@ class Stream implements StreamInterface
     {
         if (!isset($this->stream)) {
             return $key ? null : [];
-        } elseif (!$key) {
+        } elseif ($key === null) {
             return stream_get_meta_data($this->stream);
         }
 

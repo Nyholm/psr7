@@ -7,8 +7,16 @@ namespace Nyholm\Psr7\Factory;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 
+/**
+ *
+ *
+ * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ */
 class MessageFactory implements \Http\Message\MessageFactory
 {
+    /**
+     * {@inheritdoc}
+     */
     public function createRequest(
         $method,
         $uri,
@@ -19,6 +27,9 @@ class MessageFactory implements \Http\Message\MessageFactory
         new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function createResponse(
         $statusCode = 200,
         $reasonPhrase = null,
