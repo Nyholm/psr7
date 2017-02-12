@@ -7,10 +7,8 @@ cache:
         - $HOME/.composer/cache
 
 php:
-    - 5.5
-    - 5.6
     - 7.0
-    - hhvm
+    - 7.1
 
 env:
     global:
@@ -25,7 +23,7 @@ matrix:
         - php: hhvm
     fast_finish: true
     include:
-        - php: 5.5
+        - php: 7.0
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
 
 before_install:
@@ -33,9 +31,6 @@ before_install:
 
 install:
     - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
-
-before_script:
-    - vendor/bin/http_test_server > /dev/null 2>&1 &
 
 script:
     - $TEST_COMMAND
