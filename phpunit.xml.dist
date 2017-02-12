@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="vendor/autoload.php">
     <testsuites>
-        <testsuite name="HTTP Client Test Suite">
+        <testsuite name="Unit tests">
             <directory>tests/</directory>
         </testsuite>
+
+        <testsuite name="Integration tests">
+            <directory>./vendor/http-interop/http-factory-tests/test</directory>
+        </testsuite>
     </testsuites>
-    <php>
-        <server name="TEST_SERVER" value="http://127.0.0.1:10000/server.php" />
-    </php>
+
     <filter>
         <whitelist>
             <directory suffix=".php">src/</directory>
         </whitelist>
     </filter>
 
-
     <php>
-        <env name="URI_FACTORY" value="Nyholm\Psr7\Factory\UriFactory"/>
-        <env name="STREAM_FACTORY" value="Nyholm\Psr7\Factory\StreamFactory"/>
+        <const name="REQUEST_FACTORY" value="Nyholm\Psr7\Factory\MessageFactory"/>
+        <const name="RESPONSE_FACTORY" value="Nyholm\Psr7\Factory\MessageFactory"/>
+        <const name="SERVER_REQUEST_FACTORY" value="Nyholm\Psr7\Factory\ServerRequestFactory"/>
+        <const name="UPLOADED_FILE_FACTORY" value="Nyholm\Psr7\Factory\UploadedFileFactory"/>
+        <const name="URI_FACTORY" value="Nyholm\Psr7\Factory\UriFactory"/>
+        <const name="STREAM_FACTORY" value="Nyholm\Psr7\Factory\StreamFactory"/>
     </php>
 </phpunit>
