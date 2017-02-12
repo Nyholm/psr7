@@ -63,7 +63,7 @@ class Request implements RequestInterface
         }
     }
 
-    public function getRequestTarget()
+    public function getRequestTarget(): string
     {
         if ($this->requestTarget !== null) {
             return $this->requestTarget;
@@ -80,7 +80,7 @@ class Request implements RequestInterface
         return $target;
     }
 
-    public function withRequestTarget($requestTarget)
+    public function withRequestTarget($requestTarget): self
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new InvalidArgumentException(
@@ -94,12 +94,12 @@ class Request implements RequestInterface
         return $new;
     }
 
-    public function getMethod()
+    public function getMethod(): string
     {
         return $this->methodCaseSensitive;
     }
 
-    public function withMethod($method)
+    public function withMethod($method): self
     {
         $new = clone $this;
         $new->method = strtoupper($method);
@@ -108,12 +108,12 @@ class Request implements RequestInterface
         return $new;
     }
 
-    public function getUri()
+    public function getUri(): UriInterface
     {
         return $this->uri;
     }
 
-    public function withUri(UriInterface $uri, $preserveHost = false)
+    public function withUri(UriInterface $uri, $preserveHost = false): self
     {
         if ($uri === $this->uri) {
             return $this;

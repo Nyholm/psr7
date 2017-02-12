@@ -233,7 +233,7 @@ class Stream implements StreamInterface
         return $this->readable;
     }
 
-    public function read($length):string
+    public function read($length): string
     {
         if (!$this->readable) {
             throw new \RuntimeException('Cannot read from non-readable stream');
