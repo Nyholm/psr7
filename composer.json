@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^5.4",
-        "php-http/psr7-integration-tests": "dev-master"
+        "php-http/psr7-integration-tests": "dev-patch-2"
     },
     "provide": {
         "psr/http-message-implementation": "1.0"

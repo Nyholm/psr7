@@ -7,7 +7,7 @@ use Nyholm\Psr7\Uri;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers Nyholm\Psr7\Request
+ * @covers \Nyholm\Psr7\Request
  */
 class RequestTest extends \PHPUnit_Framework_TestCase
 {
@@ -61,18 +61,6 @@ class RequestTest extends \PHPUnit_Framework_TestCase
 
         $r = new Request('GET', '/', [], $body);
         $this->assertSame($body, $r->getBody());
-    }
-
-    public function testCapitalizesMethod()
-    {
-        $r = new Request('get', '/');
-        $this->assertEquals('GET', $r->getMethod());
-    }
-
-    public function testCapitalizesWithMethod()
-    {
-        $r = new Request('GET', '/');
-        $this->assertEquals('PUT', $r->withMethod('put')->getMethod());
     }
 
     public function testWithUri()

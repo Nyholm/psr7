@@ -15,7 +15,7 @@ class Stream implements StreamInterface
     /**
      * A resource reference.
      *
-     * @var int
+     * @var resource
      */
     private $stream;
 
@@ -60,21 +60,44 @@ class Stream implements StreamInterface
         ],
     ];
 
-    /**
-     * @param int $stream
-     */
-    public function __construct($stream)
+    private function __construct()
     {
-        if (!is_resource($stream)) {
+    }
+
+    /**
+     * @param resource $resource
+     *
+     * @return Stream
+     */
+    public static function createFromResource($resource): Stream
+    {
+        if (!is_resource($resource)) {
             throw new \InvalidArgumentException('Stream must be a resource');
         }
 
-        $this->stream = $stream;
-        $meta = stream_get_meta_data($this->stream);
-        $this->seekable = $meta['seekable'];
-        $this->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
-        $this->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
-        $this->uri = $this->getMetadata('uri');
+        $obj = new self();
+        $obj->stream = $resource;
+        $meta = stream_get_meta_data($obj->stream);
+        $obj->seekable = $meta['seekable'];
+        $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
+        $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
+        $obj->uri = $obj->getMetadata('uri');
+
+        return $obj;
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return Stream
+     */
+    public static function create(string $content): Stream
+    {
+        $resource = fopen('php://temp', 'rw+');
+        $stream = self::createFromResource($resource);
+        $stream->write($content);
+
+        return $stream;
     }
 
     /**
@@ -85,12 +108,14 @@ class Stream implements StreamInterface
         $this->close();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         try {
-            $this->seek(0);
+            if ($this->isSeekable()) {
+                $this->seek(0);
+            }
 
-            return (string) stream_get_contents($this->stream);
+            return $this->getContents();
         } catch (\Exception $e) {
             return '';
         }
@@ -127,7 +152,7 @@ class Stream implements StreamInterface
         }
 
         if (!isset($this->stream)) {
-            return;
+            return null;
         }
 
         // Clear the stat cache if the stream has a URI
@@ -145,7 +170,7 @@ class Stream implements StreamInterface
         return;
     }
 
-    public function tell()
+    public function tell(): int
     {
         $result = ftell($this->stream);
 
@@ -156,12 +181,12 @@ class Stream implements StreamInterface
         return $result;
     }
 
-    public function eof()
+    public function eof(): bool
     {
         return !$this->stream || feof($this->stream);
     }
 
-    public function isSeekable()
+    public function isSeekable(): bool
     {
         return $this->seekable;
     }
@@ -181,12 +206,12 @@ class Stream implements StreamInterface
         $this->seek(0);
     }
 
-    public function isWritable()
+    public function isWritable(): bool
     {
         return $this->writable;
     }
 
-    public function write($string)
+    public function write($string): int
     {
         if (!$this->writable) {
             throw new \RuntimeException('Cannot write to a non-writable stream');
@@ -203,12 +228,12 @@ class Stream implements StreamInterface
         return $result;
     }
 
-    public function isReadable()
+    public function isReadable(): bool
     {
         return $this->readable;
     }
 
-    public function read($length)
+    public function read($length):string
     {
         if (!$this->readable) {
             throw new \RuntimeException('Cannot read from non-readable stream');
@@ -217,8 +242,12 @@ class Stream implements StreamInterface
         return fread($this->stream, $length);
     }
 
-    public function getContents()
+    public function getContents():string
     {
+        if (!isset($this->stream)) {
+            throw new \RuntimeException('Unable to read stream contents');
+        }
+
         $contents = stream_get_contents($this->stream);
 
         if ($contents === false) {

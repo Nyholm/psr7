@@ -101,7 +101,7 @@ class UploadedFile implements UploadedFileInterface
         if (is_string($streamOrFile)) {
             $this->file = $streamOrFile;
         } elseif (is_resource($streamOrFile)) {
-            $this->stream = new Stream($streamOrFile);
+            $this->stream = Stream::createFromResource($streamOrFile);
         } elseif ($streamOrFile instanceof StreamInterface) {
             $this->stream = $streamOrFile;
         } else {
@@ -246,7 +246,7 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        return new Stream(fopen($this->file, 'r+'));
+        return Stream::createFromResource($this->file);
     }
 
     /**
@@ -277,9 +277,13 @@ class UploadedFile implements UploadedFileInterface
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {
+            $stream = $this->getStream();
+            if ($stream->isSeekable()) {
+                $stream->rewind();
+            }
             (new StreamFactory)->copyToStream(
-                $this->getStream(),
-                new Stream(fopen($targetPath, 'w'))
+                $stream,
+                Stream::createFromResource(fopen($targetPath, 'w'))
             );
 
             $this->moved = true;

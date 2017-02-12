@@ -8,44 +8,31 @@ use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class StreamFactory implements \Http\Message\StreamFactory
 {
+    /**
+     * {@inheritdoc}
+     */
     public function createStream($body = null)
     {
-        if (is_scalar($body)) {
-            // Copy to our stream
-            $stream = fopen('php://temp', 'r+');
-            if ($body !== '') {
-                fwrite($stream, $body);
-                fseek($stream, 0);
-            }
-
-            return new Stream($stream);
+        if ($body instanceof StreamInterface) {
+            return $body;
         }
 
-        switch (gettype($body)) {
-            case 'resource':
-                return new Stream($body);
-            case 'object':
-                if ($body instanceof StreamInterface) {
-                    return $body;
-                } elseif (method_exists($body, '__toString')) {
-                    return $this->createStream((string) $body);
-                }
-                break;
-            case 'NULL':
-                return new Stream(fopen('php://temp', 'r+'));
+        if (gettype($body) === 'resource') {
+            return Stream::createFromResource($body);
         }
 
-        throw new \InvalidArgumentException('Invalid resource type: '.gettype($body));
+        return Stream::create($body);
     }
 
     /**
      * Copy the contents of a stream into another stream until the given number
      * of bytes have been read.
+     *
+     * @author Michael Dowling and contributors to guzzlehttp/psr7
      *
      * @param StreamInterface $source Stream to read from
      * @param StreamInterface $dest   Stream to write to

@@ -6,7 +6,7 @@ use Nyholm\Psr7\UploadedFile;
 use Nyholm\Psr7\Uri;
 
 /**
- * @covers Nyholm\Psr7\ServerRequest
+ * @covers \Nyholm\Psr7\ServerRequest
  */
 class ServerRequestTest extends \PHPUnit_Framework_TestCase
 {

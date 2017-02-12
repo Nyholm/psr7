@@ -4,7 +4,7 @@ namespace Tests\Nyholm\Psr7;
 use Nyholm\Psr7\Uri;
 
 /**
- * @covers Nyholm\Psr7\Uri
+ * @covers \Nyholm\Psr7\Uri
  */
 class UriTest extends \PHPUnit_Framework_TestCase
 {

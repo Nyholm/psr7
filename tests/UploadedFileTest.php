@@ -6,7 +6,7 @@ use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 
 /**
- * @covers Nyholm\Psr7\UploadedFile
+ * @covers \Nyholm\Psr7\UploadedFile
  */
 class UploadedFileTest extends \PHPUnit_Framework_TestCase
 {
@@ -128,7 +128,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStreamReturnsOriginalStreamObject()
     {
-        $stream = new Stream(fopen('php://temp', 'r'));
+        $stream = Stream::create('');
         $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
 
         $this->assertSame($stream, $upload->getStream());
@@ -145,7 +145,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
 
     public function testSuccessful()
     {
-        $stream = (new \Nyholm\Psr7\Factory\StreamFactory())->createStream('Foo bar!');
+        $stream = Stream::create('Foo bar!');
         $upload = new UploadedFile($stream, $stream->getSize(), UPLOAD_ERR_OK, 'filename.txt', 'text/plain');
 
         $this->assertEquals($stream->getSize(), $upload->getSize());

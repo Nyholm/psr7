@@ -6,8 +6,8 @@ use Nyholm\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
 
 /**
- * @covers Nyholm\Psr7\MessageTrait
- * @covers Nyholm\Psr7\Response
+ * @covers \Nyholm\Psr7\MessageTrait
+ * @covers \Nyholm\Psr7\Response
  */
 class ResponseTest extends \PHPUnit_Framework_TestCase
 {

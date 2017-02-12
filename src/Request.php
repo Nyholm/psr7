@@ -21,6 +21,9 @@ class Request implements RequestInterface
     /** @var string */
     private $method;
 
+    /** @var string */
+    private $methodCaseSensitive;
+
     /** @var null|string */
     private $requestTarget;
 
@@ -46,6 +49,7 @@ class Request implements RequestInterface
         }
 
         $this->method = strtoupper($method);
+        $this->methodCaseSensitive = $method;
         $this->uri = $uri;
         $this->setHeaders($headers);
         $this->protocol = $version;
@@ -92,13 +96,14 @@ class Request implements RequestInterface
 
     public function getMethod()
     {
-        return $this->method;
+        return $this->methodCaseSensitive;
     }
 
     public function withMethod($method)
     {
         $new = clone $this;
         $new->method = strtoupper($method);
+        $new->methodCaseSensitive = $method;
 
         return $new;
     }
@@ -117,7 +122,7 @@ class Request implements RequestInterface
         $new = clone $this;
         $new->uri = $uri;
 
-        if (!$preserveHost) {
+        if (!$preserveHost || '' === $this->getHeaderLine('host')) {
             $new->updateHostFromUri();
         }
 

@@ -4,23 +4,15 @@ namespace Tests\Nyholm\Psr7;
 use Nyholm\Psr7\Stream;
 
 /**
- * @covers Nyholm\Psr7\Stream
+ * @covers \Nyholm\Psr7\Stream
  */
 class StreamTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testConstructorThrowsExceptionOnInvalidArgument()
-    {
-        new Stream(true);
-    }
-
     public function testConstructorInitializesProperties()
     {
         $handle = fopen('php://temp', 'r+');
         fwrite($handle, 'data');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertTrue($stream->isReadable());
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
@@ -34,7 +26,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function testStreamClosesHandleOnDestruct()
     {
         $handle = fopen('php://temp', 'r');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         unset($stream);
         $this->assertFalse(is_resource($handle));
     }
@@ -43,7 +35,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $handle = fopen('php://temp', 'w+');
         fwrite($handle, 'data');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertEquals('data', (string) $stream);
         $this->assertEquals('data', (string) $stream);
         $stream->close();
@@ -53,7 +45,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $handle = fopen('php://temp', 'w+');
         fwrite($handle, 'data');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertEquals('', $stream->getContents());
         $stream->seek(0);
         $this->assertEquals('data', $stream->getContents());
@@ -64,7 +56,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $handle = fopen('php://temp', 'w+');
         fwrite($handle, 'data');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertFalse($stream->eof());
         $stream->read(4);
         $this->assertTrue($stream->eof());
@@ -75,7 +67,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $size = filesize(__FILE__);
         $handle = fopen(__FILE__, 'r');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertEquals($size, $stream->getSize());
         // Load from cache
         $this->assertEquals($size, $stream->getSize());
@@ -86,7 +78,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     {
         $h = fopen('php://temp', 'w+');
         $this->assertEquals(3, fwrite($h, 'foo'));
-        $stream = new Stream($h);
+        $stream = Stream::createFromResource($h);
         $this->assertEquals(3, $stream->getSize());
         $this->assertEquals(4, $stream->write('test'));
         $this->assertEquals(7, $stream->getSize());
@@ -97,7 +89,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function testProvidesStreamPosition()
     {
         $handle = fopen('php://temp', 'w+');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $this->assertEquals(0, $stream->tell());
         $stream->write('foo');
         $this->assertEquals(3, $stream->tell());
@@ -110,7 +102,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function testCanDetachStream()
     {
         $r = fopen('php://temp', 'w+');
-        $stream = new Stream($r);
+        $stream = Stream::createFromResource($r);
         $stream->write('foo');
         $this->assertTrue($stream->isReadable());
         $this->assertSame($r, $stream->detach());
@@ -141,7 +133,7 @@ class StreamTest extends \PHPUnit_Framework_TestCase
     public function testCloseClearProperties()
     {
         $handle = fopen('php://temp', 'r+');
-        $stream = new Stream($handle);
+        $stream = Stream::createFromResource($handle);
         $stream->close();
 
         $this->assertFalse($stream->isSeekable());
