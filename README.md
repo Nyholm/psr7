@@ -15,5 +15,8 @@ A super lightweight PSR-7 Http client. Very strict and very fast.
 | ---- | ------ | ---- | ---- | ------ |
 | Lines of code | 4 400 | 5 000 | 4 100 | 2 000 |
 | PHP7 | No | No | No | Yes |
-| 100% PSR-7 | No | No | No | Yes |
-| 100% PSR-17 | No | No | No | Yes |
+| PSR-7* | 94% | 96% | 92% | 100% |
+| PSR-17 | No | No | No | Yes |
+| HTTPlug | No | No | No | Yes |
+
+* See https://github.com/php-http/psr7-integration-tests
