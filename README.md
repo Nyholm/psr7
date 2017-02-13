@@ -19,4 +19,4 @@ A super lightweight PSR-7 Http client. Very strict and very fast.
 | PSR-17 | No | No | No | Yes |
 | HTTPlug | No | No | No | Yes |
 
-* See https://github.com/php-http/psr7-integration-tests
+\* See https://github.com/php-http/psr7-integration-tests
