@@ -233,25 +233,13 @@ class Uri implements UriInterface
      */
     private function applyParts(array $parts)
     {
-        $this->scheme = isset($parts['scheme'])
-            ? $this->filterScheme($parts['scheme'])
-            : '';
+        $this->scheme = isset($parts['scheme']) ? $this->filterScheme($parts['scheme']) : '';
         $this->userInfo = isset($parts['user']) ? $parts['user'] : '';
-        $this->host = isset($parts['host'])
-            ? $this->filterHost($parts['host'])
-            : '';
-        $this->port = isset($parts['port'])
-            ? $this->filterPort($parts['port'])
-            : null;
-        $this->path = isset($parts['path'])
-            ? $this->filterPath($parts['path'])
-            : '';
-        $this->query = isset($parts['query'])
-            ? $this->filterQueryAndFragment($parts['query'])
-            : '';
-        $this->fragment = isset($parts['fragment'])
-            ? $this->filterQueryAndFragment($parts['fragment'])
-            : '';
+        $this->host = isset($parts['host']) ? $this->filterHost($parts['host']) : '';
+        $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
+        $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
+        $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
+        $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
         if (isset($parts['pass'])) {
             $this->userInfo .= ':'.$parts['pass'];
         }
