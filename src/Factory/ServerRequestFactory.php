@@ -9,29 +9,29 @@ use Nyholm\Psr7\ServerRequest;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @author Martijn van der Ven <martijn@vanderven.se>
  */
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    public function createServerRequest(array $server, $method = null, $uri = null)
+    public function createServerRequest($method, $uri)
     {
-        if (null === $method && isset($server['REQUEST_METHOD'])) {
-            $method = $server['REQUEST_METHOD'];
-        }
-        if (null === $method) {
+        return new ServerRequest($method, $uri);
+    }
+
+    public function createServerRequestFromArray(array $server)
+    {
+        if (!isset($server['REQUEST_METHOD'])) {
             throw new \InvalidArgumentException('Cannot determine HTTP method');
         }
         // TODO: find a MUCH better way
-        if (null === $uri) {
-            $SERVER = $_SERVER;
-            $_SERVER = $server;
-            // Until https://github.com/guzzle/psr7/pull/116 is resolved
-            if (!isset($_SERVER['HTTPS'])) {
-                $_SERVER['HTTPS'] = 'off';
-            }
-            $uri = ServerRequest::getUriFromGlobals();
-            $_SERVER = $SERVER;
-            unset($SERVER);
+        $method = $server['REQUEST_METHOD'];
+        $SERVER = $_SERVER;
+        $_SERVER = $server;
+        // Until https://github.com/guzzle/psr7/pull/116 is resolved
+        if (!isset($_SERVER['HTTPS'])) {
+            $_SERVER['HTTPS'] = 'off';
         }
+        $uri = ServerRequest::getUriFromGlobals();
 
         return new ServerRequest($method, $uri, [], null, '1.1', $server);
     }
