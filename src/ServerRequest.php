@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -65,148 +63,6 @@ class ServerRequest extends Request implements ServerRequestInterface
         $this->serverParams = $serverParams;
 
         parent::__construct($method, $uri, $headers, $body, $version);
-    }
-
-    /**
-     * Return an UploadedFile instance array.
-     *
-     * @param array $files A array which respect $_FILES structure
-     *
-     * @throws InvalidArgumentException for unrecognized values
-     *
-     * @return array
-     */
-    public static function normalizeFiles(array $files)
-    {
-        $normalized = [];
-
-        foreach ($files as $key => $value) {
-            if ($value instanceof UploadedFileInterface) {
-                $normalized[$key] = $value;
-            } elseif (is_array($value) && isset($value['tmp_name'])) {
-                $normalized[$key] = self::createUploadedFileFromSpec($value);
-            } elseif (is_array($value)) {
-                $normalized[$key] = self::normalizeFiles($value);
-                continue;
-            } else {
-                throw new InvalidArgumentException('Invalid value in files specification');
-            }
-        }
-
-        return $normalized;
-    }
-
-    /**
-     * Create and return an UploadedFile instance from a $_FILES specification.
-     *
-     * If the specification represents an array of values, this method will
-     * delegate to normalizeNestedFileSpec() and return that return value.
-     *
-     * @param array $value $_FILES struct
-     *
-     * @return array|UploadedFileInterface
-     */
-    private static function createUploadedFileFromSpec(array $value)
-    {
-        if (is_array($value['tmp_name'])) {
-            return self::normalizeNestedFileSpec($value);
-        }
-
-        return new UploadedFile(
-            $value['tmp_name'],
-            (int) $value['size'],
-            (int) $value['error'],
-            $value['name'],
-            $value['type']
-        );
-    }
-
-    /**
-     * Normalize an array of file specifications.
-     *
-     * Loops through all nested files and returns a normalized array of
-     * UploadedFileInterface instances.
-     *
-     * @param array $files
-     *
-     * @return UploadedFileInterface[]
-     */
-    private static function normalizeNestedFileSpec(array $files = [])
-    {
-        $normalizedFiles = [];
-
-        foreach (array_keys($files['tmp_name']) as $key) {
-            $spec = [
-                'tmp_name' => $files['tmp_name'][$key],
-                'size' => $files['size'][$key],
-                'error' => $files['error'][$key],
-                'name' => $files['name'][$key],
-                'type' => $files['type'][$key],
-            ];
-            $normalizedFiles[$key] = self::createUploadedFileFromSpec($spec);
-        }
-
-        return $normalizedFiles;
-    }
-
-    /**
-     * Return a ServerRequest populated with superglobals:
-     * $_GET
-     * $_POST
-     * $_COOKIE
-     * $_FILES
-     * $_SERVER.
-     *
-     * @return ServerRequestInterface
-     */
-    public static function fromGlobals()
-    {
-        $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-        $headers = function_exists('getallheaders') ? getallheaders() : [];
-        $uri = self::getUriFromGlobals();
-        $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']) : '1.1';
-
-        $serverRequest = new self($method, $uri, $headers, null, $protocol, $_SERVER);
-
-        return $serverRequest
-            ->withCookieParams($_COOKIE)
-            ->withQueryParams($_GET)
-            ->withParsedBody($_POST)
-            ->withUploadedFiles(self::normalizeFiles($_FILES));
-    }
-
-    /**
-     * Get a Uri populated with values from $_SERVER.
-     *
-     * @return UriInterface
-     */
-    public static function getUriFromGlobals()
-    {
-        $uri = new Uri('');
-
-        if (isset($_SERVER['HTTPS'])) {
-            $uri = $uri->withScheme($_SERVER['HTTPS'] == 'on' ? 'https' : 'http');
-        }
-
-        if (isset($_SERVER['HTTP_HOST'])) {
-            $uri = $uri->withHost($_SERVER['HTTP_HOST']);
-        } elseif (isset($_SERVER['SERVER_NAME'])) {
-            $uri = $uri->withHost($_SERVER['SERVER_NAME']);
-        }
-
-        if (isset($_SERVER['SERVER_PORT'])) {
-            $uri = $uri->withPort($_SERVER['SERVER_PORT']);
-        }
-
-        if (isset($_SERVER['REQUEST_URI'])) {
-            $uri = $uri->withPath(current(explode('?', $_SERVER['REQUEST_URI'])));
-        }
-
-        if (isset($_SERVER['QUERY_STRING'])) {
-            $uri = $uri->withQuery($_SERVER['QUERY_STRING']);
-        }
-
-        return $uri;
     }
 
     public function getServerParams()
