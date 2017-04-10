@@ -82,7 +82,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      *
      * @return array
      */
-    public static function normalizeFiles(array $files): array
+    private static function normalizeFiles(array $files): array
     {
         $normalized = [];
 
