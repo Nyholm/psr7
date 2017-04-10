@@ -263,7 +263,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeFiles($files, $expected)
     {
         $result = (new ServerRequestFactory())
-            ->createServerRequestFromGlobals([], [], [], [], $files)
+            ->createServerRequestFromArrays(['REQUEST_METHOD' => 'POST'], [], [], [], $files)
             ->getUploadedFiles();
 
         $this->assertEquals($expected, $result);
@@ -273,7 +273,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid value in files specification');
 
-        (new ServerRequestFactory())->createServerRequestFromGlobals([], [], [], [], ['test' => 'something']);
+        (new ServerRequestFactory())->createServerRequestFromArrays(['REQUEST_METHOD' => 'POST'], [], [], [], ['test' => 'something']);
     }
 
     public function dataGetUriFromGlobals()
@@ -402,7 +402,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $server = (new ServerRequestFactory())->createServerRequestFromGlobals($server, $cookie, $get, $post, $files);
+        $server = (new ServerRequestFactory())->createServerRequestFromArrays($server, $cookie, $get, $post, $files);
 
         $this->assertEquals('POST', $server->getMethod());
         $this->assertEquals(['Host' => ['www.blakesimpson.co.uk']], $server->getHeaders());

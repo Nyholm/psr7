@@ -26,7 +26,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     public function createServerRequestFromArray(array $server): ServerRequestInterface
     {
         if (!isset($server['REQUEST_METHOD'])) {
-            throw new \InvalidArgumentException('Cannot determine HTTP method');
+            throw new InvalidArgumentException('Cannot determine HTTP method');
         }
         $method = $server['REQUEST_METHOD'];
 
@@ -35,11 +35,13 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $uri = $uri->withScheme('http');
         }
 
-        return new ServerRequest($method, $uri, [], null, '1.1', $server);
+        $protocol = isset($server['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $server['SERVER_PROTOCOL']) : '1.1';
+
+        return new ServerRequest($method, $uri, [], null, $protocol, $server);
     }
 
     /**
-     * Create a new server request from server variables.
+     * Create a new server request from a set of arrays.
      *
      * @param array $server Typically $_SERVER or similar structure.
      * @param array $cookie Typically $_COOKIE or similar structure.
@@ -47,22 +49,30 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
      * @param array $post   Typically $_POST or similar structure.
      * @param array $files  Typically $_FILES or similar structure.
      *
+     * @throws InvalidArgumentException If no valid method or URI can be determined.
+     *
      * @return ServerRequestInterface
      */
-    public function createServerRequestFromGlobals(
+    public function createServerRequestFromArrays(
         array $server,
         array $cookie,
         array $get,
         array $post,
         array $files
     ): ServerRequestInterface {
-        $method = isset($server['REQUEST_METHOD']) ? $server['REQUEST_METHOD'] : 'GET';
-        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        if (!isset($server['REQUEST_METHOD'])) {
+            throw new InvalidArgumentException('Cannot determine HTTP method');
+        }
+        $method = $server['REQUEST_METHOD'];
+
         $uri = (new UriFactory())->createUriFromArray($server);
         if ($uri->getScheme() === '') {
             $uri = $uri->withScheme('http');
         }
+
         $protocol = isset($server['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $server['SERVER_PROTOCOL']) : '1.1';
+
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
 
         $serverRequest = new ServerRequest($method, $uri, $headers, null, $protocol, $server);
 
@@ -71,6 +81,20 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             ->withQueryParams($get)
             ->withParsedBody($post)
             ->withUploadedFiles(self::normalizeFiles($files));
+    }
+
+    /**
+     * Create a new server request from the current environment variables.
+     *
+     * @return ServerRequestInterface
+     */
+    public function createServerRequestFromGlobals(): ServerRequestInterface
+    {
+        $server = $_SERVER;
+        if (false === isset($server['REQUEST_METHOD'])) {
+            $server['REQUEST_METHOD'] = 'GET';
+        }
+        return $this->createServerRequestFromArrays($_SERVER, $_COOKIE, $_GET, $_POST, $_FILES);
     }
 
     /**
