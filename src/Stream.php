@@ -239,7 +239,7 @@ class Stream implements StreamInterface
         return fread($this->stream, $length);
     }
 
-    public function getContents():string
+    public function getContents(): string
     {
         if (!isset($this->stream)) {
             throw new \RuntimeException('Unable to read stream contents');

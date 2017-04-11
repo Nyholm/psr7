@@ -9,7 +9,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Interop\Http\Factory\ServerRequestFactoryInterface;
 use Nyholm\Psr7\ServerRequest;
-use Nyholm\Psr7\Factory\UriFactory;
 use Nyholm\Psr7\UploadedFile;
 
 /**
@@ -83,6 +82,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
             $server['REQUEST_METHOD'] = 'GET';
         }
         $headers = function_exists('getallheaders') ? getallheaders() : [];
+
         return $this->createServerRequestFromArrays($_SERVER, $headers, $_COOKIE, $_GET, $_POST, $_FILES);
     }
 
@@ -91,6 +91,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         if (false === isset($environment['REQUEST_METHOD'])) {
             throw new InvalidArgumentException('Cannot determine HTTP method');
         }
+
         return $environment['REQUEST_METHOD'];
     }
 
@@ -100,9 +101,10 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
         if ($uri->getScheme() === '') {
             $uri = $uri->withScheme('http');
         }
+
         return $uri;
     }
-    
+
     /**
      * Return an UploadedFile instance array.
      *
