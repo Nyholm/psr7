@@ -5,6 +5,8 @@ namespace Tests\Nyholm\Psr7;
 use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\UploadedFile;
 use Nyholm\Psr7\Uri;
+use Nyholm\Psr7\Factory\ServerRequestFactory;
+use Nyholm\Psr7\Factory\UriFactory;
 
 /**
  * @covers \Nyholm\Psr7\ServerRequest
@@ -260,7 +262,9 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testNormalizeFiles($files, $expected)
     {
-        $result = ServerRequest::normalizeFiles($files);
+        $result = (new ServerRequestFactory())
+            ->createServerRequestFromArrays(['REQUEST_METHOD' => 'POST'], [], [], [], [], $files)
+            ->getUploadedFiles();
 
         $this->assertEquals($expected, $result);
     }
@@ -269,7 +273,7 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
     {
         $this->setExpectedException('InvalidArgumentException', 'Invalid value in files specification');
 
-        ServerRequest::normalizeFiles(['test' => 'something']);
+        (new ServerRequestFactory())->createServerRequestFromArrays(['REQUEST_METHOD' => 'POST'], [], [], [], [], ['test' => 'something']);
     }
 
     public function dataGetUriFromGlobals()
@@ -338,14 +342,12 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUriFromGlobals($expected, $serverParams)
     {
-        $_SERVER = $serverParams;
-
-        $this->assertEquals(new Uri($expected), ServerRequest::getUriFromGlobals());
+        $this->assertEquals(new Uri($expected), (new UriFactory())->createUriFromArray($serverParams));
     }
 
     public function testFromGlobals()
     {
-        $_SERVER = [
+        $server = [
             'PHP_SELF'             => '/blog/article.php',
             'GATEWAY_INTERFACE'    => 'CGI/1.1',
             'SERVER_ADDR'          => 'Server IP: 217.112.82.20',
@@ -376,21 +378,21 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
             'REQUEST_URI'          => '/blog/article.php?id=10&user=foo',
         ];
 
-        $_COOKIE = [
+        $cookie = [
             'logged-in' => 'yes!',
         ];
 
-        $_POST = [
+        $post = [
             'name'  => 'Pesho',
             'email' => 'pesho@example.com',
         ];
 
-        $_GET = [
+        $get = [
             'id'   => 10,
             'user' => 'foo',
         ];
 
-        $_FILES = [
+        $files = [
             'file' => [
                 'name'     => 'MyFile.txt',
                 'type'     => 'text/plain',
@@ -400,15 +402,15 @@ class ServerRequestTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $server = ServerRequest::fromGlobals();
+        $server = (new ServerRequestFactory())->createServerRequestFromArrays($server, [], $cookie, $get, $post, $files);
 
         $this->assertEquals('POST', $server->getMethod());
         $this->assertEquals(['Host' => ['www.blakesimpson.co.uk']], $server->getHeaders());
         $this->assertEquals('', (string) $server->getBody());
         $this->assertEquals('1.0', $server->getProtocolVersion());
-        $this->assertEquals($_COOKIE, $server->getCookieParams());
-        $this->assertEquals($_POST, $server->getParsedBody());
-        $this->assertEquals($_GET, $server->getQueryParams());
+        $this->assertEquals($cookie, $server->getCookieParams());
+        $this->assertEquals($post, $server->getParsedBody());
+        $this->assertEquals($get, $server->getQueryParams());
 
         $this->assertEquals(
             new Uri('http://www.blakesimpson.co.uk/blog/article.php?id=10&user=foo'),
