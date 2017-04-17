@@ -2,7 +2,7 @@
     "name": "nyholm/psr7",
     "description": "A fast PHP7 implementation of PSR-7",
     "license": "MIT",
-    "keywords": ["psr7"],
+    "keywords": ["psr-7", "psr-17"],
     "homepage": "http://tnyholm.se",
     "authors": [
         {
@@ -22,7 +22,8 @@
         "http-interop/http-factory-tests": "^0.3"
     },
     "provide": {
-        "psr/http-message-implementation": "1.0"
+        "psr/http-message-implementation": "1.0",
+        "psr/http-factory-implementation": "1.0"
     },
     "autoload": {
         "psr-4": {
