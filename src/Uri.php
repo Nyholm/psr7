@@ -259,7 +259,6 @@ class Uri implements UriInterface
     private static function createUriString($scheme, $authority, $path, $query, $fragment): string
     {
         $uri = '';
-
         if ($scheme != '') {
             $uri .= $scheme.':';
         }

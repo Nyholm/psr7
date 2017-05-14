@@ -12,36 +12,22 @@ use Psr\Http\Message\StreamInterface;
  */
 class Stream implements StreamInterface
 {
-    /**
-     * A resource reference.
-     *
-     * @var resource
-     */
+    /** @var resource A resource reference */
     private $stream;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $seekable;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $readable;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     private $writable;
 
-    /**
-     * @var array|mixed|null|void
-     */
+    /** @var array|mixed|null|void */
     private $uri;
 
-    /**
-     * @var int
-     */
+    /** @var int */
     private $size;
 
     /** @var array Hash of readable and writable stream types */

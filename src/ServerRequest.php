@@ -6,6 +6,7 @@ namespace Nyholm\Psr7;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -14,34 +15,22 @@ use Psr\Http\Message\UriInterface;
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     private $attributes = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $cookieParams = [];
 
-    /**
-     * @var null|array|object
-     */
+    /** @var null|array|object */
     private $parsedBody;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $queryParams = [];
 
-    /**
-     * @var array
-     */
+    /** @var array */
     private $serverParams;
 
-    /**
-     * @var array
-     */
+    /** @var UploadedFileInterface[] */
     private $uploadedFiles = [];
 
     /**
