@@ -95,6 +95,8 @@ trait MessageTrait
     {
         if (!is_array($value)) {
             $value = [$value];
+        } else {
+            $value = array_values($value);
         }
 
         $value = $this->trimHeaderValues($value);
