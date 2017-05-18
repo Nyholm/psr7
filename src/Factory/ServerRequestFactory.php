@@ -26,7 +26,11 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     {
         return new ServerRequest(
             $this->getMethodFromEnvironment($server),
-            $this->getUriFromEnvironmentWithHTTP($server)
+            $this->getUriFromEnvironmentWithHTTP($server),
+            [],
+            null,
+            '1.1',
+            $server
         );
     }
 
