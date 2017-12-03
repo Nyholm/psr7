@@ -172,7 +172,7 @@ class UploadedFile implements UploadedFileInterface
      */
     private function isOk()
     {
-        return $this->error === UPLOAD_ERR_OK;
+        return UPLOAD_ERR_OK === $this->error;
     }
 
     /**
@@ -211,7 +211,7 @@ class UploadedFile implements UploadedFileInterface
         }
 
         if (null !== $this->file) {
-            $this->moved = php_sapi_name() == 'cli'
+            $this->moved = 'cli' == php_sapi_name()
                 ? rename($this->file, $targetPath)
                 : move_uploaded_file($this->file, $targetPath);
         } else {

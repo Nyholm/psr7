@@ -54,22 +54,22 @@ class Request implements RequestInterface
             $this->updateHostFromUri();
         }
 
-        if ($body !== '' && $body !== null) {
+        if ('' !== $body && null !== $body) {
             $this->stream = (new StreamFactory())->createStream($body);
         }
     }
 
     public function getRequestTarget(): string
     {
-        if ($this->requestTarget !== null) {
+        if (null !== $this->requestTarget) {
             return $this->requestTarget;
         }
 
         $target = $this->uri->getPath();
-        if ($target == '') {
+        if ('' == $target) {
             $target = '/';
         }
-        if ($this->uri->getQuery() != '') {
+        if ('' != $this->uri->getQuery()) {
             $target .= '?'.$this->uri->getQuery();
         }
 
@@ -126,11 +126,11 @@ class Request implements RequestInterface
     {
         $host = $this->uri->getHost();
 
-        if ($host == '') {
+        if ('' == $host) {
             return;
         }
 
-        if (($port = $this->uri->getPort()) !== null) {
+        if (null !== ($port = $this->uri->getPort())) {
             $host .= ':'.$port;
         }
 

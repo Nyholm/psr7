@@ -100,12 +100,12 @@ class Response implements ResponseInterface
     ) {
         $this->statusCode = (int) $status;
 
-        if ($body !== '' && $body !== null) {
+        if ('' !== $body && null !== $body) {
             $this->stream = (new StreamFactory())->createStream($body);
         }
 
         $this->setHeaders($headers);
-        if ($reason === null && isset(self::$phrases[$this->statusCode])) {
+        if (null === $reason && isset(self::$phrases[$this->statusCode])) {
             $this->reasonPhrase = self::$phrases[$status];
         } else {
             $this->reasonPhrase = (string) $reason;
@@ -128,7 +128,7 @@ class Response implements ResponseInterface
     {
         $new = clone $this;
         $new->statusCode = (int) $code;
-        if ($reasonPhrase == '' && isset(self::$phrases[$new->statusCode])) {
+        if ('' == $reasonPhrase && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }
         $new->reasonPhrase = $reasonPhrase;
