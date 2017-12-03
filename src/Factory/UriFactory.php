@@ -36,7 +36,7 @@ class UriFactory implements \Http\Message\UriFactory, UriFactoryInterface
         if (isset($server['REQUEST_SCHEME'])) {
             $uri = $uri->withScheme($server['REQUEST_SCHEME']);
         } elseif (isset($server['HTTPS'])) {
-            $uri = $uri->withScheme($server['HTTPS'] === 'on' ? 'https' : 'http');
+            $uri = $uri->withScheme('on' === $server['HTTPS'] ? 'https' : 'http');
         }
 
         if (isset($server['HTTP_HOST'])) {

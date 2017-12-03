@@ -19,11 +19,11 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
             return $body;
         }
 
-        if (gettype($body) === 'resource') {
+        if ('resource' === gettype($body)) {
             return Stream::createFromResource($body);
         }
 
-        return Stream::create($body === null ? '' : $body);
+        return Stream::create(null === $body ? '' : $body);
     }
 
     public function createStreamFromFile($file, $mode = 'r')

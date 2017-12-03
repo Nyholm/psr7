@@ -55,7 +55,7 @@ class Stream implements StreamInterface
      *
      * @return Stream
      */
-    public static function createFromResource($resource): Stream
+    public static function createFromResource($resource): self
     {
         if (!is_resource($resource)) {
             throw new \InvalidArgumentException('Stream must be a resource');
@@ -77,7 +77,7 @@ class Stream implements StreamInterface
      *
      * @return Stream
      */
-    public static function create(string $content): Stream
+    public static function create(string $content): self
     {
         $resource = fopen('php://temp', 'rw+');
         $stream = self::createFromResource($resource);
@@ -133,7 +133,7 @@ class Stream implements StreamInterface
 
     public function getSize()
     {
-        if ($this->size !== null) {
+        if (null !== $this->size) {
             return $this->size;
         }
 
@@ -158,7 +158,7 @@ class Stream implements StreamInterface
     {
         $result = ftell($this->stream);
 
-        if ($result === false) {
+        if (false === $result) {
             throw new \RuntimeException('Unable to determine stream position');
         }
 
@@ -204,7 +204,7 @@ class Stream implements StreamInterface
         $this->size = null;
         $result = fwrite($this->stream, $string);
 
-        if ($result === false) {
+        if (false === $result) {
             throw new \RuntimeException('Unable to write to stream');
         }
 
@@ -233,7 +233,7 @@ class Stream implements StreamInterface
 
         $contents = stream_get_contents($this->stream);
 
-        if ($contents === false) {
+        if (false === $contents) {
             throw new \RuntimeException('Unable to read stream contents');
         }
 
@@ -244,7 +244,7 @@ class Stream implements StreamInterface
     {
         if (!isset($this->stream)) {
             return $key ? null : [];
-        } elseif ($key === null) {
+        } elseif (null === $key) {
             return stream_get_meta_data($this->stream);
         }
 

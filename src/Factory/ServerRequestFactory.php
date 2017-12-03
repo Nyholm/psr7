@@ -102,7 +102,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
     private function getUriFromEnvironmentWithHTTP(array $environment): \Psr\Http\Message\UriInterface
     {
         $uri = (new UriFactory())->createUriFromArray($environment);
-        if ($uri->getScheme() === '') {
+        if ('' === $uri->getScheme()) {
             $uri = $uri->withScheme('http');
         }
 
@@ -129,6 +129,7 @@ class ServerRequestFactory implements ServerRequestFactoryInterface
                 $normalized[$key] = self::createUploadedFileFromSpec($value);
             } elseif (is_array($value)) {
                 $normalized[$key] = self::normalizeFiles($value);
+
                 continue;
             } else {
                 throw new InvalidArgumentException('Invalid value in files specification');

@@ -19,7 +19,7 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
         $clientFilename = null,
         $clientMediaType = null
     ) {
-        if ($size === null) {
+        if (null === $size) {
             if (is_string($file)) {
                 $size = filesize($file);
             } else {
