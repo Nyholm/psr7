@@ -22,6 +22,7 @@ class Uri implements UriInterface
     ];
 
     private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
+
     private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
 
     /** @var string Uri scheme. */
