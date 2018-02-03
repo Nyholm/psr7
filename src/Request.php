@@ -95,6 +95,10 @@ class Request implements RequestInterface
 
     public function withMethod($method): self
     {
+        if (!is_string($method)) {
+            throw new \InvalidArgumentException('Method must be a string');
+        }
+
         $new = clone $this;
         $new->method = $method;
 
