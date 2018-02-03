@@ -76,6 +76,18 @@ trait MessageTrait
     {
         if (!is_array($value)) {
             $value = [$value];
+        } elseif (empty($value)) {
+            throw new \InvalidArgumentException('Header values must be non-empty strings');
+        }
+
+        if (!is_string($header) || empty($header)) {
+            throw new \InvalidArgumentException('Header name must be non-empty strings');
+        }
+
+        foreach ($value as $v) {
+            if (!is_string($v) || trim($v) ==='') {
+                throw new \InvalidArgumentException('Header values must be non-empty strings');
+            }
         }
 
         $value = $this->trimHeaderValues($value);
@@ -95,8 +107,20 @@ trait MessageTrait
     {
         if (!is_array($value)) {
             $value = [$value];
-        } else {
+        } elseif (!empty($value)) {
             $value = array_values($value);
+        } else {
+            throw new \InvalidArgumentException('Header values must be non-empty strings');
+        }
+
+        if (!is_string($header) || empty($header)) {
+            throw new \InvalidArgumentException('Header name must be non-empty strings');
+        }
+
+        foreach ($value as $v) {
+            if (!is_string($v) || trim($v) ==='') {
+                throw new \InvalidArgumentException('Header values must be non-empty strings');
+            }
         }
 
         $value = $this->trimHeaderValues($value);
