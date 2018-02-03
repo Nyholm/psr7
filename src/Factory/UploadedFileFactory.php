@@ -19,13 +19,16 @@ class UploadedFileFactory implements UploadedFileFactoryInterface
         $clientFilename = null,
         $clientMediaType = null
     ) {
+        if (is_string($file)) {
+            // This is string content
+            $content = $file;
+            $file = fopen(sys_get_temp_dir().'/'.uniqid('uploaded_file', true), 'w+');
+            fwrite($file, $content);
+        }
+
         if (null === $size) {
-            if (is_string($file)) {
-                $size = filesize($file);
-            } else {
-                $stats = fstat($file);
-                $size = $stats['size'];
-            }
+            $stats = fstat($file);
+            $size = $stats['size'];
         }
 
         return new UploadedFile($file, $size, $error, $clientFilename, $clientMediaType);
