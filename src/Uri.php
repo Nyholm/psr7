@@ -105,7 +105,7 @@ class Uri implements UriInterface
         return $this->host;
     }
 
-    public function getPort()
+    public function getPort(): ?int
     {
         return $this->port;
     }
@@ -232,7 +232,7 @@ class Uri implements UriInterface
      *
      * @param array $parts Array of parse_url parts to apply
      */
-    private function applyParts(array $parts)
+    private function applyParts(array $parts): void
     {
         $this->scheme = isset($parts['scheme']) ? $this->filterScheme($parts['scheme']) : '';
         $this->userInfo = isset($parts['user']) ? $parts['user'] : '';
@@ -257,7 +257,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private static function createUriString($scheme, $authority, $path, $query, $fragment): string
+    private static function createUriString(string $scheme, string $authority, string $path, string $query, string $fragment): string
     {
         $uri = '';
         if ('' != $scheme) {
@@ -304,7 +304,7 @@ class Uri implements UriInterface
      *
      * @return bool
      */
-    private static function isNonStandardPort($scheme, $port): bool
+    private static function isNonStandardPort(string $scheme, int $port): bool
     {
         return !isset(self::$schemes[$scheme]) || $port !== self::$schemes[$scheme];
     }
@@ -316,7 +316,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterScheme($scheme): string
+    private function filterScheme(string $scheme): string
     {
         if (!is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -332,7 +332,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterHost($host): string
+    private function filterHost(string $host): string
     {
         if (!is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -348,10 +348,10 @@ class Uri implements UriInterface
      *
      * @return int|null
      */
-    private function filterPort($port)
+    private function filterPort(?int $port): ?int
     {
         if (null === $port) {
-            return;
+            return null;
         }
 
         $port = (int) $port;
@@ -371,7 +371,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterPath($path): string
+    private function filterPath(string $path): string
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('Path must be a string');
@@ -393,7 +393,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterQueryAndFragment($str): string
+    private function filterQueryAndFragment(string $str): string
     {
         if (!is_string($str)) {
             throw new \InvalidArgumentException('Query and fragment must be a string');

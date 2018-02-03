@@ -54,12 +54,12 @@ class ServerRequest extends Request implements ServerRequestInterface
         parent::__construct($method, $uri, $headers, $body, $version);
     }
 
-    public function getServerParams()
+    public function getServerParams(): array
     {
         return $this->serverParams;
     }
 
-    public function getUploadedFiles()
+    public function getUploadedFiles(): array
     {
         return $this->uploadedFiles;
     }
@@ -72,7 +72,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    public function getCookieParams()
+    public function getCookieParams(): array
     {
         return $this->cookieParams;
     }
@@ -85,7 +85,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    public function getQueryParams()
+    public function getQueryParams(): array
     {
         return $this->queryParams;
     }
@@ -115,7 +115,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    public function getAttributes()
+    public function getAttributes(): array
     {
         return $this->attributes;
     }
@@ -129,7 +129,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $this->attributes[$attribute];
     }
 
-    public function withAttribute($attribute, $value)
+    public function withAttribute($attribute, $value): self
     {
         $new = clone $this;
         $new->attributes[$attribute] = $value;
@@ -137,7 +137,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         return $new;
     }
 
-    public function withoutAttribute($attribute)
+    public function withoutAttribute($attribute): self
     {
         if (false === array_key_exists($attribute, $this->attributes)) {
             return $this;

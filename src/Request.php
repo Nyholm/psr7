@@ -126,7 +126,7 @@ class Request implements RequestInterface
         return $new;
     }
 
-    private function updateHostFromUri()
+    private function updateHostFromUri(): void
     {
         $host = $this->uri->getHost();
 
