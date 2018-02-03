@@ -17,7 +17,7 @@
         "http-interop/http-factory": "^0.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.7",
+        "phpunit/phpunit": "^7.0",
         "php-http/psr7-integration-tests": "dev-master",
         "http-interop/http-factory-tests": "dev-master"
     },

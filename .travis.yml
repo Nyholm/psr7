@@ -23,11 +23,8 @@ matrix:
         - php: 7.1
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
 
-before_install:
-    - travis_retry composer self-update
-
 install:
-    - travis_retry composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
+    - composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
 
 script:
     - $TEST_COMMAND
