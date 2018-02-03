@@ -4,11 +4,12 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Nyholm\Psr7\UploadedFile
  */
-class UploadedFileTest extends \PHPUnit_Framework_TestCase
+class UploadedFileTest extends TestCase
 {
     protected $cleanup;
 

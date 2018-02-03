@@ -7,11 +7,12 @@ use Nyholm\Psr7\UploadedFile;
 use Nyholm\Psr7\Uri;
 use Nyholm\Psr7\Factory\ServerRequestFactory;
 use Nyholm\Psr7\Factory\UriFactory;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Nyholm\Psr7\ServerRequest
  */
-class ServerRequestTest extends \PHPUnit_Framework_TestCase
+class ServerRequestTest extends TestCase
 {
     public function dataNormalizeFiles()
     {
