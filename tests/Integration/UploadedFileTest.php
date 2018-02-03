@@ -9,11 +9,6 @@ class UploadedFileTest extends UploadedFileIntegrationTest
 {
     public function createSubject()
     {
-        $tmpfname = tempnam('/tmp', 'foobar');
-        $handle = fopen($tmpfname, 'w');
-        fwrite($handle, 'writing to tempfile');
-        fclose($handle);
-
-        return (new UploadedFileFactory())->createUploadedFile($tmpfname);
+        return (new UploadedFileFactory())->createUploadedFile('writing to tempfile');
     }
 }
