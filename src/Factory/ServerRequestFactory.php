@@ -14,6 +14,9 @@ use Nyholm\Psr7\UploadedFile;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @internal This class does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
+ * This class will be finalized when the PSR-17 is accepted.
  */
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {

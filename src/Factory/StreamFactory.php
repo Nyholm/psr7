@@ -26,6 +26,12 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
         return Stream::create(null === $body ? '' : $body);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @internal This function does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
+     * This class will be finalized when the PSR-17 is accepted.
+     */
     public function createStreamFromFile($file, $mode = 'r')
     {
         $resource = fopen($file, $mode);
@@ -33,6 +39,12 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
         return Stream::createFromResource($resource);
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @internal This function does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
+     * This class will be finalized when the PSR-17 is accepted.
+     */
     public function createStreamFromResource($resource)
     {
         return Stream::createFromResource($resource);
