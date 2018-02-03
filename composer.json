@@ -19,7 +19,7 @@
     "require-dev": {
         "phpunit/phpunit": "^5.7",
         "php-http/psr7-integration-tests": "dev-master",
-        "http-interop/http-factory-tests": "^0.3"
+        "http-interop/http-factory-tests": "dev-Nyholm-patch-1"
     },
     "provide": {
         "psr/http-message-implementation": "1.0",
