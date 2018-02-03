@@ -126,7 +126,12 @@ class Response implements ResponseInterface
 
     public function withStatus($code, $reasonPhrase = ''): self
     {
-        if (!is_int($code) || $code < 100 || $code > 599) {
+        if (!is_int($code) && !is_string($code)) {
+            throw new \InvalidArgumentException('Status code has to be an integer');
+        }
+
+        $code = (int) $code;
+        if ($code < 100 || $code > 599) {
             throw new \InvalidArgumentException('Status code has to be an integer between 100 and 599');
         }
 
