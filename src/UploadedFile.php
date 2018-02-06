@@ -129,7 +129,7 @@ class UploadedFile implements UploadedFileInterface
         return is_string($param) && false === empty($param);
     }
 
-    private function setClientFilename(?string $clientFilename): void
+    private function setClientFilename($clientFilename): void
     {
         if (false === $this->isStringOrNull($clientFilename)) {
             throw new InvalidArgumentException('Upload file client filename must be a string or null');
@@ -138,7 +138,7 @@ class UploadedFile implements UploadedFileInterface
         $this->clientFilename = $clientFilename;
     }
 
-    private function setClientMediaType(?string $clientMediaType): void
+    private function setClientMediaType($clientMediaType): void
     {
         if (false === $this->isStringOrNull($clientMediaType)) {
             throw new InvalidArgumentException('Upload file client media type must be a string or null');
