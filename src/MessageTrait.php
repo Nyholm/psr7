@@ -27,12 +27,12 @@ trait MessageTrait
     /** @var StreamInterface */
     private $stream;
 
-    public function getProtocolVersion()
+    public function getProtocolVersion(): string
     {
         return $this->protocol;
     }
 
-    public function withProtocolVersion($version)
+    public function withProtocolVersion($version): self
     {
         if ($this->protocol === $version) {
             return $this;
@@ -175,7 +175,7 @@ trait MessageTrait
         return $new;
     }
 
-    private function setHeaders(array $headers)
+    private function setHeaders(array $headers): void
     {
         $this->headerNames = $this->headers = [];
         foreach ($headers as $header => $value) {

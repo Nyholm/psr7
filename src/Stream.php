@@ -107,7 +107,7 @@ class Stream implements StreamInterface
         }
     }
 
-    public function close()
+    public function close(): void
     {
         if (isset($this->stream)) {
             if (is_resource($this->stream)) {
@@ -120,7 +120,7 @@ class Stream implements StreamInterface
     public function detach()
     {
         if (!isset($this->stream)) {
-            return;
+            return null;
         }
 
         $result = $this->stream;
@@ -131,14 +131,14 @@ class Stream implements StreamInterface
         return $result;
     }
 
-    public function getSize()
+    public function getSize(): ?int
     {
         if (null !== $this->size) {
             return $this->size;
         }
 
         if (!isset($this->stream)) {
-            return;
+            return null;
         }
 
         // Clear the stat cache if the stream has a URI
@@ -152,6 +152,8 @@ class Stream implements StreamInterface
 
             return $this->size;
         }
+
+        return null;
     }
 
     public function tell(): int
@@ -175,7 +177,7 @@ class Stream implements StreamInterface
         return $this->seekable;
     }
 
-    public function seek($offset, $whence = SEEK_SET)
+    public function seek($offset, $whence = SEEK_SET): void
     {
         if (!$this->seekable) {
             throw new \RuntimeException('Stream is not seekable');
@@ -184,7 +186,7 @@ class Stream implements StreamInterface
         }
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->seek(0);
     }
