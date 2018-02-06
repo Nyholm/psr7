@@ -346,9 +346,9 @@ class Uri implements UriInterface
      *
      * @throws \InvalidArgumentException If the port is invalid
      *
-     * @return int|null
+     * @return int|string|null
      */
-    private function filterPort(?int $port): ?int
+    private function filterPort($port): ?int
     {
         if (null === $port) {
             return null;
