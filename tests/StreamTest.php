@@ -3,11 +3,12 @@
 namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Nyholm\Psr7\Stream
  */
-class StreamTest extends \PHPUnit_Framework_TestCase
+class StreamTest extends TestCase
 {
     public function testConstructorInitializesProperties()
     {

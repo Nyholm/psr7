@@ -4,12 +4,13 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Uri;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \Nyholm\Psr7\Request
  */
-class RequestTest extends \PHPUnit_Framework_TestCase
+class RequestTest extends TestCase
 {
     public function testRequestUriMayBeString()
     {

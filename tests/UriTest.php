@@ -3,11 +3,12 @@
 namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Uri;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Nyholm\Psr7\Uri
  */
-class UriTest extends \PHPUnit_Framework_TestCase
+class UriTest extends TestCase
 {
     const RFC3986_BASE = 'http://a/b/c/d;p?q';
 

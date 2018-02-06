@@ -4,11 +4,12 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \Nyholm\Psr7\UploadedFile
  */
-class UploadedFileTest extends \PHPUnit_Framework_TestCase
+class UploadedFileTest extends TestCase
 {
     protected $cleanup;
 
@@ -44,7 +45,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRaisesExceptionOnInvalidStreamOrFile($streamOrFile)
     {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->expectException('InvalidArgumentException');
 
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
     }
@@ -64,7 +65,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRaisesExceptionOnInvalidSize($size)
     {
-        $this->setExpectedException('InvalidArgumentException', 'size');
+        $this->expectException('InvalidArgumentException', 'size');
 
         new UploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
     }
@@ -89,7 +90,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRaisesExceptionOnInvalidErrorStatus($status)
     {
-        $this->setExpectedException('InvalidArgumentException', 'status');
+        $this->expectException('InvalidArgumentException', 'status');
 
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
@@ -111,7 +112,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRaisesExceptionOnInvalidClientFilename($filename)
     {
-        $this->setExpectedException('InvalidArgumentException', 'filename');
+        $this->expectException('InvalidArgumentException', 'filename');
 
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $filename);
     }
@@ -121,7 +122,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
      */
     public function testRaisesExceptionOnInvalidClientMediaType($mediaType)
     {
-        $this->setExpectedException('InvalidArgumentException', 'media type');
+        $this->expectException('InvalidArgumentException', 'media type');
 
         new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
@@ -182,7 +183,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
 
         $this->cleanup[] = $path;
 
-        $this->setExpectedException('InvalidArgumentException', 'path');
+        $this->expectException('InvalidArgumentException', 'path');
         $upload->moveTo($path);
     }
 
@@ -195,7 +196,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $upload->moveTo($to);
         $this->assertTrue(file_exists($to));
 
-        $this->setExpectedException('RuntimeException', 'moved');
+        $this->expectException('RuntimeException', 'moved');
         $upload->moveTo($to);
     }
 
@@ -208,7 +209,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
         $upload->moveTo($to);
         $this->assertFileExists($to);
 
-        $this->setExpectedException('RuntimeException', 'moved');
+        $this->expectException('RuntimeException', 'moved');
         $upload->getStream();
     }
 
@@ -240,7 +241,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     public function testMoveToRaisesExceptionWhenErrorStatusPresent($status)
     {
         $uploadedFile = new UploadedFile('not ok', 0, $status);
-        $this->setExpectedException('RuntimeException', 'upload error');
+        $this->expectException('RuntimeException', 'upload error');
         $uploadedFile->moveTo(__DIR__.'/'.uniqid());
     }
 
@@ -250,7 +251,7 @@ class UploadedFileTest extends \PHPUnit_Framework_TestCase
     public function testGetStreamRaisesExceptionWhenErrorStatusPresent($status)
     {
         $uploadedFile = new UploadedFile('not ok', 0, $status);
-        $this->setExpectedException('RuntimeException', 'upload error');
+        $this->expectException('RuntimeException', 'upload error');
         $stream = $uploadedFile->getStream();
     }
 
