@@ -316,7 +316,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterScheme(string $scheme): string
+    private function filterScheme($scheme): string
     {
         if (!is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -332,7 +332,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterHost(string $host): string
+    private function filterHost($host): string
     {
         if (!is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -371,7 +371,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterPath(string $path): string
+    private function filterPath($path): string
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException('Path must be a string');
@@ -393,7 +393,7 @@ class Uri implements UriInterface
      *
      * @return string
      */
-    private function filterQueryAndFragment(string $str): string
+    private function filterQueryAndFragment($str): string
     {
         if (!is_string($str)) {
             throw new \InvalidArgumentException('Query and fragment must be a string');
