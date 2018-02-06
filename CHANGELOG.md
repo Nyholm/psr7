@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Changed
 
 - We dropped PHP7.0 support. 
-- PSR-17 factories has been marked as internal. They do not fall under or BC promise until PSR-17 is accepted.  
+- PSR-17 factories have been marked as internal. They do not fall under our BC promise until PSR-17 is accepted.  
 - `UploadedFileFactory::createUploadedFile` does not accept a string file path. 
 
 ## 0.2.3
