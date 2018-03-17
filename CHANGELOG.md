@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 0.4.0 - Unreleased
+
+### Removed
+
+- The HTTPlug discovery strategy was removed since it is included in php-http/discovery 1.4.   
+
 ## 0.3.0
 
 ### Added
