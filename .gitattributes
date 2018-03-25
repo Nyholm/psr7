@@ -12,4 +12,4 @@
 /phpspec.yml.dist export-ignore
 /phpunit.xml.dist export-ignore
 /spec/            export-ignore
-/Tests/           export-ignore
+/tests/           export-ignore
