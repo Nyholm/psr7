@@ -10,7 +10,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class UriFactory implements \Http\Message\UriFactory
+final class UriFactory implements \Http\Message\UriFactory
 {
     public function createUri($uri = ''): UriInterface
     {

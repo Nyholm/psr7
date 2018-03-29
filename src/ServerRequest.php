@@ -13,8 +13,11 @@ use Psr\Http\Message\UriInterface;
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class ServerRequest extends Request implements ServerRequestInterface
+final class ServerRequest implements ServerRequestInterface
 {
+    use MessageTrait;
+    use RequestTrait;
+
     /** @var array */
     private $attributes = [];
 
@@ -34,11 +37,11 @@ class ServerRequest extends Request implements ServerRequestInterface
     private $uploadedFiles = [];
 
     /**
-     * @param string                               $method       HTTP method
-     * @param string|UriInterface                  $uri          URI
-     * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
-     * @param string                               $version      Protocol version
+     * @param string                               $method  HTTP method
+     * @param string|UriInterface                  $uri     URI
+     * @param array                                $headers Request headers
+     * @param string|null|resource|StreamInterface $body    Request body
+     * @param string                               $version Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(
@@ -51,7 +54,22 @@ class ServerRequest extends Request implements ServerRequestInterface
     ) {
         $this->serverParams = $serverParams;
 
-        parent::__construct($method, $uri, $headers, $body, $version);
+        if (!($uri instanceof UriInterface)) {
+            $uri = new Uri($uri);
+        }
+
+        $this->method = $method;
+        $this->uri = $uri;
+        $this->setHeaders($headers);
+        $this->protocol = $version;
+
+        if (!$this->hasHeader('Host')) {
+            $this->updateHostFromUri();
+        }
+
+        if ('' !== $body && null !== $body) {
+            $this->stream = (new StreamFactory())->createStream($body);
+        }
     }
 
     public function getServerParams(): array

@@ -12,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class Response implements ResponseInterface
+final class Response implements ResponseInterface
 {
     use MessageTrait;
 

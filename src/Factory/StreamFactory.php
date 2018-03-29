@@ -10,7 +10,7 @@ use Psr\Http\Message\StreamInterface;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class StreamFactory implements \Http\Message\StreamFactory
+final class StreamFactory implements \Http\Message\StreamFactory
 {
     public function createStream($body = null)
     {

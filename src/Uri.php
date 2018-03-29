@@ -14,7 +14,7 @@ use Psr\Http\Message\UriInterface;
  * @author Matthew Weier O'Phinney
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class Uri implements UriInterface
+final class Uri implements UriInterface
 {
     private static $schemes = [
         'http' => 80,

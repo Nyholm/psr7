@@ -10,7 +10,7 @@ use Psr\Http\Message\StreamInterface;
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class Stream implements StreamInterface
+final class Stream implements StreamInterface
 {
     /** @var resource A resource reference */
     private $stream;
