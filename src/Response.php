@@ -96,7 +96,7 @@ class Response implements ResponseInterface
         array $headers = [],
         $body = null,
         string $version = '1.1',
-        $reason = null
+        string $reason = null
     ) {
         $this->statusCode = (int) $status;
 
@@ -137,7 +137,7 @@ class Response implements ResponseInterface
 
         $new = clone $this;
         $new->statusCode = (int) $code;
-        if ('' == $reasonPhrase && isset(self::$phrases[$new->statusCode])) {
+        if ('' === $reasonPhrase && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }
         $new->reasonPhrase = $reasonPhrase;

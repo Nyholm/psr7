@@ -49,9 +49,9 @@ class Uri implements UriInterface
     /**
      * @param string $uri
      */
-    public function __construct($uri = '')
+    public function __construct(string $uri = '')
     {
-        if ('' != $uri) {
+        if ('' !== $uri) {
             $parts = parse_url($uri);
             if (false === $parts) {
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
@@ -79,12 +79,12 @@ class Uri implements UriInterface
 
     public function getAuthority(): string
     {
-        if ('' == $this->host) {
+        if ('' === $this->host) {
             return '';
         }
 
         $authority = $this->host;
-        if ('' != $this->userInfo) {
+        if ('' !== $this->userInfo) {
             $authority = $this->userInfo.'@'.$authority;
         }
 
@@ -143,7 +143,7 @@ class Uri implements UriInterface
     public function withUserInfo($user, $password = null): self
     {
         $info = $user;
-        if ('' != $password) {
+        if ('' !== $password) {
             $info .= ':'.$password;
         }
 
@@ -260,22 +260,22 @@ class Uri implements UriInterface
     private static function createUriString(string $scheme, string $authority, string $path, string $query, string $fragment): string
     {
         $uri = '';
-        if ('' != $scheme) {
+        if ('' !== $scheme) {
             $uri .= $scheme.':';
         }
 
-        if ('' != $authority) {
+        if ('' !== $authority) {
             $uri .= '//'.$authority;
         }
 
-        if ('' != $path) {
+        if ('' !== $path) {
             if ('/' !== $path[0]) {
-                if ('' != $authority) {
+                if ('' !== $authority) {
                     // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
                     $path = '/'.$path;
                 }
             } elseif (isset($path[1]) && '/' === $path[1]) {
-                if ('' == $authority) {
+                if ('' === $authority) {
                     // If the path is starting with more than one "/" and no authority is present, the
                     // starting slashes MUST be reduced to one.
                     $path = '/'.ltrim($path, '/');
@@ -285,11 +285,11 @@ class Uri implements UriInterface
             $uri .= $path;
         }
 
-        if ('' != $query) {
+        if ('' !== $query) {
             $uri .= '?'.$query;
         }
 
-        if ('' != $fragment) {
+        if ('' !== $fragment) {
             $uri .= '#'.$fragment;
         }
 
