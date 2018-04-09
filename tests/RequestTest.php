@@ -165,6 +165,15 @@ class RequestTest extends TestCase
         $this->assertEquals('zoobar, foobar, zoobar', $r->getHeaderLine('zoo'));
     }
 
+    public function testSupportNumericHeaders()
+    {
+        $r = new Request('GET', '', [
+            'Content-Length' => 200,
+        ]);
+        $this->assertSame(['Content-Length' => ['200']], $r->getHeaders());
+        $this->assertSame('200', $r->getHeaderLine('Content-Length'));
+    }
+
     public function testAddsPortToHeader()
     {
         $r = new Request('GET', 'http://foo.com:8124/bar');
