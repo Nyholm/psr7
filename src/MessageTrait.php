@@ -211,7 +211,7 @@ trait MessageTrait
      */
     private function trimHeaderValues(array $values): array
     {
-        return array_map(function ($value) {
+        return array_map(function (string $value) {
             return trim($value, " \t");
         }, $values);
     }
