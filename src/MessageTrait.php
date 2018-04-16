@@ -85,7 +85,7 @@ trait MessageTrait
         }
 
         foreach ($value as $v) {
-            if (!is_string($v) || '' === trim($v)) {
+            if (!is_string($v)) {
                 throw new \InvalidArgumentException('Header values must be non-empty strings');
             }
         }
@@ -118,7 +118,7 @@ trait MessageTrait
         }
 
         foreach ($value as $v) {
-            if (!is_string($v) || '' === trim($v)) {
+            if (!is_string($v)) {
                 throw new \InvalidArgumentException('Header values must be non-empty strings');
             }
         }
