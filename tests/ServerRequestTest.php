@@ -272,7 +272,8 @@ class ServerRequestTest extends TestCase
 
     public function testNormalizeFilesRaisesException()
     {
-        $this->expectException('InvalidArgumentException', 'Invalid value in files specification');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid value in files specification');
 
         (new ServerRequestFactory())->createServerRequestFromArrays(['REQUEST_METHOD' => 'POST'], [], [], [], [], ['test' => 'something']);
     }

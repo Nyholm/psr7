@@ -19,7 +19,7 @@ class ResponseTest extends TestCase
         $this->assertSame('1.1', $r->getProtocolVersion());
         $this->assertSame('OK', $r->getReasonPhrase());
         $this->assertSame([], $r->getHeaders());
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
@@ -71,21 +71,21 @@ class ResponseTest extends TestCase
     public function testCanConstructWithBody()
     {
         $r = new Response(200, [], 'baz');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('baz', (string) $r->getBody());
     }
 
     public function testNullBody()
     {
         $r = new Response(200, [], null);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
     public function testFalseyBody()
     {
         $r = new Response(200, [], '0');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -138,7 +138,7 @@ class ResponseTest extends TestCase
     {
         $b = (new \Nyholm\Psr7\Factory\StreamFactory())->createStream('0');
         $r = (new Response())->withBody($b);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -234,16 +234,22 @@ class ResponseTest extends TestCase
         $this->assertSame($r, $r->withoutHeader('foo'));
     }
 
-    public function testHeaderValuesAreTrimmed()
+    public function trimmedHeaderValues()
     {
-        $r1 = new Response(200, ['OWS' => " \t \tFoo\t \t "]);
-        $r2 = (new Response())->withHeader('OWS', " \t \tFoo\t \t ");
-        $r3 = (new Response())->withAddedHeader('OWS', " \t \tFoo\t \t ");
+        return [
+            [new Response(200, ['OWS' => " \t \tFoo\t \t "])],
+            [(new Response())->withHeader('OWS', " \t \tFoo\t \t ")],
+            [(new Response())->withAddedHeader('OWS', " \t \tFoo\t \t ")],
+        ];
+    }
 
-        foreach ([$r1, $r2, $r3] as $r) {
-            $this->assertSame(['OWS' => ['Foo']], $r->getHeaders());
-            $this->assertSame('Foo', $r->getHeaderLine('OWS'));
-            $this->assertSame(['Foo'], $r->getHeader('OWS'));
-        }
+    /**
+     * @dataProvider trimmedHeaderValues
+     */
+    public function testHeaderValuesAreTrimmed($r)
+    {
+        $this->assertSame(['OWS' => ['Foo']], $r->getHeaders());
+        $this->assertSame('Foo', $r->getHeaderLine('OWS'));
+        $this->assertSame(['Foo'], $r->getHeader('OWS'));
     }
 }

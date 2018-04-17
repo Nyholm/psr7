@@ -25,32 +25,32 @@ class RequestTest extends TestCase
         $this->assertSame($uri, $r->getUri());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidateRequestUri()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unable to parse URI: ///');
+
         new Request('GET', '///');
     }
 
     public function testCanConstructWithBody()
     {
         $r = new Request('GET', '/', [], 'baz');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertEquals('baz', (string) $r->getBody());
     }
 
     public function testNullBody()
     {
         $r = new Request('GET', '/', [], null);
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('', (string) $r->getBody());
     }
 
     public function testFalseyBody()
     {
         $r = new Request('GET', '/', [], '0');
-        $this->assertInstanceOf('Psr\Http\Message\StreamInterface', $r->getBody());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
     }
 
@@ -90,11 +90,11 @@ class RequestTest extends TestCase
         $this->assertEquals('/', $r1->getRequestTarget());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRequestTargetDoesNotAllowSpaces()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid request target provided; cannot contain whitespace');
+
         $r1 = new Request('GET', '/');
         $r1->withRequestTarget('/foo bar');
     }

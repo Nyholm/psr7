@@ -89,12 +89,13 @@ class UriTest extends TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unable to parse URI
      * @dataProvider getInvalidUris
      */
     public function testInvalidUrisThrowException($invalidUri)
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unable to parse URI');
+
         new Uri($invalidUri);
     }
 
@@ -109,70 +110,67 @@ class UriTest extends TestCase
         ];
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid port: 100000. Must be between 1 and 65535
-     */
     public function testPortMustBeValid()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid port: 100000. Must be between 1 and 65535');
+
         (new Uri())->withPort(100000);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Invalid port: 0. Must be between 1 and 65535
-     */
     public function testWithPortCannotBeZero()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid port: 0. Must be between 1 and 65535');
+
         (new Uri())->withPort(0);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Unable to parse URI
-     */
     public function testParseUriPortCannotBeZero()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unable to parse URI');
+
         new Uri('//example.com:0');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSchemeMustHaveCorrectType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Scheme must be a string');
+
         (new Uri())->withScheme([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testHostMustHaveCorrectType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Host must be a string');
+
         (new Uri())->withHost([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testPathMustHaveCorrectType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Path must be a string');
+
         (new Uri())->withPath([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testQueryMustHaveCorrectType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Query and fragment must be a string');
+
         (new Uri())->withQuery([]);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testFragmentMustHaveCorrectType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Query and fragment must be a string');
+
         (new Uri())->withFragment([]);
     }
 
