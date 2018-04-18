@@ -77,16 +77,16 @@ trait MessageTrait
         if (!is_array($value)) {
             $value = [$value];
         } elseif (empty($value)) {
-            throw new \InvalidArgumentException('Header values must be non-empty strings');
+            throw new \InvalidArgumentException('Header values must be strings');
         }
 
         if (!is_string($header) || empty($header)) {
-            throw new \InvalidArgumentException('Header name must be non-empty strings');
+            throw new \InvalidArgumentException('Header name must be strings');
         }
 
         foreach ($value as $v) {
             if (!is_string($v)) {
-                throw new \InvalidArgumentException('Header values must be non-empty strings');
+                throw new \InvalidArgumentException('Header values must be strings');
             }
         }
 
@@ -110,16 +110,16 @@ trait MessageTrait
         } elseif (!empty($value)) {
             $value = array_values($value);
         } else {
-            throw new \InvalidArgumentException('Header values must be non-empty strings');
+            throw new \InvalidArgumentException('Header values must be strings');
         }
 
         if (!is_string($header) || empty($header)) {
-            throw new \InvalidArgumentException('Header name must be non-empty strings');
+            throw new \InvalidArgumentException('Header name must be strings');
         }
 
         foreach ($value as $v) {
             if (!is_string($v)) {
-                throw new \InvalidArgumentException('Header values must be non-empty strings');
+                throw new \InvalidArgumentException('Header values must be strings');
             }
         }
 
