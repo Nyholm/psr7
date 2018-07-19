@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Interop\Http\Factory\StreamFactoryInterface;
 use Nyholm\Psr7\Stream;
 use Psr\Http\Message\StreamInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterface
+class StreamFactory implements \Http\Message\StreamFactory
 {
     public function createStream($body = null)
     {
@@ -24,30 +23,6 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
         }
 
         return Stream::create(null === $body ? '' : $body);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @internal This function does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
-     * This class will be finalized when the PSR-17 is accepted.
-     */
-    public function createStreamFromFile($file, $mode = 'r')
-    {
-        $resource = fopen($file, $mode);
-
-        return Stream::createFromResource($resource);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @internal This function does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
-     * This class will be finalized when the PSR-17 is accepted.
-     */
-    public function createStreamFromResource($resource)
-    {
-        return Stream::createFromResource($resource);
     }
 
     /**

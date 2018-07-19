@@ -15,14 +15,12 @@ use Nyholm\Psr7\UploadedFile;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  *
- * @internal This class does not fall under our BC promise. We will adapt to changes to the http-interop/http-factory.
- * This class will be finalized when the PSR-17 is accepted.
  */
 class ServerRequestFactory implements ServerRequestFactoryInterface
 {
-    public function createServerRequest($method, $uri): ServerRequestInterface
+    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
-        return new ServerRequest($method, $uri);
+        return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 
     public function createServerRequestFromArray(array $server): ServerRequestInterface

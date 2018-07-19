@@ -12,7 +12,7 @@ use Nyholm\Psr7\Response;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class MessageFactory implements \Http\Message\MessageFactory, RequestFactoryInterface, ResponseFactoryInterface
+class MessageFactory implements \Http\Message\MessageFactory
 {
     public function createRequest(
         $method,
