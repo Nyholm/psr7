@@ -35,11 +35,11 @@ class Request implements RequestInterface
      * @param string                               $version Protocol version
      */
     public function __construct(
-        $method,
+        string $method,
         $uri,
         array $headers = [],
         $body = null,
-        $version = '1.1'
+        string $version = '1.1'
     ) {
         if (!($uri instanceof UriInterface)) {
             $uri = new Uri($uri);
@@ -66,10 +66,10 @@ class Request implements RequestInterface
         }
 
         $target = $this->uri->getPath();
-        if ('' == $target) {
+        if ('' === $target) {
             $target = '/';
         }
-        if ('' != $this->uri->getQuery()) {
+        if ('' !== $this->uri->getQuery()) {
             $target .= '?'.$this->uri->getQuery();
         }
 
@@ -130,7 +130,7 @@ class Request implements RequestInterface
     {
         $host = $this->uri->getHost();
 
-        if ('' == $host) {
+        if ('' === $host) {
             return;
         }
 

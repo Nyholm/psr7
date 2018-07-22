@@ -83,7 +83,7 @@ class StreamFactory implements \Http\Message\StreamFactory, StreamFactoryInterfa
             }
             $bytes += $len;
             $dest->write($buf);
-            if ($bytes == $maxLen) {
+            if ($bytes === $maxLen) {
                 break;
             }
         }
