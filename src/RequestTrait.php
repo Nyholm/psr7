@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Nyholm\Psr7;
 
 use InvalidArgumentException;
-use Nyholm\Psr7\Factory\StreamFactory;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
