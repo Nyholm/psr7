@@ -143,7 +143,7 @@ class Uri implements UriInterface
     public function withUserInfo($user, $password = null): self
     {
         $info = $user;
-        if ('' !== $password) {
+        if (!empty($password)) {
             $info .= ':'.$password;
         }
 
@@ -346,7 +346,7 @@ class Uri implements UriInterface
      *
      * @throws \InvalidArgumentException If the port is invalid
      *
-     * @return int|string|null
+     * @return int|null
      */
     private function filterPort($port): ?int
     {
