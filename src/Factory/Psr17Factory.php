@@ -6,26 +6,21 @@ namespace Nyholm\Psr7\Factory;
 
 use Interop\Http\Factory\RequestFactoryInterface;
 use Interop\Http\Factory\ResponseFactoryInterface;
-use Interop\Http\Factory\ServerRequestFactoryInterface;
 use Interop\Http\Factory\StreamFactoryInterface;
 use Interop\Http\Factory\UploadedFileFactoryInterface;
 use Interop\Http\Factory\UriFactoryInterface;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
-use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 use Nyholm\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
 /**
- *
- *
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
 class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface, UriFactoryInterface, StreamFactoryInterface, UploadedFileFactoryInterface
@@ -62,9 +57,10 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
         string $clientFilename = null,
         string $clientMediaType = null
     ): UploadedFileInterface {
-        if ($size === null) {
+        if (null === $size) {
             $size = $stream->getSize();
         }
+
         return new UploadedFile($stream, $size, $error, $clientFilename, $clientMediaType);
     }
 

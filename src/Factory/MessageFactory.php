@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Interop\Http\Factory\RequestFactoryInterface;
-use Interop\Http\Factory\ResponseFactoryInterface;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 
