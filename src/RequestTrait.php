@@ -32,10 +32,10 @@ trait RequestTrait
         }
 
         $target = $this->uri->getPath();
-        if ('' == $target) {
+        if ('' === $target) {
             $target = '/';
         }
-        if ('' != $this->uri->getQuery()) {
+        if ('' !== $this->uri->getQuery()) {
             $target .= '?'.$this->uri->getQuery();
         }
 
@@ -96,7 +96,7 @@ trait RequestTrait
     {
         $host = $this->uri->getHost();
 
-        if ('' == $host) {
+        if ('' === $host) {
             return;
         }
 
