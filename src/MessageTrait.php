@@ -152,7 +152,7 @@ trait MessageTrait
     }
 
     /**
-     * Make sure header has a non-empty string name and a sting value
+     * Make sure header has a non-empty string name and a sting value.
      *
      * Trims whitespace from the header values. Spaces and tabs ought to be
      * excluded by parsers when extracting the field value from a header field.
