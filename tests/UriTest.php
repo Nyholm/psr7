@@ -471,19 +471,4 @@ class UriTest extends TestCase
         $this->assertNotSame($uri, $uri->withQuery('q=abc'));
         $this->assertNotSame($uri, $uri->withFragment('test'));
     }
-
-    public function testExtendingClassesInstantiates()
-    {
-        // The non-standard port triggers a cascade of private methods which
-        //  should not use late static binding to access private static members.
-        // If they do, this will fatal.
-        $this->assertInstanceOf(
-            '\Tests\Nyholm\Psr7\ExtendingClassTest',
-            new ExtendingClassTest('http://h:9/')
-        );
-    }
-}
-
-class ExtendingClassTest extends \Nyholm\Psr7\Uri
-{
 }

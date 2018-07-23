@@ -15,7 +15,7 @@ use Nyholm\Psr7\UploadedFile;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  */
-class ServerRequestFactory implements ServerRequestFactoryInterface
+final class ServerRequestFactory implements ServerRequestFactoryInterface
 {
     public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
     {
