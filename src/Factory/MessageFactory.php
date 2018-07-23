@@ -12,23 +12,13 @@ use Nyholm\Psr7\Response;
  */
 final class MessageFactory implements \Http\Message\MessageFactory
 {
-    public function createRequest(
-        $method,
-        $uri,
-        array $headers = [],
-        $body = null,
-        $protocolVersion = '1.1'
-    ) {
+    public function createRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
+    {
         return new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
-    public function createResponse(
-        $statusCode = 200,
-        $reasonPhrase = null,
-        array $headers = [],
-        $body = null,
-        $protocolVersion = '1.1'
-    ) {
-        return new Response((int) $statusCode, $headers, $body, $protocolVersion, $reasonPhrase);
+    public function createResponse($statusCode = 200, $reasonPhrase = null, array $headers = [], $body = null, $version = '1.1')
+    {
+        return new Response((int) $statusCode, $headers, $body, $version, $reasonPhrase);
     }
 }

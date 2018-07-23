@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
+use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -44,14 +45,8 @@ final class ServerRequest implements ServerRequestInterface
      * @param string                               $version      Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
-    public function __construct(
-        string $method,
-        $uri,
-        array $headers = [],
-        $body = null,
-        string $version = '1.1',
-        array $serverParams = []
-    ) {
+    public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1', array $serverParams = [])
+    {
         $this->serverParams = $serverParams;
 
         if (!($uri instanceof UriInterface)) {

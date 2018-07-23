@@ -13,10 +13,10 @@ A super lightweight PSR-7 Http client. Very strict and very fast.
 
 | Description | Guzzle | Zend | Slim | Nyholm |
 | ---- | ------ | ---- | ---- | ------ |
-| Lines of code | 4 400 | 5 000 | 4 100 | 2 000 |
+| Lines of code | 3 000 | 3 000 | 1 700 | 1 200 |
 | PHP7 | No | No | No | Yes |
-| PSR-7* | 94% | 96% | 92% | 100% |
+| PSR-7* | 66% | 92% | 75% | 100% |
 | PSR-17 | No | No | No | Yes |
 | HTTPlug | No | No | No | Yes |
 
-\* See https://github.com/php-http/psr7-integration-tests
+\* Percent of completed tests in https://github.com/php-http/psr7-integration-tests
