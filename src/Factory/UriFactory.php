@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Interop\Http\Factory\UriFactoryInterface;
 use Nyholm\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class UriFactory implements \Http\Message\UriFactory, UriFactoryInterface
+class UriFactory implements \Http\Message\UriFactory
 {
     public function createUri($uri = ''): UriInterface
     {
@@ -28,6 +27,8 @@ class UriFactory implements \Http\Message\UriFactory, UriFactoryInterface
      * @param array $server Typically $_SERVER or similar structure.
      *
      * @return UriInterface
+     *
+     * @deprecated This function will be removed as it serves no purpose.
      */
     public function createUriFromArray(array $server): UriInterface
     {
