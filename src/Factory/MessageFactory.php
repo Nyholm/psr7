@@ -17,7 +17,8 @@ final class MessageFactory implements \Http\Message\MessageFactory
         return new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
-    public function createResponse($statusCode = 200, $reasonPhrase = null, array $headers = [], $body = null, $version = '1.1') {
+    public function createResponse($statusCode = 200, $reasonPhrase = null, array $headers = [], $body = null, $version = '1.1')
+    {
         return new Response((int) $statusCode, $headers, $body, $version, $reasonPhrase);
     }
 }
