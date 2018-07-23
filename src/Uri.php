@@ -16,10 +16,7 @@ use Psr\Http\Message\UriInterface;
  */
 final class Uri implements UriInterface
 {
-    private static $schemes = [
-        'http' => 80,
-        'https' => 443,
-    ];
+    private static $schemes = ['http' => 80, 'https' => 443];
 
     private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
 
@@ -60,13 +57,7 @@ final class Uri implements UriInterface
 
     public function __toString(): string
     {
-        return self::createUriString(
-            $this->scheme,
-            $this->getAuthority(),
-            $this->path,
-            $this->query,
-            $this->fragment
-        );
+        return self::createUriString($this->scheme, $this->getAuthority(), $this->path, $this->query, $this->fragment);
     }
 
     public function getScheme(): string
@@ -344,11 +335,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Query and fragment must be a string');
         }
 
-        return preg_replace_callback(
-            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
-            [$this, 'rawurlencodeMatchZero'],
-            $str
-        );
+        return preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $str);
     }
 
     private function rawurlencodeMatchZero(array $match): string
