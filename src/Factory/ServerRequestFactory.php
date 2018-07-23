@@ -39,7 +39,8 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
      *
      * @throws InvalidArgumentException If no valid method or URI can be determined.
      */
-    public function createServerRequestFromArrays(array $server, array $headers, array $cookie, array $get, array $post, array $files): ServerRequestInterface {
+    public function createServerRequestFromArrays(array $server, array $headers, array $cookie, array $get, array $post, array $files): ServerRequestInterface
+    {
         $method = $this->getMethodFromEnv($server);
         $uri = $this->getUriFromEnvWithHTTP($server);
 
