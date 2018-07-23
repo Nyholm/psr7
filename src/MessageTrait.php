@@ -74,22 +74,7 @@ trait MessageTrait
 
     public function withHeader($header, $value): self
     {
-        if (!is_array($value)) {
-            $value = [$value];
-        } elseif (empty($value)) {
-            throw new \InvalidArgumentException('Header values must be strings');
-        }
-
-        if (!is_string($header) || empty($header)) {
-            throw new \InvalidArgumentException('Header name must be strings');
-        }
-
-        foreach ($value as $v) {
-            if (!is_string($v)) {
-                throw new \InvalidArgumentException('Header values must be strings');
-            }
-        }
-
+        $this->validateHeader($header, $value);
         $value = $this->trimHeaderValues($value);
         $normalized = strtolower($header);
 
@@ -105,35 +90,12 @@ trait MessageTrait
 
     public function withAddedHeader($header, $value): self
     {
-        if (!is_array($value)) {
-            $value = [$value];
-        } elseif (!empty($value)) {
-            $value = array_values($value);
-        } else {
-            throw new \InvalidArgumentException('Header values must be strings');
-        }
-
         if (!is_string($header) || empty($header)) {
             throw new \InvalidArgumentException('Header name must be strings');
         }
 
-        foreach ($value as $v) {
-            if (!is_string($v)) {
-                throw new \InvalidArgumentException('Header values must be strings');
-            }
-        }
-
-        $value = $this->trimHeaderValues($value);
-        $normalized = strtolower($header);
-
         $new = clone $this;
-        if (isset($new->headerNames[$normalized])) {
-            $header = $this->headerNames[$normalized];
-            $new->headers[$header] = array_merge($this->headers[$header], $value);
-        } else {
-            $new->headerNames[$normalized] = $header;
-            $new->headers[$header] = $value;
-        }
+        $new->setHeaders([$header => $value]);
 
         return $new;
     }
@@ -177,12 +139,8 @@ trait MessageTrait
 
     private function setHeaders(array $headers): void
     {
-        $this->headerNames = $this->headers = [];
         foreach ($headers as $header => $value) {
-            if (!is_array($value)) {
-                $value = [$value];
-            }
-
+            $this->validateHeader($header, $value);
             $value = $this->trimHeaderValues($value);
             $normalized = strtolower($header);
             if (isset($this->headerNames[$normalized])) {
@@ -214,5 +172,35 @@ trait MessageTrait
         return array_map(function (string $value) {
             return trim($value, " \t");
         }, $values);
+    }
+
+    /**
+     * Make sure header has a non-empty string name and a sting value
+     *
+     * @param $header
+     * @param &$value
+     */
+    private function validateHeader($header, &$value): void
+    {
+        if (!is_array($value)) {
+            $value = [$value];
+        } elseif (empty($value)) {
+            throw new \InvalidArgumentException('Header values must be strings, empty array given.');
+        } else {
+            // Non empty array
+            $value = array_values($value);
+        }
+
+        if (!is_string($header) || empty($header)) {
+            throw new \InvalidArgumentException('Header name must be strings');
+        }
+
+        foreach ($value as &$v) {
+            if (is_numeric($v)) {
+                $v = (string) $v;
+            } elseif (!is_string($v)) {
+                throw new \InvalidArgumentException('Header values must be strings');
+            }
+        }
     }
 }
