@@ -26,8 +26,6 @@ final class UriFactory implements \Http\Message\UriFactory
      *
      * @param array $server Typically $_SERVER or similar structure.
      *
-     * @return UriInterface
-     *
      * @deprecated This function will be removed as it serves no purpose.
      */
     public function createUriFromArray(array $server): UriInterface

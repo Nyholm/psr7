@@ -46,9 +46,6 @@ final class Uri implements UriInterface
     /** @var string Uri fragment. */
     private $fragment = '';
 
-    /**
-     * @param string $uri
-     */
     public function __construct(string $uri = '')
     {
         if ('' !== $uri) {
@@ -248,14 +245,6 @@ final class Uri implements UriInterface
 
     /**
      * Create a URI string from its various parts.
-     *
-     * @param string $scheme
-     * @param string $authority
-     * @param string $path
-     * @param string $query
-     * @param string $fragment
-     *
-     * @return string
      */
     private static function createUriString(string $scheme, string $authority, string $path, string $query, string $fragment): string
     {
@@ -298,24 +287,12 @@ final class Uri implements UriInterface
 
     /**
      * Is a given port non-standard for the current scheme?
-     *
-     * @param string $scheme
-     * @param int    $port
-     *
-     * @return bool
      */
     private static function isNonStandardPort(string $scheme, int $port): bool
     {
         return !isset(self::$schemes[$scheme]) || $port !== self::$schemes[$scheme];
     }
 
-    /**
-     * @param string $scheme
-     *
-     * @throws \InvalidArgumentException If the scheme is invalid
-     *
-     * @return string
-     */
     private function filterScheme($scheme): string
     {
         if (!is_string($scheme)) {
@@ -325,13 +302,6 @@ final class Uri implements UriInterface
         return strtolower($scheme);
     }
 
-    /**
-     * @param string $host
-     *
-     * @throws \InvalidArgumentException If the host is invalid
-     *
-     * @return string
-     */
     private function filterHost($host): string
     {
         if (!is_string($host)) {
@@ -341,13 +311,6 @@ final class Uri implements UriInterface
         return strtolower($host);
     }
 
-    /**
-     * @param int|null $port
-     *
-     * @throws \InvalidArgumentException If the port is invalid
-     *
-     * @return int|null
-     */
     private function filterPort($port): ?int
     {
         if (null === $port) {
@@ -362,15 +325,6 @@ final class Uri implements UriInterface
         return self::isNonStandardPort($this->scheme, $port) ? $port : null;
     }
 
-    /**
-     * Filters the path of a URI.
-     *
-     * @param string $path
-     *
-     * @throws \InvalidArgumentException If the path is invalid
-     *
-     * @return string
-     */
     private function filterPath($path): string
     {
         if (!is_string($path)) {
@@ -384,15 +338,6 @@ final class Uri implements UriInterface
         );
     }
 
-    /**
-     * Filters the query string or fragment of a URI.
-     *
-     * @param string $str
-     *
-     * @throws \InvalidArgumentException If the query or fragment is invalid
-     *
-     * @return string
-     */
     private function filterQueryAndFragment($str): string
     {
         if (!is_string($str)) {

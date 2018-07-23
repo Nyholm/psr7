@@ -52,8 +52,6 @@ final class Stream implements StreamInterface
 
     /**
      * @param resource $resource
-     *
-     * @return Stream
      */
     public static function createFromResource($resource): self
     {
@@ -72,11 +70,6 @@ final class Stream implements StreamInterface
         return $obj;
     }
 
-    /**
-     * @param string $content
-     *
-     * @return Stream
-     */
     public static function create(string $content): self
     {
         $resource = fopen('php://temp', 'rw+');

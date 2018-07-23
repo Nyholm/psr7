@@ -24,14 +24,7 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
 
     public function createServerRequestFromArray(array $server): ServerRequestInterface
     {
-        return new ServerRequest(
-            $this->getMethodFromEnvironment($server),
-            $this->getUriFromEnvironmentWithHTTP($server),
-            [],
-            null,
-            '1.1',
-            $server
-        );
+        return new ServerRequest($this->getMethodFromEnv($server), $this->getUriFromEnvWithHTTP($server), [], null, '1.1', $server);
     }
 
     /**
@@ -45,19 +38,11 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
      * @param array $files   Typically $_FILES or similar structure.
      *
      * @throws InvalidArgumentException If no valid method or URI can be determined.
-     *
-     * @return ServerRequestInterface
      */
-    public function createServerRequestFromArrays(
-        array $server,
-        array $headers,
-        array $cookie,
-        array $get,
-        array $post,
-        array $files
-    ): ServerRequestInterface {
-        $method = $this->getMethodFromEnvironment($server);
-        $uri = $this->getUriFromEnvironmentWithHTTP($server);
+    public function createServerRequestFromArrays(array $server, array $headers, array $cookie, array $get, array $post, array $files): ServerRequestInterface
+    {
+        $method = $this->getMethodFromEnv($server);
+        $uri = $this->getUriFromEnvWithHTTP($server);
 
         $protocol = isset($server['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $server['SERVER_PROTOCOL']) : '1.1';
 
@@ -76,8 +61,6 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
      * Includes the current request headers as supplied by the server through `getallheaders()`.
      *
      * @throws InvalidArgumentException If no valid method or URI can be determined.
-     *
-     * @return ServerRequestInterface
      */
     public function createServerRequestFromGlobals(): ServerRequestInterface
     {
@@ -90,7 +73,7 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
         return $this->createServerRequestFromArrays($server, $headers, $_COOKIE, $_GET, $_POST, $_FILES);
     }
 
-    private function getMethodFromEnvironment(array $environment): string
+    private function getMethodFromEnv(array $environment): string
     {
         if (false === isset($environment['REQUEST_METHOD'])) {
             throw new InvalidArgumentException('Cannot determine HTTP method');
@@ -99,7 +82,7 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
         return $environment['REQUEST_METHOD'];
     }
 
-    private function getUriFromEnvironmentWithHTTP(array $environment): \Psr\Http\Message\UriInterface
+    private function getUriFromEnvWithHTTP(array $environment): \Psr\Http\Message\UriInterface
     {
         $uri = (new UriFactory())->createUriFromArray($environment);
         if ('' === $uri->getScheme()) {
@@ -115,8 +98,6 @@ final class ServerRequestFactory implements ServerRequestFactoryInterface
      * @param array $files A array which respect $_FILES structure
      *
      * @throws InvalidArgumentException for unrecognized values
-     *
-     * @return array
      */
     private static function normalizeFiles(array $files): array
     {
