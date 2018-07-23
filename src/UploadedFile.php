@@ -70,7 +70,7 @@ final class UploadedFile implements UploadedFileInterface
     /**
      * Depending on the value set file or stream variable.
      *
-     * @param mixed $streamOrFile
+     * @param string|resource|StreamInterface $streamOrFile
      *
      * @throws InvalidArgumentException
      */
@@ -87,11 +87,6 @@ final class UploadedFile implements UploadedFileInterface
         }
     }
 
-    /**
-     * @param int $error
-     *
-     * @throws InvalidArgumentException
-     */
     private function setError($error): void
     {
         if (false === is_int($error)) {
@@ -105,11 +100,6 @@ final class UploadedFile implements UploadedFileInterface
         $this->error = $error;
     }
 
-    /**
-     * @param int $size
-     *
-     * @throws InvalidArgumentException
-     */
     private function setSize($size): void
     {
         if (false === is_int($size)) {
