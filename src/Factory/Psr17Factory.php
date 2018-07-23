@@ -23,7 +23,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface, UriFactoryInterface, StreamFactoryInterface, UploadedFileFactoryInterface
+final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface, UriFactoryInterface, StreamFactoryInterface, UploadedFileFactoryInterface
 {
     public function createRequest(string $method, $uri): RequestInterface
     {
