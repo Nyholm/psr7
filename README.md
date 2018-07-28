@@ -60,4 +60,11 @@ TODO
 
 ### Emitting a response
 
-TODO 
+```bash
+composer require zendframework/zend-httphandlerrunner
+```
+
+```php
+$response = (new Psr17Factory())->createReponse('200', 'Hello world');
+(new \Zend\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
+```
