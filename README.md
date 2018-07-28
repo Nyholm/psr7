@@ -39,12 +39,14 @@ the [PSR-7 specification](https://www.php-fig.org/psr/psr-7/).
 Use the PSR-17 factory to create requests, streams, URIs etc.  
 
 ```php
-$request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
+$factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+$request = $factory->createRequest('GET', 'http://tnyholm.se');
+$steam = $factory->createStream('foobar');
 ```
 
 ### Sending a request
 
-With HTTPlug or any other PSR-18 (HTTP client) you may send requests like: 
+With [HTTPlug](http://httplug.io/) or any other PSR-18 (HTTP client) you may send requests like: 
 
 ```php
 $psr18Client = ...;
