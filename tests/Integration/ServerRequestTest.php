@@ -11,6 +11,6 @@ class ServerRequestTest extends ServerRequestIntegrationTest
     {
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        return (new ServerRequestFactory())->createServerRequestFromArray($_SERVER);
+        return (new ServerRequestFactory())->createServerRequest('GET', '/', $_SERVER);
     }
 }
