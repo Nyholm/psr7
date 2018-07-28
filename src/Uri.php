@@ -46,8 +46,7 @@ final class Uri implements UriInterface
     public function __construct(string $uri = '')
     {
         if ('' !== $uri) {
-            $parts = parse_url($uri);
-            if (false === $parts) {
+            if (false === $parts = parse_url($uri)) {
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
             }
 
@@ -115,9 +114,7 @@ final class Uri implements UriInterface
 
     public function withScheme($scheme): self
     {
-        $scheme = $this->filterScheme($scheme);
-
-        if ($this->scheme === $scheme) {
+        if ($this->scheme === $scheme = $this->filterScheme($scheme)) {
             return $this;
         }
 
@@ -147,9 +144,7 @@ final class Uri implements UriInterface
 
     public function withHost($host): self
     {
-        $host = $this->filterHost($host);
-
-        if ($this->host === $host) {
+        if ($this->host === $host = $this->filterHost($host)) {
             return $this;
         }
 
@@ -161,9 +156,7 @@ final class Uri implements UriInterface
 
     public function withPort($port): self
     {
-        $port = $this->filterPort($port);
-
-        if ($this->port === $port) {
+        if ($this->port === $port = $this->filterPort($port)) {
             return $this;
         }
 
@@ -175,9 +168,7 @@ final class Uri implements UriInterface
 
     public function withPath($path): self
     {
-        $path = $this->filterPath($path);
-
-        if ($this->path === $path) {
+        if ($this->path === $path = $this->filterPath($path)) {
             return $this;
         }
 
@@ -189,9 +180,7 @@ final class Uri implements UriInterface
 
     public function withQuery($query): self
     {
-        $query = $this->filterQueryAndFragment($query);
-
-        if ($this->query === $query) {
+        if ($this->query === $query = $this->filterQueryAndFragment($query)) {
             return $this;
         }
 
@@ -203,9 +192,7 @@ final class Uri implements UriInterface
 
     public function withFragment($fragment): self
     {
-        $fragment = $this->filterQueryAndFragment($fragment);
-
-        if ($this->fragment === $fragment) {
+        if ($this->fragment === $fragment = $this->filterQueryAndFragment($fragment)) {
             return $this;
         }
 
@@ -322,11 +309,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Path must be a string');
         }
 
-        return preg_replace_callback(
-            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
-            [$this, 'rawurlencodeMatchZero'],
-            $path
-        );
+        return preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $path);
     }
 
     private function filterQueryAndFragment($str): string
