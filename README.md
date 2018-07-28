@@ -20,3 +20,44 @@ A super lightweight PSR-7 Http client. Very strict and very fast.
 | HTTPlug | No | No | No | Yes |
 
 \* Percent of completed tests in https://github.com/php-http/psr7-integration-tests
+
+## Installation
+
+```bash
+composer require nyholm/psr7
+```
+
+If you are using Symfony Flex then you get all message factories registered as services. 
+
+## Usage
+
+The PSR-7 objects do not contain any other public methods then those defined in
+the [PSR-7 specification](https://www.php-fig.org/psr/psr-7/). 
+
+### Create objects
+
+Use the PSR-17 factory to create requests, streams, URIs etc.  
+
+```php
+$request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
+```
+
+### Sending a request
+
+With HTTPlug or any other PSR-18 (HTTP client) you may send requests like: 
+
+```php
+$psr18Client = ...;
+
+$request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
+$response = $psr18Client->sendRequest($request);
+```
+
+### Create server requests
+
+TODO 
+
+
+### Emitting a response
+
+TODO 
