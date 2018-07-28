@@ -4,9 +4,6 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\UploadedFile;
-use Nyholm\Psr7\Uri;
-use Nyholm\Psr7\Factory\ServerRequestFactory;
-use Nyholm\Psr7\Factory\UriFactory;
 use PHPUnit\Framework\TestCase;
 
 /**
