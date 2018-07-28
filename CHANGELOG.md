@@ -25,11 +25,10 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Removed
 
 - The HTTPlug discovery strategy was removed since it is included in php-http/discovery 1.4.
-- `UploadedFileFactory()` was removed in favor for `Psr17Factory`.   
-
-### Deprecated 
-
-- `UriFactory::createUriFromArray` since it is never used. 
+- `UploadedFileFactory()` was removed in favor for `Psr17Factory`.  
+- `ServerRequestFactory::createServerRequestFromArray`, `ServerRequestFactory::createServerRequestFromArrays` and 
+  `ServerRequestFactory::createServerRequestFromGlobals`. Please use the new `nyholm/psr7-server` instead. 
+- `UriFactory::createUriFromArray` since it was never used. 
 
 ## 0.3.0
 
