@@ -75,7 +75,6 @@ $creator = new ServerRequestCreator(
 $serverRequest = $creator->fromGlobals();
 ```
 
-
 ### Emitting a response
 
 ```bash
