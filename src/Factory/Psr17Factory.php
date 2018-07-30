@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Interop\Http\Factory\RequestFactoryInterface;
-use Interop\Http\Factory\ResponseFactoryInterface;
-use Interop\Http\Factory\StreamFactoryInterface;
-use Interop\Http\Factory\UploadedFileFactoryInterface;
-use Interop\Http\Factory\UriFactoryInterface;
+use Psr\Http\Factory\RequestFactoryInterface;
+use Psr\Http\Factory\ResponseFactoryInterface;
+use Psr\Http\Factory\StreamFactoryInterface;
+use Psr\Http\Factory\UploadedFileFactoryInterface;
+use Psr\Http\Factory\UriFactoryInterface;
 use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\Stream;

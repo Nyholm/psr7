@@ -7,7 +7,7 @@ namespace Nyholm\Psr7\Factory;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
-use Interop\Http\Factory\ServerRequestFactoryInterface;
+use Psr\Http\Factory\ServerRequestFactoryInterface;
 use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\UploadedFile;
 
