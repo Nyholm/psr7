@@ -151,9 +151,7 @@ final class Stream implements StreamInterface
 
     public function tell(): int
     {
-        $result = ftell($this->stream);
-
-        if (false === $result) {
+        if (false === $result = ftell($this->stream)) {
             throw new \RuntimeException('Unable to determine stream position');
         }
 
@@ -197,9 +195,8 @@ final class Stream implements StreamInterface
 
         // We can't know the size after writing anything
         $this->size = null;
-        $result = fwrite($this->stream, $string);
 
-        if (false === $result) {
+        if (false === $result = fwrite($this->stream, $string)) {
             throw new \RuntimeException('Unable to write to stream');
         }
 
@@ -226,9 +223,7 @@ final class Stream implements StreamInterface
             throw new \RuntimeException('Unable to read stream contents');
         }
 
-        $contents = stream_get_contents($this->stream);
-
-        if (false === $contents) {
+        if (false === $contents = stream_get_contents($this->stream)) {
             throw new \RuntimeException('Unable to read stream contents');
         }
 

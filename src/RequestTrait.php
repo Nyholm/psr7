@@ -28,8 +28,7 @@ trait RequestTrait
             return $this->requestTarget;
         }
 
-        $target = $this->uri->getPath();
-        if ('' === $target) {
+        if ('' === $target = $this->uri->getPath()) {
             $target = '/';
         }
         if ('' !== $this->uri->getQuery()) {
@@ -91,9 +90,7 @@ trait RequestTrait
 
     private function updateHostFromUri(): void
     {
-        $host = $this->uri->getHost();
-
-        if ('' === $host) {
+        if ('' === $host = $this->uri->getHost()) {
             return;
         }
 

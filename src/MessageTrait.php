@@ -57,7 +57,6 @@ trait MessageTrait
     public function getHeader($header): array
     {
         $header = strtolower($header);
-
         if (!isset($this->headerNames[$header])) {
             return [];
         }
@@ -102,13 +101,11 @@ trait MessageTrait
     public function withoutHeader($header): self
     {
         $normalized = strtolower($header);
-
         if (!isset($this->headerNames[$normalized])) {
             return $this;
         }
 
         $header = $this->headerNames[$normalized];
-
         $new = clone $this;
         unset($new->headers[$header], $new->headerNames[$normalized]);
 
