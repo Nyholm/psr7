@@ -63,10 +63,9 @@ composer require nyholm/psr7-server
 
 ```php
 $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
-$serverRequestFactory = new \Nyholm\Psr7\Factory\ServerRequestFactory();
 
 $creator = new ServerRequestCreator(
-    $serverRequestFactory,
+    $psr17Factory,
     $psr17Factory,
     $psr17Factory,
     $psr17Factory
