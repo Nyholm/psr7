@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Nyholm\Psr7\Factory;
 
 use InvalidArgumentException;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Interop\Http\Factory\ServerRequestFactoryInterface;
 use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\UploadedFile;
+use Psr\Http\Message\ServerRequestFactoryInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UploadedFileInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
