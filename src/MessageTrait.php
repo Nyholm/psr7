@@ -148,13 +148,20 @@ trait MessageTrait
     }
 
     /**
-     * Make sure header has a non-empty string name and a sting value.
+     * Make sure the header complies with RFC 7230.
      *
-     * Trims whitespace from the header values. Spaces and tabs ought to be
-     * excluded by parsers when extracting the field value from a header field.
+     * Header names must be a non-empty string consisting of token characters.
+     *
+     * Header values must be strings consisting of visible characters with all optional
+     * leading and trailing whitespace stripped. This method will always strip such
+     * optional whitespace. Note that the method does not allow folding whitespace within
+     * the values as this was deprecated for almost all instances by the RFC.
      *
      * header-field = field-name ":" OWS field-value OWS
+     * field-name   = 1*( "!" / "#" / "$" / "%" / "&" / "'" / "*" / "+" / "-" / "." / "^"
+     *              / "_" / "`" / "|" / "~" / %x30-39 / ( %x41-5A / %x61-7A ) )
      * OWS          = *( SP / HTAB )
+     * field-value  = *( ( %x21-7E / %x80-FF ) [ 1*( SP / HTAB ) ( %x21-7E / %x80-FF ) ] )
      *
      * @see https://tools.ietf.org/html/rfc7230#section-3.2.4
      */
@@ -163,21 +170,21 @@ trait MessageTrait
         if (!is_array($values)) {
             $values = [$values];
         } elseif (empty($values)) {
-            throw new \InvalidArgumentException('Header values must be strings, empty array given.');
+            throw new \InvalidArgumentException('Header values must be an array of strings, empty array given.');
         } else {
             // Non empty array
             $values = array_values($values);
         }
 
-        if (!is_string($header) || empty($header)) {
-            throw new \InvalidArgumentException('Header name must be strings');
+        if (!is_string($header) || preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header) !== 1) {
+            throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string.');
         }
 
         foreach ($values as &$v) {
             if (is_numeric($v)) {
                 $v = (string) $v;
-            } elseif (!is_string($v)) {
-                throw new \InvalidArgumentException('Header values must be strings');
+            } elseif (!is_string($v) || preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", $v) !== 1) {
+                throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
             }
         }
 
