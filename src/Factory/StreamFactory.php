@@ -24,43 +24,4 @@ final class StreamFactory implements \Http\Message\StreamFactory
 
         return Stream::create(null === $body ? '' : $body);
     }
-
-    /**
-     * Copy the contents of a stream into another stream until the given number
-     * of bytes have been read.
-     *
-     * @author Michael Dowling and contributors to guzzlehttp/psr7
-     *
-     * @param StreamInterface $source Stream to read from
-     * @param StreamInterface $dest   Stream to write to
-     * @param int             $maxLen Maximum number of bytes to read. Pass -1
-     *                                to read the entire stream
-     *
-     * @throws \RuntimeException on error
-     */
-    public function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1)
-    {
-        if ($maxLen === -1) {
-            while (!$source->eof()) {
-                if (!$dest->write($source->read(1048576))) {
-                    break;
-                }
-            }
-
-            return;
-        }
-
-        $bytes = 0;
-        while (!$source->eof()) {
-            $buf = $source->read($maxLen - $bytes);
-            if (!($len = strlen($buf))) {
-                break;
-            }
-            $bytes += $len;
-            $dest->write($buf);
-            if ($bytes === $maxLen) {
-                break;
-            }
-        }
-    }
 }
