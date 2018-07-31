@@ -57,8 +57,22 @@ $response = $psr18Client->sendRequest($request);
 
 ### Create server requests
 
-TODO 
+```bash
+composer require nyholm/psr7-server
+```
 
+```php
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+
+$creator = new ServerRequestCreator(
+    $psr17Factory,
+    $psr17Factory,
+    $psr17Factory,
+    $psr17Factory
+);
+
+$serverRequest = $creator->fromGlobals();
+```
 
 ### Emitting a response
 

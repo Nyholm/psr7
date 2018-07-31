@@ -19,7 +19,7 @@
     <php>
         <const name="REQUEST_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
         <const name="RESPONSE_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
-        <const name="SERVER_REQUEST_FACTORY" value="Nyholm\Psr7\Factory\ServerRequestFactory"/>
+        <const name="SERVER_REQUEST_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
         <const name="UPLOADED_FILE_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
         <const name="URI_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
         <const name="STREAM_FACTORY" value="Nyholm\Psr7\Factory\Psr17Factory"/>
