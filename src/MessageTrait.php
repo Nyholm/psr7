@@ -89,10 +89,6 @@ trait MessageTrait
 
     public function withAddedHeader($header, $value): self
     {
-        if (!is_string($header) || empty($header)) {
-            throw new \InvalidArgumentException('Header name must be strings');
-        }
-
         $new = clone $this;
         $new->setHeaders([$header => $value]);
 
