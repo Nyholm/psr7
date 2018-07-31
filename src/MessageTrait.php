@@ -89,6 +89,10 @@ trait MessageTrait
 
     public function withAddedHeader($header, $value): self
     {
+        if (!is_string($header) || preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header) !== 1) {
+            throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string.');
+        }
+
         $new = clone $this;
         $new->setHeaders([$header => $value]);
 
