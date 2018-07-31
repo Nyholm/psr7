@@ -174,7 +174,7 @@ trait MessageTrait
         if (!is_array($values)) {
             $values = [$values];
         } elseif (empty($values)) {
-            throw new \InvalidArgumentException('Header values must be an array of strings, empty array given.');
+            throw new \InvalidArgumentException('Header values must be a string or an array of strings, empty array given.');
         } else {
             // Non empty array
             $values = array_values($values);
