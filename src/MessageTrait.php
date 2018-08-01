@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -115,7 +114,7 @@ trait MessageTrait
     public function getBody(): StreamInterface
     {
         if (!$this->stream) {
-            $this->stream = (new StreamFactory())->createStream('');
+            $this->stream = Stream::create('');
         }
 
         return $this->stream;
