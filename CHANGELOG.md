@@ -30,6 +30,7 @@ All notable changes to this project will be documented in this file, in reverse 
 - `ServerRequestFactory::createServerRequestFromArray`, `ServerRequestFactory::createServerRequestFromArrays` and 
   `ServerRequestFactory::createServerRequestFromGlobals`. Please use the new `nyholm/psr7-server` instead. 
 - `UriFactory::createUriFromArray` since it was never used. 
+- `StreamFactory::copyToStream`
 
 ## 0.3.0
 

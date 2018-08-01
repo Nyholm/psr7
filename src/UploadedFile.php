@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Nyholm\Psr7;
 
 use InvalidArgumentException;
-use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -184,11 +183,7 @@ final class UploadedFile implements UploadedFileInterface
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
-            (new StreamFactory())->copyToStream(
-                $stream,
-                Stream::createFromResource(fopen($targetPath, 'w'))
-            );
-
+            $this->copyToStream($stream, Stream::createFromResource(fopen($targetPath, 'w')));
             $this->moved = true;
         }
 
@@ -215,5 +210,44 @@ final class UploadedFile implements UploadedFileInterface
     public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;
+    }
+
+    /**
+     * Copy the contents of a stream into another stream until the given number
+     * of bytes have been read.
+     *
+     * @author Michael Dowling and contributors to guzzlehttp/psr7
+     *
+     * @param StreamInterface $source Stream to read from
+     * @param StreamInterface $dest   Stream to write to
+     * @param int             $maxLen Maximum number of bytes to read. Pass -1
+     *                                to read the entire stream
+     *
+     * @throws \RuntimeException on error
+     */
+    private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1)
+    {
+        if ($maxLen === -1) {
+            while (!$source->eof()) {
+                if (!$dest->write($source->read(1048576))) {
+                    break;
+                }
+            }
+
+            return;
+        }
+
+        $bytes = 0;
+        while (!$source->eof()) {
+            $buf = $source->read($maxLen - $bytes);
+            if (!($len = strlen($buf))) {
+                break;
+            }
+            $bytes += $len;
+            $dest->write($buf);
+            if ($bytes === $maxLen) {
+                break;
+            }
+        }
     }
 }
