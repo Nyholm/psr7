@@ -9,7 +9,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 
 
-A super lightweight PSR-7 Http client. Very strict and very fast.
+A super lightweight PSR-7 implementation. Very strict and very fast.
 
 | Description | Guzzle | Zend | Slim | Nyholm |
 | ---- | ------ | ---- | ---- | ------ |
