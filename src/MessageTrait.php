@@ -193,4 +193,17 @@ trait MessageTrait
             return trim($value, " \t");
         }, $values);
     }
+
+    private function createStream($body = null): StreamInterface
+    {
+        if ($body instanceof StreamInterface) {
+            return $body;
+        }
+
+        if ('resource' === gettype($body)) {
+            return Stream::createFromResource($body);
+        }
+
+        return Stream::create(null === $body ? '' : $body);
+    }
 }

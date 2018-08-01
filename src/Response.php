@@ -43,7 +43,7 @@ final class Response implements ResponseInterface
         $this->statusCode = (int) $status;
 
         if ('' !== $body && null !== $body) {
-            $this->stream = (new StreamFactory())->createStream($body);
+            $this->stream = $this->createStream($body);
         }
 
         $this->setHeaders($headers);
