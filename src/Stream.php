@@ -86,7 +86,7 @@ final class Stream implements StreamInterface
         }
 
         if ('resource' === gettype($body)) {
-            return Stream::createFromResource($body);
+            return self::createFromResource($body);
         }
 
         if (is_string($body)) {
