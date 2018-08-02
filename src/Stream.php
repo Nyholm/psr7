@@ -77,7 +77,7 @@ final class Stream implements StreamInterface
      *
      * @return StreamInterface
      *
-     * @throws \InvalidArgumentException If the stream body is invalid.
+     * @throws \InvalidArgumentException
      */
     public static function create($body = ''): StreamInterface
     {
@@ -97,7 +97,7 @@ final class Stream implements StreamInterface
             return $stream;
         }
 
-        throw new \InvalidArgumentException('Body must be a string, resource or StreamInterface.');
+        throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
     }
 
     /**
