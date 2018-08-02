@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\{ResponseInterface, StreamInterface};
 
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7

@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Nyholm\Psr7\Request;
-use Nyholm\Psr7\Response;
-use Nyholm\Psr7\Stream;
-use Nyholm\Psr7\Uri;
+use Nyholm\Psr7\{Request, Response, Stream, Uri};
 use Psr\Http\Message\UriInterface;
 
 /**
