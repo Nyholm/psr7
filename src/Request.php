@@ -10,6 +10,7 @@ use Psr\Http\Message\UriInterface;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @author Martijn van der Ven <martijn@vanderven.se>
  */
 final class Request implements RequestInterface
 {
