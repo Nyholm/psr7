@@ -51,32 +51,39 @@ final class Stream implements StreamInterface
     }
 
     /**
-     * @param resource $resource
+     * Creates a new PSR-7 stream.
+     *
+     * @param string|resource|StreamInterface $body
+     *
+     * @return StreamInterface
+     *
+     * @throws \InvalidArgumentException
      */
-    public static function createFromResource($resource): self
+    public static function create($body = ''): StreamInterface
     {
-        if (!is_resource($resource)) {
-            throw new \InvalidArgumentException('Stream must be a resource');
+        if ($body instanceof StreamInterface) {
+            return $body;
         }
 
-        $obj = new self();
-        $obj->stream = $resource;
-        $meta = stream_get_meta_data($obj->stream);
-        $obj->seekable = $meta['seekable'];
-        $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
-        $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
-        $obj->uri = $obj->getMetadata('uri');
+        if (is_string($body)) {
+            $resource = fopen('php://temp', 'rw+');
+            fwrite($resource, $body);
+            $body = $resource;
+        }
 
-        return $obj;
-    }
+        if ('resource' === gettype($body)) {
+            $obj = new self();
+            $obj->stream = $body;
+            $meta = stream_get_meta_data($obj->stream);
+            $obj->seekable = $meta['seekable'];
+            $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
+            $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
+            $obj->uri = $obj->getMetadata('uri');
 
-    public static function create(string $content): self
-    {
-        $resource = fopen('php://temp', 'rw+');
-        $stream = self::createFromResource($resource);
-        $stream->write($content);
+            return $obj;
+        }
 
-        return $stream;
+        throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
     }
 
     /**

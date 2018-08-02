@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -63,7 +62,7 @@ final class ServerRequest implements ServerRequestInterface
         }
 
         if ('' !== $body && null !== $body) {
-            $this->stream = (new StreamFactory())->createStream($body);
+            $this->stream = Stream::create($body);
         }
     }
 

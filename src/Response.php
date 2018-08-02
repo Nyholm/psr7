@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Nyholm\Psr7\Factory\StreamFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -43,7 +42,7 @@ final class Response implements ResponseInterface
         $this->statusCode = (int) $status;
 
         if ('' !== $body && null !== $body) {
-            $this->stream = (new StreamFactory())->createStream($body);
+            $this->stream = Stream::create($body);
         }
 
         $this->setHeaders($headers);
