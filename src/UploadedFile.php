@@ -172,9 +172,7 @@ final class UploadedFile implements UploadedFileInterface
         }
 
         if (null !== $this->file) {
-            $this->moved = 'cli' === php_sapi_name()
-                ? rename($this->file, $targetPath)
-                : move_uploaded_file($this->file, $targetPath);
+            $this->moved = 'cli' === php_sapi_name() ? rename($this->file, $targetPath) : move_uploaded_file($this->file, $targetPath);
         } else {
             $stream = $this->getStream();
             if ($stream->isSeekable()) {
