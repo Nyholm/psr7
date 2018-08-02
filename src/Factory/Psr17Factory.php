@@ -4,24 +4,8 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Nyholm\Psr7\Request;
-use Nyholm\Psr7\Response;
-use Nyholm\Psr7\ServerRequest;
-use Nyholm\Psr7\Stream;
-use Nyholm\Psr7\UploadedFile;
-use Nyholm\Psr7\Uri;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileFactoryInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
+use Nyholm\Psr7\{Request, Response, ServerRequest, Stream, UploadedFile, Uri};
+use Psr\Http\Message\{RequestFactoryInterface, RequestInterface, ResponseFactoryInterface, ResponseInterface, ServerRequestFactoryInterface, ServerRequestInterface, StreamFactoryInterface, StreamInterface, UploadedFileFactoryInterface, UploadedFileInterface, UriFactoryInterface, UriInterface};
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>

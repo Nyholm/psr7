@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Nyholm\Psr7\Request;
-use Nyholm\Psr7\Response;
-use Nyholm\Psr7\Stream;
-use Nyholm\Psr7\Uri;
+use Nyholm\Psr7\{Request, Response, Stream, Uri};
 use Psr\Http\Message\UriInterface;
+use Http\Message\{MessageFactory, StreamFactory, UriFactory};
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  */
-final class HttplugFactory implements \Http\Message\MessageFactory, \Http\Message\StreamFactory, \Http\Message\UriFactory
+final class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
 {
     public function createRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
     {

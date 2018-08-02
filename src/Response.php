@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\{ResponseInterface, StreamInterface};
 
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7
@@ -41,7 +40,6 @@ final class Response implements ResponseInterface
     public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
         $this->statusCode = (int) $status;
-
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);
         }
