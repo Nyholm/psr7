@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 - Support for numeric header values. 
 - Support for empty header values. 
 - All classes are final
-- `HttplugFactory` that implements factory interfaces from HTTplug. 
+- `HttplugFactory` that implements factory interfaces from HTTPlug. 
 
 ### Changed
 
