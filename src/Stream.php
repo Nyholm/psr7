@@ -53,7 +53,7 @@ final class Stream implements StreamInterface
     /**
      * @param resource $resource
      */
-    public static function createFromResource($resource): self
+    private static function createFromResource($resource): self
     {
         if (!is_resource($resource)) {
             throw new \InvalidArgumentException('Stream must be a resource');
@@ -70,13 +70,34 @@ final class Stream implements StreamInterface
         return $obj;
     }
 
-    public static function create(string $content): self
+    /**
+     * Creates a new PSR-7 stream.
+     *
+     * @param string|resource|StreamInterface $body
+     *
+     * @return StreamInterface
+     *
+     * @throws \InvalidArgumentException If the stream body is invalid.
+     */
+    public static function create($body = ''): StreamInterface
     {
-        $resource = fopen('php://temp', 'rw+');
-        $stream = self::createFromResource($resource);
-        $stream->write($content);
+        if ($body instanceof StreamInterface) {
+            return $body;
+        }
 
-        return $stream;
+        if ('resource' === gettype($body)) {
+            return Stream::createFromResource($body);
+        }
+
+        if (is_string($body)) {
+            $resource = fopen('php://temp', 'rw+');
+            $stream = self::createFromResource($resource);
+            $stream->write($body);
+
+            return $stream;
+        }
+
+        throw new \InvalidArgumentException('Body must be a string, resource or StreamInterface.');
     }
 
     /**
