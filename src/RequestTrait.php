@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -41,7 +40,7 @@ trait RequestTrait
     public function withRequestTarget($requestTarget): self
     {
         if (preg_match('#\s#', $requestTarget)) {
-            throw new InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
+            throw new \InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }
 
         $new = clone $this;
