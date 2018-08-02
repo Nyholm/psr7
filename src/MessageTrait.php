@@ -11,6 +11,8 @@ use Psr\Http\Message\StreamInterface;
  *
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ *
+ * @internal should not be used outside of Nyholm/Psr7 as it does not fall under out BC promise.
  */
 trait MessageTrait
 {
