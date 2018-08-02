@@ -9,6 +9,6 @@ class StreamTest extends StreamIntegrationTest
 {
     public function createStream($data)
     {
-        return Stream::createFromResource($data);
+        return Stream::create($data);
     }
 }
