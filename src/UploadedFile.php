@@ -73,7 +73,7 @@ final class UploadedFile implements UploadedFileInterface
         if (is_string($streamOrFile)) {
             $this->file = $streamOrFile;
         } elseif (is_resource($streamOrFile)) {
-            $this->stream = Stream::createFromResource($streamOrFile);
+            $this->stream = Stream::create($streamOrFile);
         } elseif ($streamOrFile instanceof StreamInterface) {
             $this->stream = $streamOrFile;
         } else {
@@ -163,7 +163,7 @@ final class UploadedFile implements UploadedFileInterface
 
         $resource = fopen($this->file, 'r');
 
-        return Stream::createFromResource($resource);
+        return Stream::create($resource);
     }
 
     public function moveTo($targetPath): void
@@ -183,7 +183,7 @@ final class UploadedFile implements UploadedFileInterface
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
-            $this->copyToStream($stream, Stream::createFromResource(fopen($targetPath, 'w')));
+            $this->copyToStream($stream, Stream::create(fopen($targetPath, 'w')));
             $this->moved = true;
         }
 

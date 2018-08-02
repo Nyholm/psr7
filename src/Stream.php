@@ -81,12 +81,12 @@ final class Stream implements StreamInterface
      */
     public static function create($body = ''): StreamInterface
     {
-        if ($body instanceof StreamInterface) {
-            return $body;
-        }
-
         if ('resource' === gettype($body)) {
             return self::createFromResource($body);
+        }
+
+        if ($body instanceof StreamInterface) {
+            return $body;
         }
 
         if (is_string($body)) {
