@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriInterface;
-
+use Psr\Http\Message as Psr;
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  */
-final class ServerRequest implements ServerRequestInterface
+final class ServerRequest implements Psr\ServerRequestInterface
 {
     use MessageTrait;
     use RequestTrait;
@@ -33,14 +29,14 @@ final class ServerRequest implements ServerRequestInterface
     /** @var array */
     private $serverParams;
 
-    /** @var UploadedFileInterface[] */
+    /** @var Psr\UploadedFileInterface[] */
     private $uploadedFiles = [];
 
     /**
      * @param string                               $method       HTTP method
-     * @param string|UriInterface                  $uri          URI
+     * @param string|Psr\UriInterface                  $uri          URI
      * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
+     * @param string|null|resource|Psr\StreamInterface $body         Request body
      * @param string                               $version      Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
@@ -48,7 +44,7 @@ final class ServerRequest implements ServerRequestInterface
     {
         $this->serverParams = $serverParams;
 
-        if (!($uri instanceof UriInterface)) {
+        if (!($uri instanceof Psr\UriInterface)) {
             $uri = new Uri($uri);
         }
 

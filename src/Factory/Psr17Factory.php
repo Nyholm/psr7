@@ -10,51 +10,40 @@ use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 use Nyholm\Psr7\Uri;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\StreamInterface;
-use Psr\Http\Message\UploadedFileFactoryInterface;
-use Psr\Http\Message\UploadedFileInterface;
-use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
+use Psr\Http\Message as Psr;
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  */
-final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface, ServerRequestFactoryInterface, StreamFactoryInterface, UploadedFileFactoryInterface, UriFactoryInterface
+final class Psr17Factory implements Psr\RequestFactoryInterface, Psr\ResponseFactoryInterface, Psr\ServerRequestFactoryInterface, Psr\StreamFactoryInterface, Psr\UploadedFileFactoryInterface, Psr\UriFactoryInterface
 {
-    public function createRequest(string $method, $uri): RequestInterface
+    public function createRequest(string $method, $uri): Psr\RequestInterface
     {
         return new Request($method, $uri);
     }
 
-    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+    public function createResponse(int $code = 200, string $reasonPhrase = ''): Psr\ResponseInterface
     {
         return new Response($code, [], null, '1.1', $reasonPhrase);
     }
 
-    public function createStream(string $content = ''): StreamInterface
+    public function createStream(string $content = ''): Psr\StreamInterface
     {
         return Stream::create($content);
     }
 
-    public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
+    public function createStreamFromFile(string $filename, string $mode = 'r'): Psr\StreamInterface
     {
         return Stream::create(fopen($filename, $mode));
     }
 
-    public function createStreamFromResource($resource): StreamInterface
+    public function createStreamFromResource($resource): Psr\StreamInterface
     {
         return Stream::create($resource);
     }
 
-    public function createUploadedFile(StreamInterface $stream, int $size = null, int $error = \UPLOAD_ERR_OK, string $clientFilename = null, string $clientMediaType = null): UploadedFileInterface
+    public function createUploadedFile(Psr\StreamInterface $stream, int $size = null, int $error = \UPLOAD_ERR_OK, string $clientFilename = null, string $clientMediaType = null): Psr\UploadedFileInterface
     {
         if (null === $size) {
             $size = $stream->getSize();
@@ -63,12 +52,12 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         return new UploadedFile($stream, $size, $error, $clientFilename, $clientMediaType);
     }
 
-    public function createUri(string $uri = ''): UriInterface
+    public function createUri(string $uri = ''): Psr\UriInterface
     {
         return new Uri($uri);
     }
 
-    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    public function createServerRequest(string $method, $uri, array $serverParams = []): Psr\ServerRequestInterface
     {
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
