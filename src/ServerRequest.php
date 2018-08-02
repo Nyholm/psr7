@@ -34,12 +34,12 @@ final class ServerRequest implements ServerRequestInterface
     private $uploadedFiles = [];
 
     /**
-     * @param string                                   $method       HTTP method
+     * @param string                               $method       HTTP method
      * @param string|UriInterface                  $uri          URI
-     * @param array                                    $headers      Request headers
+     * @param array                                $headers      Request headers
      * @param string|null|resource|StreamInterface $body         Request body
-     * @param string                                   $version      Protocol version
-     * @param array                                    $serverParams Typically the $_SERVER superglobal
+     * @param string                               $version      Protocol version
+     * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1', array $serverParams = [])
     {
