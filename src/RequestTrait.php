@@ -10,6 +10,7 @@ use Psr\Http\Message\UriInterface;
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
+ * @author Martijn van der Ven <martijn@vanderven.se>
  *
  * @internal should not be used outside of Nyholm/Psr7 as it does not fall under our BC promise.
  */

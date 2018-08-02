@@ -8,6 +8,10 @@
         {
             "name": "Tobias Nyholm",
             "email": "tobias.nyholm@gmail.com"
+        },
+        {
+            "name": "Martijn van der Ven",
+            "email": "martijn@vanderven.se"
         }
     ],
     "require": {
