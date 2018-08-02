@@ -39,7 +39,7 @@ final class Request implements RequestInterface
         }
 
         if ('' !== $body && null !== $body) {
-            $this->stream = $this->createStream($body);
+            $this->stream = Stream::create($body);
         }
     }
 }
