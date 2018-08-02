@@ -48,8 +48,13 @@ $steam = $factory->createStream('foobar');
 
 With [HTTPlug](http://httplug.io/) or any other PSR-18 (HTTP client) you may send requests like: 
 
+```bash
+composer require kriswallsmith/buzz
+```
+
 ```php
-$psr18Client = ...;
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+$psr18Client = new Buzz\Client\Curl([], $psr17Factory);
 
 $request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
 $response = $psr18Client->sendRequest($request);
