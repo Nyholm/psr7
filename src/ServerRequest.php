@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Nyholm\Psr7;
 
 use Psr\Http\Message as Psr;
+
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -33,12 +34,12 @@ final class ServerRequest implements Psr\ServerRequestInterface
     private $uploadedFiles = [];
 
     /**
-     * @param string                               $method       HTTP method
+     * @param string                                   $method       HTTP method
      * @param string|Psr\UriInterface                  $uri          URI
-     * @param array                                $headers      Request headers
+     * @param array                                    $headers      Request headers
      * @param string|null|resource|Psr\StreamInterface $body         Request body
-     * @param string                               $version      Protocol version
-     * @param array                                $serverParams Typically the $_SERVER superglobal
+     * @param string                                   $version      Protocol version
+     * @param array                                    $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1', array $serverParams = [])
     {
