@@ -136,7 +136,7 @@ class ResponseTest extends TestCase
 
     public function testWithBody()
     {
-        $b = (new \Nyholm\Psr7\Factory\StreamFactory())->createStream('0');
+        $b = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('0');
         $r = (new Response())->withBody($b);
         $this->assertInstanceOf(StreamInterface::class, $r->getBody());
         $this->assertSame('0', (string) $r->getBody());
