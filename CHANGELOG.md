@@ -2,9 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.5.0 - Unreleased
-
-## 0.4.0
+## 1.0.0
 
 ### Added
 
@@ -12,14 +10,10 @@ All notable changes to this project will be documented in this file, in reverse 
 - Support for numeric header values. 
 - Support for empty header values. 
 - All classes are final
+- `HttplugFactory` that implements factory interfaces from HTTplug. 
 
 ### Changed
 
-- `MessageFactory` does not implement PSR-17 interfaces. 
-- `StreamFactory` does not implement PSR-17 interfaces. 
-- `UriFactory` does not implement PSR-17 interfaces. 
-- `StreamFactory::createStreamFromFile()` was removed.
-- `StreamFactory::createStreamFromResource()` was removed.
 - `ServerRequest` does not extend `Request`.
 
 ### Removed
@@ -27,10 +21,9 @@ All notable changes to this project will be documented in this file, in reverse 
 - The HTTPlug discovery strategy was removed since it is included in php-http/discovery 1.4.
 - `UploadedFileFactory()` was removed in favor for `Psr17Factory`.  
 - `ServerRequestFactory()` was removed in favor for `Psr17Factory`.  
+- `StreamFactory`, `UriFactory`, abd `MessageFactory`. Use `HttplugFactory` instead.  
 - `ServerRequestFactory::createServerRequestFromArray`, `ServerRequestFactory::createServerRequestFromArrays` and 
   `ServerRequestFactory::createServerRequestFromGlobals`. Please use the new `nyholm/psr7-server` instead. 
-- `UriFactory::createUriFromArray` since it was never used. 
-- `StreamFactory::copyToStream`
 
 ## 0.3.0
 
