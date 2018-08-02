@@ -51,26 +51,6 @@ final class Stream implements StreamInterface
     }
 
     /**
-     * @param resource $resource
-     */
-    private static function createFromResource($resource): self
-    {
-        if (!is_resource($resource)) {
-            throw new \InvalidArgumentException('Stream must be a resource');
-        }
-
-        $obj = new self();
-        $obj->stream = $resource;
-        $meta = stream_get_meta_data($obj->stream);
-        $obj->seekable = $meta['seekable'];
-        $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
-        $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
-        $obj->uri = $obj->getMetadata('uri');
-
-        return $obj;
-    }
-
-    /**
      * Creates a new PSR-7 stream.
      *
      * @param string|resource|StreamInterface $body
@@ -81,20 +61,26 @@ final class Stream implements StreamInterface
      */
     public static function create($body = ''): StreamInterface
     {
-        if ('resource' === gettype($body)) {
-            return self::createFromResource($body);
-        }
-
         if ($body instanceof StreamInterface) {
             return $body;
         }
 
         if (is_string($body)) {
             $resource = fopen('php://temp', 'rw+');
-            $stream = self::createFromResource($resource);
-            $stream->write($body);
+            fwrite($resource, $body);
+            $body = $resource;
+        }
 
-            return $stream;
+        if ('resource' === gettype($body)) {
+            $obj = new self();
+            $obj->stream = $body;
+            $meta = stream_get_meta_data($obj->stream);
+            $obj->seekable = $meta['seekable'];
+            $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
+            $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
+            $obj->uri = $obj->getMetadata('uri');
+
+            return $obj;
         }
 
         throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
