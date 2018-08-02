@@ -59,7 +59,7 @@ trait RequestTrait
 
     public function withMethod($method): self
     {
-        if (!is_string($method)) {
+        if (!\is_string($method)) {
             throw new \InvalidArgumentException('Method must be a string');
         }
 

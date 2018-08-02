@@ -68,9 +68,9 @@ final class UploadedFile implements UploadedFileInterface
      */
     private function setStreamOrFile($streamOrFile): void
     {
-        if (is_string($streamOrFile)) {
+        if (\is_string($streamOrFile)) {
             $this->file = $streamOrFile;
-        } elseif (is_resource($streamOrFile)) {
+        } elseif (\is_resource($streamOrFile)) {
             $this->stream = Stream::create($streamOrFile);
         } elseif ($streamOrFile instanceof StreamInterface) {
             $this->stream = $streamOrFile;
@@ -81,11 +81,11 @@ final class UploadedFile implements UploadedFileInterface
 
     private function setError($error): void
     {
-        if (false === is_int($error)) {
+        if (false === \is_int($error)) {
             throw new \InvalidArgumentException('Upload file error status must be an integer');
         }
 
-        if (false === in_array($error, self::$errors)) {
+        if (false === \in_array($error, self::$errors)) {
             throw new \InvalidArgumentException('Invalid error status for UploadedFile');
         }
 
@@ -94,7 +94,7 @@ final class UploadedFile implements UploadedFileInterface
 
     private function setSize($size): void
     {
-        if (false === is_int($size)) {
+        if (false === \is_int($size)) {
             throw new \InvalidArgumentException('Upload file size must be an integer');
         }
 
@@ -103,12 +103,12 @@ final class UploadedFile implements UploadedFileInterface
 
     private function isStringOrNull($param): bool
     {
-        return in_array(gettype($param), ['string', 'NULL']);
+        return \in_array(\gettype($param), ['string', 'NULL']);
     }
 
     private function isStringNotEmpty($param): bool
     {
-        return is_string($param) && false === empty($param);
+        return \is_string($param) && false === empty($param);
     }
 
     private function setClientFilename($clientFilename): void
@@ -236,7 +236,7 @@ final class UploadedFile implements UploadedFileInterface
         $bytes = 0;
         while (!$source->eof()) {
             $buf = $source->read($maxLen - $bytes);
-            if (!($len = strlen($buf))) {
+            if (!($len = \strlen($buf))) {
                 break;
             }
             $bytes += $len;

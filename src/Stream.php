@@ -66,13 +66,13 @@ final class Stream implements StreamInterface
             return $body;
         }
 
-        if (is_string($body)) {
+        if (\is_string($body)) {
             $resource = fopen('php://temp', 'rw+');
             fwrite($resource, $body);
             $body = $resource;
         }
 
-        if ('resource' === gettype($body)) {
+        if ('resource' === \gettype($body)) {
             $obj = new self();
             $obj->stream = $body;
             $meta = stream_get_meta_data($obj->stream);
@@ -111,7 +111,7 @@ final class Stream implements StreamInterface
     public function close(): void
     {
         if (isset($this->stream)) {
-            if (is_resource($this->stream)) {
+            if (\is_resource($this->stream)) {
                 fclose($this->stream);
             }
             $this->detach();
