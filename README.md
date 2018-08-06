@@ -41,7 +41,7 @@ Use the PSR-17 factory to create requests, streams, URIs etc.
 ```php
 $factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 $request = $factory->createRequest('GET', 'http://tnyholm.se');
-$steam = $factory->createStream('foobar');
+$stream = $factory->createStream('foobar');
 ```
 
 ### Sending a request
