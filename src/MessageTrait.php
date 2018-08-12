@@ -13,7 +13,7 @@ use Psr\Http\Message\StreamInterface;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  *
- * @internal should not be used outside of Nyholm/Psr7 as it does not fall under our BC promise.
+ * @internal should not be used outside of Nyholm/Psr7 as it does not fall under our BC promise
  */
 trait MessageTrait
 {
@@ -53,12 +53,12 @@ trait MessageTrait
 
     public function hasHeader($header): bool
     {
-        return isset($this->headerNames[strtolower($header)]);
+        return isset($this->headerNames[\strtolower($header)]);
     }
 
     public function getHeader($header): array
     {
-        $header = strtolower($header);
+        $header = \strtolower($header);
         if (!isset($this->headerNames[$header])) {
             return [];
         }
@@ -70,13 +70,13 @@ trait MessageTrait
 
     public function getHeaderLine($header): string
     {
-        return implode(', ', $this->getHeader($header));
+        return \implode(', ', $this->getHeader($header));
     }
 
     public function withHeader($header, $value): self
     {
         $value = $this->validateAndTrimHeader($header, $value);
-        $normalized = strtolower($header);
+        $normalized = \strtolower($header);
 
         $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
@@ -102,7 +102,7 @@ trait MessageTrait
 
     public function withoutHeader($header): self
     {
-        $normalized = strtolower($header);
+        $normalized = \strtolower($header);
         if (!isset($this->headerNames[$normalized])) {
             return $this;
         }
@@ -139,10 +139,10 @@ trait MessageTrait
     {
         foreach ($headers as $header => $value) {
             $value = $this->validateAndTrimHeader($header, $value);
-            $normalized = strtolower($header);
+            $normalized = \strtolower($header);
             if (isset($this->headerNames[$normalized])) {
                 $header = $this->headerNames[$normalized];
-                $this->headers[$header] = array_merge($this->headers[$header], $value);
+                $this->headers[$header] = \array_merge($this->headers[$header], $value);
             } else {
                 $this->headerNames[$normalized] = $header;
                 $this->headers[$header] = $value;
@@ -170,17 +170,17 @@ trait MessageTrait
      */
     private function validateAndTrimHeader($header, $values): array
     {
-        if (!\is_string($header) || 1 !== preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header)) {
+        if (!\is_string($header) || 1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header)) {
             throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string.');
         }
 
         if (!\is_array($values)) {
             // This is simple, just one value.
-            if ((!is_numeric($values) && !\is_string($values)) || 1 !== preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $values)) {
+            if ((!\is_numeric($values) && !\is_string($values)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $values)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
             }
 
-            return [trim((string) $values, " \t")];
+            return [\trim((string) $values, " \t")];
         }
 
         if (empty($values)) {
@@ -190,11 +190,11 @@ trait MessageTrait
         // Assert Non empty array
         $returnValues = [];
         foreach ($values as $v) {
-            if ((!is_numeric($v) && !\is_string($v)) || 1 !== preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $v)) {
+            if ((!\is_numeric($v) && !\is_string($v)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $v)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
             }
 
-            $returnValues[] = trim((string) $v, " \t");
+            $returnValues[] = \trim((string) $v, " \t");
         }
 
         return $returnValues;

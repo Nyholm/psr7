@@ -132,7 +132,7 @@ final class ServerRequest implements ServerRequestInterface
 
     public function getAttribute($attribute, $default = null)
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (false === \array_key_exists($attribute, $this->attributes)) {
             return $default;
         }
 
@@ -149,7 +149,7 @@ final class ServerRequest implements ServerRequestInterface
 
     public function withoutAttribute($attribute): self
     {
-        if (false === array_key_exists($attribute, $this->attributes)) {
+        if (false === \array_key_exists($attribute, $this->attributes)) {
             return $this;
         }
 

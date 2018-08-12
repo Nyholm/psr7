@@ -30,7 +30,7 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
 
     public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
     {
-        return Stream::create(fopen($filename, $mode));
+        return Stream::create(\fopen($filename, $mode));
     }
 
     public function createStreamFromResource($resource): StreamInterface

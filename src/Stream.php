@@ -67,15 +67,15 @@ final class Stream implements StreamInterface
         }
 
         if (\is_string($body)) {
-            $resource = fopen('php://temp', 'rw+');
-            fwrite($resource, $body);
+            $resource = \fopen('php://temp', 'rw+');
+            \fwrite($resource, $body);
             $body = $resource;
         }
 
         if ('resource' === \gettype($body)) {
             $obj = new self();
             $obj->stream = $body;
-            $meta = stream_get_meta_data($obj->stream);
+            $meta = \stream_get_meta_data($obj->stream);
             $obj->seekable = $meta['seekable'];
             $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
             $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
@@ -112,7 +112,7 @@ final class Stream implements StreamInterface
     {
         if (isset($this->stream)) {
             if (\is_resource($this->stream)) {
-                fclose($this->stream);
+                \fclose($this->stream);
             }
             $this->detach();
         }
@@ -144,10 +144,10 @@ final class Stream implements StreamInterface
 
         // Clear the stat cache if the stream has a URI
         if ($this->uri) {
-            clearstatcache(true, $this->uri);
+            \clearstatcache(true, $this->uri);
         }
 
-        $stats = fstat($this->stream);
+        $stats = \fstat($this->stream);
         if (isset($stats['size'])) {
             $this->size = $stats['size'];
 
@@ -159,7 +159,7 @@ final class Stream implements StreamInterface
 
     public function tell(): int
     {
-        if (false === $result = ftell($this->stream)) {
+        if (false === $result = \ftell($this->stream)) {
             throw new \RuntimeException('Unable to determine stream position');
         }
 
@@ -168,7 +168,7 @@ final class Stream implements StreamInterface
 
     public function eof(): bool
     {
-        return !$this->stream || feof($this->stream);
+        return !$this->stream || \feof($this->stream);
     }
 
     public function isSeekable(): bool
@@ -180,8 +180,8 @@ final class Stream implements StreamInterface
     {
         if (!$this->seekable) {
             throw new \RuntimeException('Stream is not seekable');
-        } elseif (fseek($this->stream, $offset, $whence) === -1) {
-            throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.var_export($whence, true));
+        } elseif (\fseek($this->stream, $offset, $whence) === -1) {
+            throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.\var_export($whence, true));
         }
     }
 
@@ -204,7 +204,7 @@ final class Stream implements StreamInterface
         // We can't know the size after writing anything
         $this->size = null;
 
-        if (false === $result = fwrite($this->stream, $string)) {
+        if (false === $result = \fwrite($this->stream, $string)) {
             throw new \RuntimeException('Unable to write to stream');
         }
 
@@ -222,7 +222,7 @@ final class Stream implements StreamInterface
             throw new \RuntimeException('Cannot read from non-readable stream');
         }
 
-        return fread($this->stream, $length);
+        return \fread($this->stream, $length);
     }
 
     public function getContents(): string
@@ -231,7 +231,7 @@ final class Stream implements StreamInterface
             throw new \RuntimeException('Unable to read stream contents');
         }
 
-        if (false === $contents = stream_get_contents($this->stream)) {
+        if (false === $contents = \stream_get_contents($this->stream)) {
             throw new \RuntimeException('Unable to read stream contents');
         }
 
@@ -243,10 +243,10 @@ final class Stream implements StreamInterface
         if (!isset($this->stream)) {
             return $key ? null : [];
         } elseif (null === $key) {
-            return stream_get_meta_data($this->stream);
+            return \stream_get_meta_data($this->stream);
         }
 
-        $meta = stream_get_meta_data($this->stream);
+        $meta = \stream_get_meta_data($this->stream);
 
         return isset($meta[$key]) ? $meta[$key] : null;
     }
