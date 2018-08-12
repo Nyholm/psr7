@@ -176,6 +176,9 @@ trait MessageTrait
 
         if (!\is_array($values)) {
             // This is simple, just one value.
+            if ((!is_numeric($values) && !\is_string($values)) || 1 !== preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", $values)) {
+                throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
+            }
             return [trim((string) $values, " \t")];
         }
 
