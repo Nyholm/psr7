@@ -11,7 +11,7 @@ use Psr\Http\Message\UriInterface;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  *
- * @internal should not be used outside of Nyholm/Psr7 as it does not fall under our BC promise.
+ * @internal should not be used outside of Nyholm/Psr7 as it does not fall under our BC promise
  */
 trait RequestTrait
 {
@@ -42,7 +42,7 @@ trait RequestTrait
 
     public function withRequestTarget($requestTarget): self
     {
-        if (preg_match('#\s#', $requestTarget)) {
+        if (\preg_match('#\s#', $requestTarget)) {
             throw new \InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }
 

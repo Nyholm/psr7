@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
+use Http\Message\{MessageFactory, StreamFactory, UriFactory};
 use Nyholm\Psr7\{Request, Response, Stream, Uri};
 use Psr\Http\Message\UriInterface;
-use Http\Message\{MessageFactory, StreamFactory, UriFactory};
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
