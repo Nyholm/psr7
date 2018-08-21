@@ -186,4 +186,19 @@ class RequestTest extends TestCase
         $r = $r->withUri(new Uri('http://foo.com:8125/bar'));
         $this->assertEquals('foo.com:8125', $r->getHeaderLine('host'));
     }
+
+    public function testCannotHaveHeaderWithEmptyName()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Header name must be an RFC 7230 compatible string.');
+        $r = new Request('GET', 'https://example.com/');
+        $r = $r->withHeader('', 'Bar');
+    }
+
+    public function testCanHaveHeaderWithEmptyValue()
+    {
+        $r = new Request('GET', 'https://example.com/');
+        $r = $r->withHeader('Foo', '');
+        $this->assertEquals([''], $r->getHeader('Foo'));
+    }
 }
