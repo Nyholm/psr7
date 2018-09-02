@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.0.1
+
+### Fixed
+
+- Handle `fopen` failing in createStreamFromFile according to PSR-7.
+- Reduce execution path to speed up performance. 
+- Fixed typos.
+- Code style.
+
 ## 1.0.0
 
 ### Added
