@@ -25,6 +25,12 @@ matrix:
     include:
         - php: 7.1
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
+        - php: 7.2
+          name: Backward compatibillity check
+          env: BC_CHECK=true DEPENDENCIES="roave/backward-compatibility-check" TEST_COMMAND="vendor/bin/roave-backward-compatibility-check --from=master --to=HEAD"
+
+before_install:
+    - if ! [ -v "$DEPENDENCIES" ]; then composer require --no-update ${DEPENDENCIES}; fi;
 
 install:
     - composer update ${COMPOSER_FLAGS} --prefer-source --no-interaction
