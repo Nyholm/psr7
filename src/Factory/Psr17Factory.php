@@ -32,7 +32,11 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
     {
         $resource = @\fopen($filename, $mode);
         if (false === $resource) {
-            throw new \RuntimeException('The file '.$filename.'cannot be opened.');
+            if (0 === \strlen($mode) || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'])) {
+                throw new \InvalidArgumentException('The mode '.$mode.' is invalid.');
+            }
+
+            throw new \RuntimeException('The file '.$filename.' cannot be opened.');
         }
 
         return Stream::create($resource);
