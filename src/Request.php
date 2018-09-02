@@ -22,7 +22,7 @@ final class Request implements RequestInterface
      * @param string|null|resource|StreamInterface $body    Request body
      * @param string                               $version Protocol version
      */
-    public function __construct(string $method, $uri, array $headers = [], $body = null)
+    public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1')
     {
         if (!($uri instanceof UriInterface)) {
             $uri = new Uri($uri);
@@ -31,7 +31,7 @@ final class Request implements RequestInterface
         $this->method = $method;
         $this->uri = $uri;
         $this->setHeaders($headers);
-        $this->protocol = '1.1';
+        $this->protocol = $version;
 
         if (!$this->hasHeader('Host')) {
             $this->updateHostFromUri();

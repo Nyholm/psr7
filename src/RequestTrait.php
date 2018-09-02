@@ -24,7 +24,7 @@ trait RequestTrait
     /** @var null|UriInterface */
     private $uri;
 
-    public function getRequestTarget(): ?string
+    public function getRequestTarget(): string
     {
         if (null !== $this->requestTarget) {
             return $this->requestTarget;
@@ -52,7 +52,7 @@ trait RequestTrait
         return $new;
     }
 
-    public function getMethod(): ?string
+    public function getMethod(): string
     {
         return $this->method;
     }
