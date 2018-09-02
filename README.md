@@ -65,18 +65,22 @@ $response = $psr18Client->sendRequest($request);
 
 ### Create server requests
 
+The [`nyholm/psr7-server`](https://github.com/Nyholm/psr7-server) package can be used to create server requests from PHP superglobals.
+
 ```bash
 composer require nyholm/psr7-server
 ```
 
 ```php
-$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+use Nyholm\Psr7\Factory\Psr17Factory;
+
+$psr17Factory = new Psr17Factory();
 
 $creator = new ServerRequestCreator(
-    $psr17Factory,
-    $psr17Factory,
-    $psr17Factory,
-    $psr17Factory
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
 );
 
 $serverRequest = $creator->fromGlobals();
