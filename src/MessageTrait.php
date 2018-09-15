@@ -17,6 +17,10 @@ use Psr\Http\Message\StreamInterface;
  */
 trait MessageTrait
 {
+    protected static $patternHeaderName = "@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@";
+
+    protected static $patternHeaderValue = "@^[ \t\x21-\x7E\x80-\xFF]*$@";
+
     /** @var array Map of all registered headers, as original name => array of values */
     private $headers = [];
 
@@ -170,13 +174,13 @@ trait MessageTrait
      */
     private function validateAndTrimHeader($header, $values): array
     {
-        if (!\is_string($header) || 1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header)) {
+        if (!\is_string($header) || 1 !== \preg_match(self::$patternHeaderName, $header)) {
             throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string.');
         }
 
         if (!\is_array($values)) {
             // This is simple, just one value.
-            if ((!\is_numeric($values) && !\is_string($values)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $values)) {
+            if ((!\is_numeric($values) && !\is_string($values)) || 1 !== \preg_match(self::$patternHeaderValue, (string) $values)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
             }
 
@@ -190,7 +194,7 @@ trait MessageTrait
         // Assert Non empty array
         $returnValues = [];
         foreach ($values as $v) {
-            if ((!\is_numeric($v) && !\is_string($v)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $v)) {
+            if ((!\is_numeric($v) && !\is_string($v)) || 1 !== \preg_match(self::$patternHeaderValue, (string) $v)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings.');
             }
 
