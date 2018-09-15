@@ -36,6 +36,8 @@ trait MessageTrait
 
     public function withProtocolVersion($version): self
     {
+        $this->validateProtocolVersion($version);
+
         if ($this->protocol === $version) {
             return $this;
         }
@@ -198,5 +200,14 @@ trait MessageTrait
         }
 
         return $returnValues;
+    }
+
+    private function validateProtocolVersion(string $protocolVersion): string
+    {
+        if (!\in_array($protocolVersion, ['0.9', '1.0', '1.1', '2'], true)) {
+            throw new \InvalidArgumentException('Protocol Version must be 0.9 or 1.0 or 1.1 or 2');
+        }
+
+        return $protocolVersion;
     }
 }
