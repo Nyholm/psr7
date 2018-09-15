@@ -51,7 +51,7 @@ final class Response implements ResponseInterface
             $this->reasonPhrase = $reason;
         }
 
-        $this->protocol = $version;
+        $this->protocol = $this->validateProtocolVersion($version);
     }
 
     public function getStatusCode(): int

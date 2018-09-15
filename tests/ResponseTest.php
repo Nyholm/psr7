@@ -100,8 +100,16 @@ class ResponseTest extends TestCase
 
     public function testCanConstructWithProtocolVersion()
     {
-        $r = new Response(200, [], null, '1000');
-        $this->assertSame('1000', $r->getProtocolVersion());
+        $r = new Response(200, [], null, '1.0');
+        $this->assertSame('1.0', $r->getProtocolVersion());
+    }
+
+    public function testConstructWithInvalidProtocolVersionRaiseException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Protocol Version must be 0.9 or 1.0 or 1.1 or 2');
+
+        new Response(200, [], null, '1000');
     }
 
     public function testWithStatusCodeAndNoReason()
@@ -124,8 +132,8 @@ class ResponseTest extends TestCase
 
     public function testWithProtocolVersion()
     {
-        $r = (new Response())->withProtocolVersion('1000');
-        $this->assertSame('1000', $r->getProtocolVersion());
+        $r = (new Response())->withProtocolVersion('1.0');
+        $this->assertSame('1.0', $r->getProtocolVersion());
     }
 
     public function testSameInstanceWhenSameProtocol()
