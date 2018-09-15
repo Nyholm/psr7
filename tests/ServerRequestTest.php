@@ -26,6 +26,13 @@ class ServerRequestTest extends TestCase
         $this->assertSame($files, $request2->getUploadedFiles());
     }
 
+    public function testBody()
+    {
+        $serverRequest = new ServerRequest('GET', '/', [], 'string');
+
+        $this->assertEquals('string', (string)$serverRequest->getBody());
+    }
+
     public function testServerParams()
     {
         $params = ['name' => 'value'];

@@ -471,4 +471,17 @@ class UriTest extends TestCase
         $this->assertNotSame($uri, $uri->withQuery('q=abc'));
         $this->assertNotSame($uri, $uri->withFragment('test'));
     }
+
+    public function testReturnCurrentUriInstance()
+    {
+        $uri = new Uri();
+
+        $this->assertSame($uri, $uri->withScheme(''));
+        $this->assertSame($uri, $uri->withUserInfo(''));
+        $this->assertSame($uri, $uri->withHost(''));
+        $this->assertSame($uri, $uri->withPort(null));
+        $this->assertSame($uri, $uri->withPath(''));
+        $this->assertSame($uri, $uri->withQuery(''));
+        $this->assertSame($uri, $uri->withFragment(''));
+    }
 }

@@ -201,4 +201,12 @@ class RequestTest extends TestCase
         $r = $r->withHeader('Foo', '');
         $this->assertEquals([''], $r->getHeader('Foo'));
     }
+
+    public function testCannotHaveEmptyHeaderValues()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Header values must be RFC 7230 compatible strings.');
+        $r = new Request('GET', 'https://example.com/');
+        $r = $r->withHeader('Foo', [null]);
+    }
 }

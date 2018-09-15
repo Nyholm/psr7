@@ -66,6 +66,27 @@ class UploadedFileTest extends TestCase
         ];
     }
 
+    public function invalidSizes()
+    {
+        return [
+            'null'   => [null],
+            'float'  => [1.1],
+            'array'  => [[1]],
+            'object' => [(object) [1]],
+        ];
+    }
+
+    /**
+     * @dataProvider invalidSizes
+     */
+    public function testRaisesExceptionOnInvalidSize($size)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('size');
+
+        new UploadedFile(fopen('php://temp', 'wb+'), $size, UPLOAD_ERR_OK);
+    }
+
     /**
      * @dataProvider invalidErrorStatuses
      */

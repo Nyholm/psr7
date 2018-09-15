@@ -159,4 +159,22 @@ class StreamTest extends TestCase
         $this->assertNull($stream->getSize());
         $this->assertEmpty($stream->getMetadata());
     }
+
+    public function testCreateRaiseException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('First argument to Stream::create() must be a string, resource or StreamInterface.');
+
+        Stream::create(1);
+    }
+
+    public function testSeekRaiseExceptionUnableToSeek()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unable to seek to stream position 1 with whence 90909090');
+
+        $handle = fopen('php://temp', 'w+');
+        $stream = Stream::create($handle);
+        $stream->seek(1, 90909090);
+    }
 }
