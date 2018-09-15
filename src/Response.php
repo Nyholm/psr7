@@ -76,7 +76,7 @@ final class Response implements ResponseInterface
         }
 
         $new = clone $this;
-        $new->statusCode = (int) $code;
+        $new->statusCode = $code;
         if ((null === $reasonPhrase || '' === $reasonPhrase) && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }
