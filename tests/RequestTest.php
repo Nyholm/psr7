@@ -202,7 +202,7 @@ class RequestTest extends TestCase
         $this->assertEquals([''], $r->getHeader('Foo'));
     }
 
-    public function testCannotHaveEmptyHeaderValues()
+    public function testCannotHaveHeaderValueWithNullValue()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Header values must be RFC 7230 compatible strings.');
