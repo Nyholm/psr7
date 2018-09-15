@@ -69,9 +69,9 @@ class UploadedFileTest extends TestCase
     public function invalidSizes()
     {
         return [
-            'null'   => [null],
-            'float'  => [1.1],
-            'array'  => [[1]],
+            'null' => [null],
+            'float' => [1.1],
+            'array' => [[1]],
             'object' => [(object) [1]],
         ];
     }

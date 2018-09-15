@@ -30,7 +30,7 @@ class ServerRequestTest extends TestCase
     {
         $serverRequest = new ServerRequest('GET', '/', [], 'string');
 
-        $this->assertEquals('string', (string)$serverRequest->getBody());
+        $this->assertEquals('string', (string) $serverRequest->getBody());
     }
 
     public function testServerParams()
