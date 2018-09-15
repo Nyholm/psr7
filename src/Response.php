@@ -39,7 +39,7 @@ final class Response implements ResponseInterface
      */
     public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
-        $this->statusCode = (int) $status;
+        $this->statusCode = $status;
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);
         }
@@ -48,7 +48,7 @@ final class Response implements ResponseInterface
         if (null === $reason && isset(self::$phrases[$this->statusCode])) {
             $this->reasonPhrase = self::$phrases[$status];
         } else {
-            $this->reasonPhrase = (string) $reason;
+            $this->reasonPhrase = $reason;
         }
 
         $this->protocol = $version;
@@ -76,7 +76,7 @@ final class Response implements ResponseInterface
         }
 
         $new = clone $this;
-        $new->statusCode = (int) $code;
+        $new->statusCode = $code;
         if ((null === $reasonPhrase || '' === $reasonPhrase) && isset(self::$phrases[$new->statusCode])) {
             $reasonPhrase = self::$phrases[$new->statusCode];
         }
