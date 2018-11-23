@@ -12,7 +12,6 @@ use Nyholm\Psr7\{
     UploadedFile,
     Uri
 };
-
 use Psr\Http\Message\{
     RequestFactoryInterface,
     RequestInterface,
