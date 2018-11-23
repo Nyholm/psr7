@@ -54,8 +54,7 @@ final class ServerRequest implements ServerRequestInterface
         $body = null,
         string $version = '1.1',
         array $serverParams = []
-    )
-    {
+    ) {
         $this->serverParams = $serverParams;
 
         if (!($uri instanceof UriInterface)) {

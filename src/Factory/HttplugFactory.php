@@ -20,8 +20,7 @@ final class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
         array $headers = [],
         $body = null,
         $protocolVersion = '1.1'
-    )
-    {
+    ) {
         return new Request($method, $uri, $headers, $body, $protocolVersion);
     }
 
@@ -31,8 +30,7 @@ final class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
         array $headers = [],
         $body = null,
         $version = '1.1'
-    )
-    {
+    ) {
         return new Response(
             (int) $statusCode,
             $headers,

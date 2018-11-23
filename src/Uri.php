@@ -237,8 +237,7 @@ final class Uri implements UriInterface
         string $path,
         string $query,
         string $fragment
-    ): string
-    {
+    ): string {
         $uri = '';
         if ('' !== $scheme) {
             $uri .= $scheme.':';

@@ -79,7 +79,7 @@ final class Response implements ResponseInterface
         506 => 'Variant Also Negotiates',
         507 => 'Insufficient Storage',
         508 => 'Loop Detected',
-        511 => 'Network Authentication Required'
+        511 => 'Network Authentication Required',
     ];
 
     /** @var string */
@@ -101,8 +101,7 @@ final class Response implements ResponseInterface
         $body = null,
         string $version = '1.1',
         string $reason = null
-    )
-    {
+    ) {
         $this->statusCode = $status;
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);

@@ -42,8 +42,7 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
     public function createResponse(
         int $code = 200,
         string $reasonPhrase = ''
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         return new Response($code, [], null, '1.1', $reasonPhrase);
     }
 
@@ -80,8 +79,7 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         int $error = \UPLOAD_ERR_OK,
         string $clientFilename = null,
         string $clientMediaType = null
-    ): UploadedFileInterface
-    {
+    ): UploadedFileInterface {
         if (null === $size) {
             $size = $stream->getSize();
         }
@@ -104,8 +102,7 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         string $method,
         $uri,
         array $serverParams = []
-    ): ServerRequestInterface
-    {
+    ): ServerRequestInterface {
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }
 }

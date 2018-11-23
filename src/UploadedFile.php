@@ -24,7 +24,7 @@ final class UploadedFile implements UploadedFileInterface
         \UPLOAD_ERR_NO_FILE,
         \UPLOAD_ERR_NO_TMP_DIR,
         \UPLOAD_ERR_CANT_WRITE,
-        \UPLOAD_ERR_EXTENSION
+        \UPLOAD_ERR_EXTENSION,
     ];
 
     /** @var string */
@@ -61,8 +61,7 @@ final class UploadedFile implements UploadedFileInterface
         $errorStatus,
         $clientFilename = null,
         $clientMediaType = null
-    )
-    {
+    ) {
         $this->setError($errorStatus);
         $this->setSize($size);
         $this->setClientFilename($clientFilename);
@@ -258,8 +257,7 @@ final class UploadedFile implements UploadedFileInterface
     private function copyToStream(
         StreamInterface $source,
         StreamInterface $dest, $maxLen = -1
-    )
-    {
+    ) {
         if ($maxLen === -1) {
             while (!$source->eof()) {
                 if (!$dest->write($source->read(1048576))) {
