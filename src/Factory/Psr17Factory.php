@@ -4,8 +4,29 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7\Factory;
 
-use Nyholm\Psr7\{Request, Response, ServerRequest, Stream, UploadedFile, Uri};
-use Psr\Http\Message\{RequestFactoryInterface, RequestInterface, ResponseFactoryInterface, ResponseInterface, ServerRequestFactoryInterface, ServerRequestInterface, StreamFactoryInterface, StreamInterface, UploadedFileFactoryInterface, UploadedFileInterface, UriFactoryInterface, UriInterface};
+use Nyholm\Psr7\{
+    Request,
+    Response,
+    ServerRequest,
+    Stream,
+    UploadedFile,
+    Uri
+};
+
+use Psr\Http\Message\{
+    RequestFactoryInterface,
+    RequestInterface,
+    ResponseFactoryInterface,
+    ResponseInterface,
+    ServerRequestFactoryInterface,
+    ServerRequestInterface,
+    StreamFactoryInterface,
+    StreamInterface,
+    UploadedFileFactoryInterface,
+    UploadedFileInterface,
+    UriFactoryInterface,
+    UriInterface
+};
 
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
@@ -18,7 +39,10 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         return new Request($method, $uri);
     }
 
-    public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
+    public function createResponse(
+        int $code = 200,
+        string $reasonPhrase = ''
+    ): ResponseInterface
     {
         return new Response($code, [], null, '1.1', $reasonPhrase);
     }
@@ -32,7 +56,10 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
     {
         $resource = @\fopen($filename, $mode);
         if (false === $resource) {
-            if (0 === \strlen($mode) || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'])) {
+            if (
+                0 === \strlen($mode)
+                || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'])
+            ) {
                 throw new \InvalidArgumentException('The mode '.$mode.' is invalid.');
             }
 
@@ -47,13 +74,25 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         return Stream::create($resource);
     }
 
-    public function createUploadedFile(StreamInterface $stream, int $size = null, int $error = \UPLOAD_ERR_OK, string $clientFilename = null, string $clientMediaType = null): UploadedFileInterface
+    public function createUploadedFile(
+        StreamInterface $stream,
+        int $size = null,
+        int $error = \UPLOAD_ERR_OK,
+        string $clientFilename = null,
+        string $clientMediaType = null
+    ): UploadedFileInterface
     {
         if (null === $size) {
             $size = $stream->getSize();
         }
 
-        return new UploadedFile($stream, $size, $error, $clientFilename, $clientMediaType);
+        return new UploadedFile(
+            $stream,
+            $size,
+            $error,
+            $clientFilename,
+            $clientMediaType
+        );
     }
 
     public function createUri(string $uri = ''): UriInterface
@@ -61,7 +100,11 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
         return new Uri($uri);
     }
 
-    public function createServerRequest(string $method, $uri, array $serverParams = []): ServerRequestInterface
+    public function createServerRequest(
+        string $method,
+        $uri,
+        array $serverParams = []
+    ): ServerRequestInterface
     {
         return new ServerRequest($method, $uri, [], null, '1.1', $serverParams);
     }

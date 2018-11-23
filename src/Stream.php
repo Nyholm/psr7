@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
+use RuntimeException;
+use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -58,7 +60,7 @@ final class Stream implements StreamInterface
      *
      * @return StreamInterface
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function create($body = ''): StreamInterface
     {
@@ -84,7 +86,9 @@ final class Stream implements StreamInterface
             return $obj;
         }
 
-        throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
+        throw new InvalidArgumentException(
+            'First argument to Stream::create() must be a string, resource or StreamInterface.'
+        );
     }
 
     /**
@@ -160,7 +164,7 @@ final class Stream implements StreamInterface
     public function tell(): int
     {
         if (false === $result = \ftell($this->stream)) {
-            throw new \RuntimeException('Unable to determine stream position');
+            throw new RuntimeException('Unable to determine stream position');
         }
 
         return $result;
@@ -179,9 +183,11 @@ final class Stream implements StreamInterface
     public function seek($offset, $whence = \SEEK_SET): void
     {
         if (!$this->seekable) {
-            throw new \RuntimeException('Stream is not seekable');
+            throw new RuntimeException('Stream is not seekable');
         } elseif (\fseek($this->stream, $offset, $whence) === -1) {
-            throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.\var_export($whence, true));
+            throw new RuntimeException(
+                'Unable to seek to stream position '.$offset.' with whence '.\var_export($whence, true)
+            );
         }
     }
 
@@ -198,14 +204,14 @@ final class Stream implements StreamInterface
     public function write($string): int
     {
         if (!$this->writable) {
-            throw new \RuntimeException('Cannot write to a non-writable stream');
+            throw new RuntimeException('Cannot write to a non-writable stream');
         }
 
         // We can't know the size after writing anything
         $this->size = null;
 
         if (false === $result = \fwrite($this->stream, $string)) {
-            throw new \RuntimeException('Unable to write to stream');
+            throw new RuntimeException('Unable to write to stream');
         }
 
         return $result;
@@ -219,7 +225,7 @@ final class Stream implements StreamInterface
     public function read($length): string
     {
         if (!$this->readable) {
-            throw new \RuntimeException('Cannot read from non-readable stream');
+            throw new RuntimeException('Cannot read from non-readable stream');
         }
 
         return \fread($this->stream, $length);
@@ -228,11 +234,11 @@ final class Stream implements StreamInterface
     public function getContents(): string
     {
         if (!isset($this->stream)) {
-            throw new \RuntimeException('Unable to read stream contents');
+            throw new RuntimeException('Unable to read stream contents');
         }
 
         if (false === $contents = \stream_get_contents($this->stream)) {
-            throw new \RuntimeException('Unable to read stream contents');
+            throw new RuntimeException('Unable to read stream contents');
         }
 
         return $contents;

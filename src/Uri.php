@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
+use InvalidArgumentException;
 use Psr\Http\Message\UriInterface;
 
 /**
@@ -48,7 +49,7 @@ final class Uri implements UriInterface
     {
         if ('' !== $uri) {
             if (false === $parts = \parse_url($uri)) {
-                throw new \InvalidArgumentException("Unable to parse URI: $uri");
+                throw new InvalidArgumentException("Unable to parse URI: $uri");
             }
 
             $this->applyParts($parts);
@@ -57,7 +58,12 @@ final class Uri implements UriInterface
 
     public function __toString(): string
     {
-        return self::createUriString($this->scheme, $this->getAuthority(), $this->path, $this->query, $this->fragment);
+        return self::createUriString(
+            $this->scheme,
+            $this->getAuthority(),
+            $this->path, $this->query,
+            $this->fragment
+        );
     }
 
     public function getScheme(): string
@@ -225,7 +231,13 @@ final class Uri implements UriInterface
     /**
      * Create a URI string from its various parts.
      */
-    private static function createUriString(string $scheme, string $authority, string $path, string $query, string $fragment): string
+    private static function createUriString(
+        string $scheme,
+        string $authority,
+        string $path,
+        string $query,
+        string $fragment
+    ): string
     {
         $uri = '';
         if ('' !== $scheme) {
@@ -269,13 +281,16 @@ final class Uri implements UriInterface
      */
     private static function isNonStandardPort(string $scheme, int $port): bool
     {
-        return !isset(self::$schemes[$scheme]) || $port !== self::$schemes[$scheme];
+        $scheme_not_set = !isset(self::$schemes[$scheme]);
+        $is_invalid_port = $port !== self::$schemes[$scheme];
+
+        return $scheme_not_set || $is_invalid_port;
     }
 
     private function filterScheme($scheme): string
     {
         if (!\is_string($scheme)) {
-            throw new \InvalidArgumentException('Scheme must be a string');
+            throw new InvalidArgumentException('Scheme must be a string');
         }
 
         return \strtolower($scheme);
@@ -284,7 +299,7 @@ final class Uri implements UriInterface
     private function filterHost($host): string
     {
         if (!\is_string($host)) {
-            throw new \InvalidArgumentException('Host must be a string');
+            throw new InvalidArgumentException('Host must be a string');
         }
 
         return \strtolower($host);
@@ -298,7 +313,9 @@ final class Uri implements UriInterface
 
         $port = (int) $port;
         if (1 > $port || 0xffff < $port) {
-            throw new \InvalidArgumentException(\sprintf('Invalid port: %d. Must be between 1 and 65535', $port));
+            throw new InvalidArgumentException(
+                \sprintf('Invalid port: %d. Must be between 1 and 65535', $port)
+            );
         }
 
         return self::isNonStandardPort($this->scheme, $port) ? $port : null;
@@ -307,19 +324,27 @@ final class Uri implements UriInterface
     private function filterPath($path): string
     {
         if (!\is_string($path)) {
-            throw new \InvalidArgumentException('Path must be a string');
+            throw new InvalidArgumentException('Path must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $path);
+        return \preg_replace_callback(
+            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/',
+            [$this, 'rawurlencodeMatchZero'],
+            $path
+        );
     }
 
     private function filterQueryAndFragment($str): string
     {
         if (!\is_string($str)) {
-            throw new \InvalidArgumentException('Query and fragment must be a string');
+            throw new InvalidArgumentException('Query and fragment must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $str);
+        return \preg_replace_callback(
+            '/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/',
+            [$this, 'rawurlencodeMatchZero'],
+            $str
+        );
     }
 
     private function rawurlencodeMatchZero(array $match): string

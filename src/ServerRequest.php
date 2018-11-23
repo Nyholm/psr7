@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace Nyholm\Psr7;
 
-use Psr\Http\Message\{ServerRequestInterface, StreamInterface, UploadedFileInterface, UriInterface};
+use Psr\Http\Message\{
+    ServerRequestInterface,
+    StreamInterface,
+    UploadedFileInterface,
+    UriInterface
+};
 
 /**
  * @author Michael Dowling and contributors to guzzlehttp/psr7
@@ -42,7 +47,14 @@ final class ServerRequest implements ServerRequestInterface
      * @param string                               $version      Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
-    public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1', array $serverParams = [])
+    public function __construct(
+        string $method,
+        $uri,
+        array $headers = [],
+        $body = null,
+        string $version = '1.1',
+        array $serverParams = []
+    )
     {
         $this->serverParams = $serverParams;
 
@@ -116,7 +128,9 @@ final class ServerRequest implements ServerRequestInterface
     public function withParsedBody($data)
     {
         if (!\is_array($data) && !\is_object($data) && null !== $data) {
-            throw new \InvalidArgumentException('First parameter to withParsedBody MUST be object, array or null');
+            throw new \InvalidArgumentException(
+                'First parameter to withParsedBody MUST be object, array or null'
+            );
         }
 
         $new = clone $this;
