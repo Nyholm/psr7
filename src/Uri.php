@@ -280,10 +280,7 @@ final class Uri implements UriInterface
      */
     private static function isNonStandardPort(string $scheme, int $port): bool
     {
-        $scheme_not_set = !isset(self::$schemes[$scheme]);
-        $is_invalid_port = $port !== self::$schemes[$scheme];
-
-        return $scheme_not_set || $is_invalid_port;
+        return !isset(self::$schemes[$scheme]) || $port !== self::$schemes[$scheme];
     }
 
     private function filterScheme($scheme): string
