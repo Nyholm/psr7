@@ -23,6 +23,14 @@ class ResponseTest extends TestCase
         $this->assertSame('', (string) $r->getBody());
     }
 
+    public function testDefaultConstructorSeekBody()
+    {
+        $r = new Response(200, [], 'Hello');
+        $this->assertSame(200, $r->getStatusCode());
+        $this->assertInstanceOf(StreamInterface::class, $r->getBody());
+        $this->assertSame('Hello', $r->getBody()->getContents());
+    }
+
     public function testCanConstructWithStatusCode()
     {
         $r = new Response(404);

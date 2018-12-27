@@ -69,6 +69,7 @@ final class Stream implements StreamInterface
         if (\is_string($body)) {
             $resource = \fopen('php://temp', 'rw+');
             \fwrite($resource, $body);
+            \fseek($resource, 0);
             $body = $resource;
         }
 
