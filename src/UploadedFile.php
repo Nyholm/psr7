@@ -13,10 +13,16 @@ use Psr\Http\Message\{StreamInterface, UploadedFileInterface};
  */
 final class UploadedFile implements UploadedFileInterface
 {
-    /** @var int[] */
-    private static $errors = [
-        \UPLOAD_ERR_OK, \UPLOAD_ERR_INI_SIZE, \UPLOAD_ERR_FORM_SIZE, \UPLOAD_ERR_PARTIAL, \UPLOAD_ERR_NO_FILE,
-        \UPLOAD_ERR_NO_TMP_DIR, \UPLOAD_ERR_CANT_WRITE, \UPLOAD_ERR_EXTENSION,
+    /** @var array */
+    private const ERRORS = [
+        \UPLOAD_ERR_OK => 1,
+        \UPLOAD_ERR_INI_SIZE => 1,
+        \UPLOAD_ERR_FORM_SIZE => 1,
+        \UPLOAD_ERR_PARTIAL => 1,
+        \UPLOAD_ERR_NO_FILE => 1,
+        \UPLOAD_ERR_NO_TMP_DIR => 1,
+        \UPLOAD_ERR_CANT_WRITE => 1,
+        \UPLOAD_ERR_EXTENSION => 1,
     ];
 
     /** @var string */
@@ -85,7 +91,7 @@ final class UploadedFile implements UploadedFileInterface
             throw new \InvalidArgumentException('Upload file error status must be an integer');
         }
 
-        if (false === \in_array($error, self::$errors)) {
+        if (!isset(self::ERRORS[$error])) {
             throw new \InvalidArgumentException('Invalid error status for UploadedFile');
         }
 
@@ -101,19 +107,9 @@ final class UploadedFile implements UploadedFileInterface
         $this->size = $size;
     }
 
-    private function isStringOrNull($param): bool
-    {
-        return \in_array(\gettype($param), ['string', 'NULL']);
-    }
-
-    private function isStringNotEmpty($param): bool
-    {
-        return \is_string($param) && false === empty($param);
-    }
-
     private function setClientFilename($clientFilename): void
     {
-        if (false === $this->isStringOrNull($clientFilename)) {
+        if ($clientFilename !== null && !\is_string($clientFilename)) {
             throw new \InvalidArgumentException('Upload file client filename must be a string or null');
         }
 
@@ -122,7 +118,7 @@ final class UploadedFile implements UploadedFileInterface
 
     private function setClientMediaType($clientMediaType): void
     {
-        if (false === $this->isStringOrNull($clientMediaType)) {
+        if ($clientMediaType !== null && !\is_string($clientMediaType)) {
             throw new \InvalidArgumentException('Upload file client media type must be a string or null');
         }
 
@@ -168,7 +164,7 @@ final class UploadedFile implements UploadedFileInterface
     {
         $this->validateActive();
 
-        if (false === $this->isStringNotEmpty($targetPath)) {
+        if (!\is_string($targetPath) || $targetPath === '') {
             throw new \InvalidArgumentException('Invalid path provided for move operation; must be a non-empty string');
         }
 
@@ -221,7 +217,7 @@ final class UploadedFile implements UploadedFileInterface
      *
      * @throws \RuntimeException on error
      */
-    private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1)
+    private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1): void
     {
         if ($maxLen === -1) {
             while (!$source->eof()) {

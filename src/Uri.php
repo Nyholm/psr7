@@ -17,11 +17,11 @@ use Psr\Http\Message\UriInterface;
  */
 final class Uri implements UriInterface
 {
-    private static $schemes = ['http' => 80, 'https' => 443];
+    private const SCHEMES = ['http' => 80, 'https' => 443];
 
-    private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
+    private const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
 
-    private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
+    private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
 
     /** @var string Uri scheme. */
     private $scheme = '';
@@ -73,11 +73,11 @@ final class Uri implements UriInterface
 
         $authority = $this->host;
         if ('' !== $this->userInfo) {
-            $authority = $this->userInfo.'@'.$authority;
+            $authority = $this->userInfo . '@' . $authority;
         }
 
         if (null !== $this->port) {
-            $authority .= ':'.$this->port;
+            $authority .= ':' . $this->port;
         }
 
         return $authority;
@@ -115,7 +115,11 @@ final class Uri implements UriInterface
 
     public function withScheme($scheme): self
     {
-        if ($this->scheme === $scheme = $this->filterScheme($scheme)) {
+        if (!\is_string($scheme)) {
+            throw new \InvalidArgumentException('Scheme must be a string');
+        }
+
+        if ($this->scheme === $scheme = \strtolower($scheme)) {
             return $this;
         }
 
@@ -130,7 +134,7 @@ final class Uri implements UriInterface
     {
         $info = $user;
         if (null !== $password && '' !== $password) {
-            $info .= ':'.$password;
+            $info .= ':' . $password;
         }
 
         if ($this->userInfo === $info) {
@@ -145,7 +149,11 @@ final class Uri implements UriInterface
 
     public function withHost($host): self
     {
-        if ($this->host === $host = $this->filterHost($host)) {
+        if (!\is_string($host)) {
+            throw new \InvalidArgumentException('Host must be a string');
+        }
+
+        if ($this->host === $host = \strtolower($host)) {
             return $this;
         }
 
@@ -210,15 +218,15 @@ final class Uri implements UriInterface
      */
     private function applyParts(array $parts): void
     {
-        $this->scheme = isset($parts['scheme']) ? $this->filterScheme($parts['scheme']) : '';
-        $this->userInfo = isset($parts['user']) ? $parts['user'] : '';
-        $this->host = isset($parts['host']) ? $this->filterHost($parts['host']) : '';
+        $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
+        $this->userInfo = $parts['user'] ?? '';
+        $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
         $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
         $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
         $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
         $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
         if (isset($parts['pass'])) {
-            $this->userInfo .= ':'.$parts['pass'];
+            $this->userInfo .= ':' . $parts['pass'];
         }
     }
 
@@ -229,24 +237,24 @@ final class Uri implements UriInterface
     {
         $uri = '';
         if ('' !== $scheme) {
-            $uri .= $scheme.':';
+            $uri .= $scheme . ':';
         }
 
         if ('' !== $authority) {
-            $uri .= '//'.$authority;
+            $uri .= '//' . $authority;
         }
 
         if ('' !== $path) {
             if ('/' !== $path[0]) {
                 if ('' !== $authority) {
                     // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
-                    $path = '/'.$path;
+                    $path = '/' . $path;
                 }
             } elseif (isset($path[1]) && '/' === $path[1]) {
                 if ('' === $authority) {
                     // If the path is starting with more than one "/" and no authority is present, the
                     // starting slashes MUST be reduced to one.
-                    $path = '/'.\ltrim($path, '/');
+                    $path = '/' . \ltrim($path, '/');
                 }
             }
 
@@ -254,11 +262,11 @@ final class Uri implements UriInterface
         }
 
         if ('' !== $query) {
-            $uri .= '?'.$query;
+            $uri .= '?' . $query;
         }
 
         if ('' !== $fragment) {
-            $uri .= '#'.$fragment;
+            $uri .= '#' . $fragment;
         }
 
         return $uri;
@@ -269,25 +277,7 @@ final class Uri implements UriInterface
      */
     private static function isNonStandardPort(string $scheme, int $port): bool
     {
-        return !isset(self::$schemes[$scheme]) || $port !== self::$schemes[$scheme];
-    }
-
-    private function filterScheme($scheme): string
-    {
-        if (!\is_string($scheme)) {
-            throw new \InvalidArgumentException('Scheme must be a string');
-        }
-
-        return \strtolower($scheme);
-    }
-
-    private function filterHost($host): string
-    {
-        if (!\is_string($host)) {
-            throw new \InvalidArgumentException('Host must be a string');
-        }
-
-        return \strtolower($host);
+        return !isset(self::SCHEMES[$scheme]) || $port !== self::SCHEMES[$scheme];
     }
 
     private function filterPort($port): ?int
@@ -296,7 +286,7 @@ final class Uri implements UriInterface
             return null;
         }
 
-        $port = (int) $port;
+        $port = (int)$port;
         if (1 > $port || 0xffff < $port) {
             throw new \InvalidArgumentException(\sprintf('Invalid port: %d. Must be between 1 and 65535', $port));
         }
@@ -310,7 +300,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Path must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $path);
+        return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $path);
     }
 
     private function filterQueryAndFragment($str): string
@@ -319,10 +309,10 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Query and fragment must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::$charUnreserved.self::$charSubDelims.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $str);
+        return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [$this, 'rawurlencodeMatchZero'], $str);
     }
 
-    private function rawurlencodeMatchZero(array $match): string
+    private static function rawurlencodeMatchZero(array $match): string
     {
         return \rawurlencode($match[0]);
     }

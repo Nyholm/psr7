@@ -26,7 +26,7 @@ final class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
 
     public function createStream($body = null)
     {
-        return Stream::create(null === $body ? '' : $body);
+        return Stream::create($body ?? '');
     }
 
     public function createUri($uri = ''): UriInterface

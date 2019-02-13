@@ -32,7 +32,7 @@ final class Stream implements StreamInterface
     private $size;
 
     /** @var array Hash of readable and writable stream types */
-    private static $readWriteHash = [
+    private const READ_WRITE_HASH = [
         'read' => [
             'r' => true, 'w+' => true, 'r+' => true, 'x+' => true, 'c+' => true,
             'rb' => true, 'w+b' => true, 'r+b' => true, 'x+b' => true,
@@ -72,16 +72,16 @@ final class Stream implements StreamInterface
             $body = $resource;
         }
 
-        if ('resource' === \gettype($body)) {
-            $obj = new self();
-            $obj->stream = $body;
-            $meta = \stream_get_meta_data($obj->stream);
-            $obj->seekable = $meta['seekable'];
-            $obj->readable = isset(self::$readWriteHash['read'][$meta['mode']]);
-            $obj->writable = isset(self::$readWriteHash['write'][$meta['mode']]);
-            $obj->uri = $obj->getMetadata('uri');
+        if (\is_resource($body)) {
+            $new = new self();
+            $new->stream = $body;
+            $meta = \stream_get_meta_data($new->stream);
+            $new->seekable = $meta['seekable'];
+            $new->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
+            $new->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
+            $new->uri = $new->getMetadata('uri');
 
-            return $obj;
+            return $new;
         }
 
         throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
@@ -180,7 +180,9 @@ final class Stream implements StreamInterface
     {
         if (!$this->seekable) {
             throw new \RuntimeException('Stream is not seekable');
-        } elseif (\fseek($this->stream, $offset, $whence) === -1) {
+        }
+
+        if (\fseek($this->stream, $offset, $whence) === -1) {
             throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.\var_export($whence, true));
         }
     }
@@ -242,12 +244,14 @@ final class Stream implements StreamInterface
     {
         if (!isset($this->stream)) {
             return $key ? null : [];
-        } elseif (null === $key) {
-            return \stream_get_meta_data($this->stream);
         }
 
         $meta = \stream_get_meta_data($this->stream);
 
-        return isset($meta[$key]) ? $meta[$key] : null;
+        if (null === $key) {
+            return $meta;
+        }
+
+        return $meta[$key] ?? null;
     }
 }

@@ -28,7 +28,7 @@ final class Response implements ResponseInterface
     private $reasonPhrase = '';
 
     /** @var int */
-    private $statusCode = 200;
+    private $statusCode;
 
     /**
      * @param int                                  $status  Status code
