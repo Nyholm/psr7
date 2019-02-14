@@ -16,11 +16,11 @@ final class Request implements RequestInterface
     use RequestTrait;
 
     /**
-     * @param string                               $method  HTTP method
-     * @param string|UriInterface                  $uri     URI
-     * @param array                                $headers Request headers
-     * @param string|null|resource|StreamInterface $body    Request body
-     * @param string                               $version Protocol version
+     * @param string $method HTTP method
+     * @param string|UriInterface $uri URI
+     * @param array $headers Request headers
+     * @param string|null|resource|StreamInterface $body Request body
+     * @param string $version Protocol version
      */
     public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1')
     {
