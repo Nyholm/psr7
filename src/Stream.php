@@ -13,7 +13,7 @@ use Psr\Http\Message\StreamInterface;
  */
 final class Stream implements StreamInterface
 {
-    /** @var resource A resource reference */
+    /** @var resource|null A resource reference */
     private $stream;
 
     /** @var bool */
@@ -25,10 +25,10 @@ final class Stream implements StreamInterface
     /** @var bool */
     private $writable;
 
-    /** @var array|mixed|null|void */
+    /** @var array|mixed|void|null */
     private $uri;
 
-    /** @var int */
+    /** @var int|null */
     private $size;
 
     /** @var array Hash of readable and writable stream types */
@@ -182,7 +182,7 @@ final class Stream implements StreamInterface
             throw new \RuntimeException('Stream is not seekable');
         }
 
-        if (\fseek($this->stream, $offset, $whence) === -1) {
+        if (-1 === \fseek($this->stream, $offset, $whence)) {
             throw new \RuntimeException('Unable to seek to stream position '.$offset.' with whence '.\var_export($whence, true));
         }
     }

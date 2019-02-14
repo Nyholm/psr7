@@ -22,7 +22,7 @@ final class ServerRequest implements ServerRequestInterface
     /** @var array */
     private $cookieParams = [];
 
-    /** @var null|array|object */
+    /** @var array|object|null */
     private $parsedBody;
 
     /** @var array */
@@ -38,7 +38,7 @@ final class ServerRequest implements ServerRequestInterface
      * @param string                               $method       HTTP method
      * @param string|UriInterface                  $uri          URI
      * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
+     * @param string|resource|StreamInterface|null $body         Request body
      * @param string                               $version      Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */

@@ -18,10 +18,10 @@ trait RequestTrait
     /** @var string */
     private $method;
 
-    /** @var null|string */
+    /** @var string|null */
     private $requestTarget;
 
-    /** @var null|UriInterface */
+    /** @var UriInterface|null */
     private $uri;
 
     public function getRequestTarget(): string
