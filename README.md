@@ -49,7 +49,8 @@ $stream = $factory->createStream('foobar');
 
 ### Sending a request
 
-With [HTTPlug](http://httplug.io/) or any other PSR-18 (HTTP client) you may send requests like: 
+With [HTTPlug](http://httplug.io/) or any other PSR-18 (HTTP client) you may send 
+requests like: 
 
 ```bash
 composer require kriswallsmith/buzz
@@ -65,7 +66,8 @@ $response = $psr18Client->sendRequest($request);
 
 ### Create server requests
 
-The [`nyholm/psr7-server`](https://github.com/Nyholm/psr7-server) package can be used to create server requests from PHP superglobals.
+The [`nyholm/psr7-server`](https://github.com/Nyholm/psr7-server) package can be used 
+to create server requests from PHP superglobals.
 
 ```bash
 composer require nyholm/psr7-server
@@ -96,3 +98,13 @@ composer require zendframework/zend-httphandlerrunner
 $response = (new Psr17Factory())->createReponse('200', 'Hello world');
 (new \Zend\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
 ```
+
+## Our goal
+
+This package is currently maintained by [Tobias Nyholm](http://nyholm.se) and 
+[Martijn van der Ven](https://vanderven.se/martijn/). They have decided that the
+goal of this library should be to provide a super strict implementation of 
+[PSR-7](https://www.php-fig.org/psr/psr-7/) that is blazing fast. 
+
+The package will never include any extra features nor helper methods. All our classes
+and functions exist because they are required to fulfill the PSR-7 specification. 
