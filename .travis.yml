@@ -8,6 +8,7 @@ cache:
 php:
     - 7.1
     - 7.2
+    - 7.3
     - nightly
 
 env:
@@ -42,5 +43,3 @@ script:
 after_success:
     - if [[ "$COVERAGE" = true ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
     - if [[ "$COVERAGE" = true ]]; then php ocular.phar code-coverage:upload --format=php-clover build/coverage.xml; fi
-    - wget http://tnyholm.se/reporter.phar
-    - php reporter.phar build:upload
