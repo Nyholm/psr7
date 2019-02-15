@@ -73,11 +73,11 @@ final class Uri implements UriInterface
 
         $authority = $this->host;
         if ('' !== $this->userInfo) {
-            $authority = $this->userInfo.'@'.$authority;
+            $authority = $this->userInfo . '@' . $authority;
         }
 
         if (null !== $this->port) {
-            $authority .= ':'.$this->port;
+            $authority .= ':' . $this->port;
         }
 
         return $authority;
@@ -134,7 +134,7 @@ final class Uri implements UriInterface
     {
         $info = $user;
         if (null !== $password && '' !== $password) {
-            $info .= ':'.$password;
+            $info .= ':' . $password;
         }
 
         if ($this->userInfo === $info) {
@@ -226,7 +226,7 @@ final class Uri implements UriInterface
         $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
         $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
         if (isset($parts['pass'])) {
-            $this->userInfo .= ':'.$parts['pass'];
+            $this->userInfo .= ':' . $parts['pass'];
         }
     }
 
@@ -237,24 +237,24 @@ final class Uri implements UriInterface
     {
         $uri = '';
         if ('' !== $scheme) {
-            $uri .= $scheme.':';
+            $uri .= $scheme . ':';
         }
 
         if ('' !== $authority) {
-            $uri .= '//'.$authority;
+            $uri .= '//' . $authority;
         }
 
         if ('' !== $path) {
             if ('/' !== $path[0]) {
                 if ('' !== $authority) {
                     // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
-                    $path = '/'.$path;
+                    $path = '/' . $path;
                 }
             } elseif (isset($path[1]) && '/' === $path[1]) {
                 if ('' === $authority) {
                     // If the path is starting with more than one "/" and no authority is present, the
                     // starting slashes MUST be reduced to one.
-                    $path = '/'.\ltrim($path, '/');
+                    $path = '/' . \ltrim($path, '/');
                 }
             }
 
@@ -262,11 +262,11 @@ final class Uri implements UriInterface
         }
 
         if ('' !== $query) {
-            $uri .= '?'.$query;
+            $uri .= '?' . $query;
         }
 
         if ('' !== $fragment) {
-            $uri .= '#'.$fragment;
+            $uri .= '#' . $fragment;
         }
 
         return $uri;
@@ -300,7 +300,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Path must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::CHAR_UNRESERVED.self::CHAR_SUB_DELIMS.'%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $path);
+        return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $path);
     }
 
     private function filterQueryAndFragment($str): string
@@ -309,7 +309,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Query and fragment must be a string');
         }
 
-        return \preg_replace_callback('/(?:[^'.self::CHAR_UNRESERVED.self::CHAR_SUB_DELIMS.'%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $str);
+        return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $str);
     }
 
     private static function rawurlencodeMatchZero(array $match): string
