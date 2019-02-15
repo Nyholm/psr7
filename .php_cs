@@ -11,6 +11,8 @@ $config = PhpCsFixer\Config::create()
         'declare_strict_types' => true,
         'single_import_per_statement' => false,
         'concat_space' => ['spacing'=>'one'],
+        'function_typehint_space' => true,
+        'phpdoc_align' => ['align'=>'left'],
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()

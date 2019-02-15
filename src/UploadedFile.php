@@ -48,10 +48,10 @@ final class UploadedFile implements UploadedFileInterface
 
     /**
      * @param StreamInterface|string|resource $streamOrFile
-     * @param int                             $size
-     * @param int                             $errorStatus
-     * @param string|null                     $clientFilename
-     * @param string|null                     $clientMediaType
+     * @param int $size
+     * @param int $errorStatus
+     * @param string|null $clientFilename
+     * @param string|null $clientMediaType
      */
     public function __construct($streamOrFile, $size, $errorStatus, $clientFilename = null, $clientMediaType = null)
     {
@@ -211,9 +211,9 @@ final class UploadedFile implements UploadedFileInterface
      * @author Michael Dowling and contributors to guzzlehttp/psr7
      *
      * @param StreamInterface $source Stream to read from
-     * @param StreamInterface $dest   Stream to write to
-     * @param int             $maxLen Maximum number of bytes to read. Pass -1
-     *                                to read the entire stream
+     * @param StreamInterface $dest Stream to write to
+     * @param int $maxLen Maximum number of bytes to read. Pass -1
+     *                    to read the entire stream
      *
      * @throws \RuntimeException on error
      */

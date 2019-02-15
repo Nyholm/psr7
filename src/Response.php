@@ -31,11 +31,11 @@ final class Response implements ResponseInterface
     private $statusCode;
 
     /**
-     * @param int                                  $status  Status code
-     * @param array                                $headers Response headers
-     * @param string|resource|StreamInterface|null $body    Response body
-     * @param string                               $version Protocol version
-     * @param string|null                          $reason  Reason phrase (when empty a default will be used based on the status code)
+     * @param int $status Status code
+     * @param array $headers Response headers
+     * @param string|resource|StreamInterface|null $body Response body
+     * @param string $version Protocol version
+     * @param string|null $reason Reason phrase (when empty a default will be used based on the status code)
      */
     public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
