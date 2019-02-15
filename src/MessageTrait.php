@@ -116,7 +116,7 @@ trait MessageTrait
 
     public function getBody(): StreamInterface
     {
-        if (!$this->stream) {
+        if (null === $this->stream) {
             $this->stream = Stream::create('');
         }
 
