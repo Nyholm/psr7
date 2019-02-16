@@ -73,6 +73,15 @@ class RequestTest extends TestCase
         $this->assertNotSame($r1, $r2);
         $this->assertSame($u2, $r2->getUri());
         $this->assertSame($u1, $r1->getUri());
+
+        $r3 = new Request('GET', '/');
+        $u3 = $r3->getUri();
+        $r4 = $r3->withUri($u3);
+        $this->assertSame($r3, $r4, 'If the Request did not change, then there is no need to create a new request object');
+
+        $u4 = new Uri('/');
+        $r5 = $r3->withUri($u4);
+        $this->assertNotSame($r3, $r5);
     }
 
     public function testSameInstanceWhenSameUri()
@@ -88,6 +97,25 @@ class RequestTest extends TestCase
         $r2 = $r1->withRequestTarget('*');
         $this->assertEquals('*', $r2->getRequestTarget());
         $this->assertEquals('/', $r1->getRequestTarget());
+    }
+
+    public function testWithInvalidRequestTarget()
+    {
+        $r = new Request('GET', '/');
+        $this->expectException(\InvalidArgumentException::class);
+        $r->withRequestTarget('foo bar');
+    }
+
+    public function testGetRequestTarget()
+    {
+        $r = new Request('GET', 'https://nyholm.tech');
+        $this->assertEquals('/', $r->getRequestTarget());
+
+        $r = new Request('GET', 'https://nyholm.tech/foo?bar=baz');
+        $this->assertEquals('/foo?bar=baz', $r->getRequestTarget());
+
+        $r = new Request('GET', 'https://nyholm.tech?bar=baz');
+        $this->assertEquals('/?bar=baz', $r->getRequestTarget());
     }
 
     public function testRequestTargetDoesNotAllowSpaces()
@@ -200,5 +228,25 @@ class RequestTest extends TestCase
         $r = new Request('GET', 'https://example.com/');
         $r = $r->withHeader('Foo', '');
         $this->assertEquals([''], $r->getHeader('Foo'));
+    }
+
+    public function testUpdateHostFromUri()
+    {
+        $request = new Request('GET', '/');
+        $request = $request->withUri(new Uri('https://nyholm.tech'));
+        $this->assertEquals('nyholm.tech', $request->getHeaderLine('Host'));
+
+        $request = new Request('GET', 'https://example.com/');
+        $this->assertEquals('example.com', $request->getHeaderLine('Host'));
+        $request = $request->withUri(new Uri('https://nyholm.tech'));
+        $this->assertEquals('nyholm.tech', $request->getHeaderLine('Host'));
+
+        $request = new Request('GET', '/');
+        $request = $request->withUri(new Uri('https://nyholm.tech:8080'));
+        $this->assertEquals('nyholm.tech:8080', $request->getHeaderLine('Host'));
+
+        $request = new Request('GET', '/');
+        $request = $request->withUri(new Uri('https://nyholm.tech:443'));
+        $this->assertEquals('nyholm.tech', $request->getHeaderLine('Host'));
     }
 }
