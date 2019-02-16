@@ -39,7 +39,7 @@ final class Response implements ResponseInterface
      */
     public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
-        // If we got no body, defer initialization of the stream until Request::getBody()
+        // If we got no body, defer initialization of the stream until Response::getBody()
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);
         }
