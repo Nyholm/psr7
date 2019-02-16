@@ -175,7 +175,15 @@ final class UploadedFile implements UploadedFileInterface
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
-            $this->copyToStream($stream, Stream::create(\fopen($targetPath, 'w')));
+
+            // Copy the contents of a stream into another stream until end-of-file.
+            $dest = Stream::create(\fopen($targetPath, 'w'));
+            while (!$stream->eof()) {
+                if (!$dest->write($stream->read(1048576))) {
+                    break;
+                }
+            }
+
             $this->moved = true;
         }
 
@@ -202,25 +210,5 @@ final class UploadedFile implements UploadedFileInterface
     public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;
-    }
-
-    /**
-     * Copy the contents of a stream into another stream until the given number
-     * of bytes have been read.
-     *
-     * @author Michael Dowling and contributors to guzzlehttp/psr7
-     *
-     * @param StreamInterface $source Stream to read from
-     * @param StreamInterface $dest Stream to write to
-     *
-     * @throws \RuntimeException on error
-     */
-    private function copyToStream(StreamInterface $source, StreamInterface $dest): void
-    {
-        while (!$source->eof()) {
-            if (!$dest->write($source->read(1048576))) {
-                break;
-            }
-        }
     }
 }
