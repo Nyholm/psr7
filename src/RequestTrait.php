@@ -18,10 +18,10 @@ trait RequestTrait
     /** @var string */
     private $method;
 
-    /** @var null|string */
+    /** @var string|null */
     private $requestTarget;
 
-    /** @var null|UriInterface */
+    /** @var UriInterface|null */
     private $uri;
 
     public function getRequestTarget(): string
@@ -34,7 +34,7 @@ trait RequestTrait
             $target = '/';
         }
         if ('' !== $this->uri->getQuery()) {
-            $target .= '?'.$this->uri->getQuery();
+            $target .= '?' . $this->uri->getQuery();
         }
 
         return $target;
@@ -97,7 +97,7 @@ trait RequestTrait
         }
 
         if (null !== ($port = $this->uri->getPort())) {
-            $host .= ':'.$port;
+            $host .= ':' . $port;
         }
 
         if (isset($this->headerNames['host'])) {

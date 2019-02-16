@@ -22,7 +22,7 @@ final class ServerRequest implements ServerRequestInterface
     /** @var array */
     private $cookieParams = [];
 
-    /** @var null|array|object */
+    /** @var array|object|null */
     private $parsedBody;
 
     /** @var array */
@@ -35,12 +35,12 @@ final class ServerRequest implements ServerRequestInterface
     private $uploadedFiles = [];
 
     /**
-     * @param string                               $method       HTTP method
-     * @param string|UriInterface                  $uri          URI
-     * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
-     * @param string                               $version      Protocol version
-     * @param array                                $serverParams Typically the $_SERVER superglobal
+     * @param string $method HTTP method
+     * @param string|UriInterface $uri URI
+     * @param array $headers Request headers
+     * @param string|resource|StreamInterface|null $body Request body
+     * @param string $version Protocol version
+     * @param array $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(string $method, $uri, array $headers = [], $body = null, string $version = '1.1', array $serverParams = [])
     {

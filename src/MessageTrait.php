@@ -26,7 +26,7 @@ trait MessageTrait
     /** @var string */
     private $protocol = '1.1';
 
-    /** @var StreamInterface */
+    /** @var StreamInterface|null */
     private $stream;
 
     public function getProtocolVersion(): string
@@ -116,7 +116,7 @@ trait MessageTrait
 
     public function getBody(): StreamInterface
     {
-        if (!$this->stream) {
+        if (null === $this->stream) {
             $this->stream = Stream::create('');
         }
 

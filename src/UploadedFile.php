@@ -34,24 +34,24 @@ final class UploadedFile implements UploadedFileInterface
     /** @var int */
     private $error;
 
-    /** @var null|string */
+    /** @var string|null */
     private $file;
 
     /** @var bool */
     private $moved = false;
 
-    /** @var null|int */
+    /** @var int|null */
     private $size;
 
-    /** @var null|StreamInterface */
+    /** @var StreamInterface|null */
     private $stream;
 
     /**
      * @param StreamInterface|string|resource $streamOrFile
-     * @param int                             $size
-     * @param int                             $errorStatus
-     * @param string|null                     $clientFilename
-     * @param string|null                     $clientMediaType
+     * @param int $size
+     * @param int $errorStatus
+     * @param string|null $clientFilename
+     * @param string|null $clientMediaType
      */
     public function __construct($streamOrFile, $size, $errorStatus, $clientFilename = null, $clientMediaType = null)
     {
@@ -109,7 +109,7 @@ final class UploadedFile implements UploadedFileInterface
 
     private function setClientFilename($clientFilename): void
     {
-        if ($clientFilename !== null && !\is_string($clientFilename)) {
+        if (null !== $clientFilename && !\is_string($clientFilename)) {
             throw new \InvalidArgumentException('Upload file client filename must be a string or null');
         }
 
@@ -118,7 +118,7 @@ final class UploadedFile implements UploadedFileInterface
 
     private function setClientMediaType($clientMediaType): void
     {
-        if ($clientMediaType !== null && !\is_string($clientMediaType)) {
+        if (null !== $clientMediaType && !\is_string($clientMediaType)) {
             throw new \InvalidArgumentException('Upload file client media type must be a string or null');
         }
 
@@ -164,12 +164,12 @@ final class UploadedFile implements UploadedFileInterface
     {
         $this->validateActive();
 
-        if (!\is_string($targetPath) || $targetPath === '') {
+        if (!\is_string($targetPath) || '' === $targetPath) {
             throw new \InvalidArgumentException('Invalid path provided for move operation; must be a non-empty string');
         }
 
         if (null !== $this->file) {
-            $this->moved = 'cli' === PHP_SAPI ? \rename($this->file, $targetPath) : \move_uploaded_file($this->file, $targetPath);
+            $this->moved = 'cli' === \PHP_SAPI ? \rename($this->file, $targetPath) : \move_uploaded_file($this->file, $targetPath);
         } else {
             $stream = $this->getStream();
             if ($stream->isSeekable()) {
@@ -211,15 +211,15 @@ final class UploadedFile implements UploadedFileInterface
      * @author Michael Dowling and contributors to guzzlehttp/psr7
      *
      * @param StreamInterface $source Stream to read from
-     * @param StreamInterface $dest   Stream to write to
-     * @param int             $maxLen Maximum number of bytes to read. Pass -1
-     *                                to read the entire stream
+     * @param StreamInterface $dest Stream to write to
+     * @param int $maxLen Maximum number of bytes to read. Pass -1
+     *                    to read the entire stream
      *
      * @throws \RuntimeException on error
      */
     private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1): void
     {
-        if ($maxLen === -1) {
+        if (-1 === $maxLen) {
             while (!$source->eof()) {
                 if (!$dest->write($source->read(1048576))) {
                     break;
