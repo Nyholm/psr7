@@ -212,34 +212,17 @@ final class UploadedFile implements UploadedFileInterface
      *
      * @param StreamInterface $source Stream to read from
      * @param StreamInterface $dest Stream to write to
-     * @param int $maxLen Maximum number of bytes to read. Pass -1
-     *                    to read the entire stream
      *
      * @throws \RuntimeException on error
      */
-    private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1): void
+    private function copyToStream(StreamInterface $source, StreamInterface $dest): void
     {
-        if (-1 === $maxLen) {
-            while (!$source->eof()) {
-                if (!$dest->write($source->read(1048576))) {
-                    break;
-                }
-            }
-
-            return;
-        }
-
-        $bytes = 0;
         while (!$source->eof()) {
-            $buf = $source->read($maxLen - $bytes);
-            if (!($len = \strlen($buf))) {
-                break;
-            }
-            $bytes += $len;
-            $dest->write($buf);
-            if ($bytes === $maxLen) {
+            if (!$dest->write($source->read(1048576))) {
                 break;
             }
         }
+
+        return;
     }
 }
