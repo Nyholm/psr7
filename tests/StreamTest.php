@@ -19,7 +19,7 @@ class StreamTest extends TestCase
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
         $this->assertEquals('php://temp', $stream->getMetadata('uri'));
-        $this->assertInternalType('array', $stream->getMetadata());
+        $this->assertIsArray($stream->getMetadata());
         $this->assertEquals(4, $stream->getSize());
         $this->assertFalse($stream->eof());
         $stream->close();
@@ -119,6 +119,7 @@ class StreamTest extends TestCase
                 $fn($stream);
                 $this->fail();
             } catch (\Exception $e) {
+                // Suppress the exception
             }
         };
 

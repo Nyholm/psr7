@@ -51,7 +51,17 @@ final class Uri implements UriInterface
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
             }
 
-            $this->applyParts($parts);
+            // Apply parse_url parts to a URI.
+            $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
+            $this->userInfo = $parts['user'] ?? '';
+            $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
+            $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
+            $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
+            $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
+            $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
+            if (isset($parts['pass'])) {
+                $this->userInfo .= ':' . $parts['pass'];
+            }
         }
     }
 
@@ -209,25 +219,6 @@ final class Uri implements UriInterface
         $new->fragment = $fragment;
 
         return $new;
-    }
-
-    /**
-     * Apply parse_url parts to a URI.
-     *
-     * @param array $parts Array of parse_url parts to apply
-     */
-    private function applyParts(array $parts): void
-    {
-        $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
-        $this->userInfo = $parts['user'] ?? '';
-        $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
-        $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
-        $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
-        $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
-        $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
-        if (isset($parts['pass'])) {
-            $this->userInfo .= ':' . $parts['pass'];
-        }
     }
 
     /**

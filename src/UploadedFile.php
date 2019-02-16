@@ -40,7 +40,7 @@ final class UploadedFile implements UploadedFileInterface
     /** @var bool */
     private $moved = false;
 
-    /** @var int|null */
+    /** @var int */
     private $size;
 
     /** @var StreamInterface|null */
@@ -55,82 +55,39 @@ final class UploadedFile implements UploadedFileInterface
      */
     public function __construct($streamOrFile, $size, $errorStatus, $clientFilename = null, $clientMediaType = null)
     {
-        $this->setError($errorStatus);
-        $this->setSize($size);
-        $this->setClientFilename($clientFilename);
-        $this->setClientMediaType($clientMediaType);
-
-        if ($this->isOk()) {
-            $this->setStreamOrFile($streamOrFile);
-        }
-    }
-
-    /**
-     * Depending on the value set file or stream variable.
-     *
-     * @param string|resource|StreamInterface $streamOrFile
-     *
-     * @throws \InvalidArgumentException
-     */
-    private function setStreamOrFile($streamOrFile): void
-    {
-        if (\is_string($streamOrFile)) {
-            $this->file = $streamOrFile;
-        } elseif (\is_resource($streamOrFile)) {
-            $this->stream = Stream::create($streamOrFile);
-        } elseif ($streamOrFile instanceof StreamInterface) {
-            $this->stream = $streamOrFile;
-        } else {
-            throw new \InvalidArgumentException('Invalid stream or file provided for UploadedFile');
-        }
-    }
-
-    private function setError($error): void
-    {
-        if (false === \is_int($error)) {
-            throw new \InvalidArgumentException('Upload file error status must be an integer');
+        if (false === \is_int($errorStatus) || !isset(self::ERRORS[$errorStatus])) {
+            throw new \InvalidArgumentException('Upload file error status must be an integer value and one of the "UPLOAD_ERR_*" constants.');
         }
 
-        if (!isset(self::ERRORS[$error])) {
-            throw new \InvalidArgumentException('Invalid error status for UploadedFile');
-        }
-
-        $this->error = $error;
-    }
-
-    private function setSize($size): void
-    {
         if (false === \is_int($size)) {
             throw new \InvalidArgumentException('Upload file size must be an integer');
         }
 
-        $this->size = $size;
-    }
-
-    private function setClientFilename($clientFilename): void
-    {
         if (null !== $clientFilename && !\is_string($clientFilename)) {
             throw new \InvalidArgumentException('Upload file client filename must be a string or null');
         }
 
-        $this->clientFilename = $clientFilename;
-    }
-
-    private function setClientMediaType($clientMediaType): void
-    {
         if (null !== $clientMediaType && !\is_string($clientMediaType)) {
             throw new \InvalidArgumentException('Upload file client media type must be a string or null');
         }
 
+        $this->error = $errorStatus;
+        $this->size = $size;
+        $this->clientFilename = $clientFilename;
         $this->clientMediaType = $clientMediaType;
-    }
 
-    /**
-     * @return bool return true if there is no upload error
-     */
-    private function isOk(): bool
-    {
-        return \UPLOAD_ERR_OK === $this->error;
+        if (\UPLOAD_ERR_OK === $this->error) {
+            // Depending on the value set file or stream variable.
+            if (\is_string($streamOrFile)) {
+                $this->file = $streamOrFile;
+            } elseif (\is_resource($streamOrFile)) {
+                $this->stream = Stream::create($streamOrFile);
+            } elseif ($streamOrFile instanceof StreamInterface) {
+                $this->stream = $streamOrFile;
+            } else {
+                throw new \InvalidArgumentException('Invalid stream or file provided for UploadedFile');
+            }
+        }
     }
 
     /**
@@ -138,7 +95,7 @@ final class UploadedFile implements UploadedFileInterface
      */
     private function validateActive(): void
     {
-        if (false === $this->isOk()) {
+        if (\UPLOAD_ERR_OK !== $this->error) {
             throw new \RuntimeException('Cannot retrieve stream due to upload error');
         }
 
@@ -175,7 +132,15 @@ final class UploadedFile implements UploadedFileInterface
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
-            $this->copyToStream($stream, Stream::create(\fopen($targetPath, 'w')));
+
+            // Copy the contents of a stream into another stream until end-of-file.
+            $dest = Stream::create(\fopen($targetPath, 'w'));
+            while (!$stream->eof()) {
+                if (!$dest->write($stream->read(1048576))) {
+                    break;
+                }
+            }
+
             $this->moved = true;
         }
 
@@ -184,7 +149,7 @@ final class UploadedFile implements UploadedFileInterface
         }
     }
 
-    public function getSize(): ?int
+    public function getSize(): int
     {
         return $this->size;
     }
@@ -202,44 +167,5 @@ final class UploadedFile implements UploadedFileInterface
     public function getClientMediaType(): ?string
     {
         return $this->clientMediaType;
-    }
-
-    /**
-     * Copy the contents of a stream into another stream until the given number
-     * of bytes have been read.
-     *
-     * @author Michael Dowling and contributors to guzzlehttp/psr7
-     *
-     * @param StreamInterface $source Stream to read from
-     * @param StreamInterface $dest Stream to write to
-     * @param int $maxLen Maximum number of bytes to read. Pass -1
-     *                    to read the entire stream
-     *
-     * @throws \RuntimeException on error
-     */
-    private function copyToStream(StreamInterface $source, StreamInterface $dest, $maxLen = -1): void
-    {
-        if (-1 === $maxLen) {
-            while (!$source->eof()) {
-                if (!$dest->write($source->read(1048576))) {
-                    break;
-                }
-            }
-
-            return;
-        }
-
-        $bytes = 0;
-        while (!$source->eof()) {
-            $buf = $source->read($maxLen - $bytes);
-            if (!($len = \strlen($buf))) {
-                break;
-            }
-            $bytes += $len;
-            $dest->write($buf);
-            if ($bytes === $maxLen) {
-                break;
-            }
-        }
     }
 }
