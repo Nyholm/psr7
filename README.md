@@ -58,7 +58,7 @@ composer require kriswallsmith/buzz
 
 ```php
 $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
-$psr18Client = new Buzz\Client\Curl([], $psr17Factory);
+$psr18Client = new Buzz\Client\Curl($psr17Factory);
 
 $request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
 $response = $psr18Client->sendRequest($request);
