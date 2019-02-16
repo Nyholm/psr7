@@ -39,11 +39,12 @@ final class Response implements ResponseInterface
      */
     public function __construct(int $status = 200, array $headers = [], $body = null, string $version = '1.1', string $reason = null)
     {
-        $this->statusCode = $status;
+        // If we got no body, defer initialization of the stream until Request::getBody()
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);
         }
 
+        $this->statusCode = $status;
         $this->setHeaders($headers);
         if (null === $reason && isset(self::PHRASES[$this->statusCode])) {
             $this->reasonPhrase = self::PHRASES[$status];
