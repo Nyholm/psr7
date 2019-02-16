@@ -27,9 +27,12 @@ matrix:
         - php: 7.2
           name: Backward compatibillity check
           env: DEPENDENCIES="roave/backward-compatibility-check" TEST_COMMAND="./vendor/bin/roave-backward-compatibility-check"
-        - php: 7.1
+        - php: 7.2
           name: Lowest version of dependencies
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
+        - php: 7.2
+          name: PHPStan
+          env: DEPENDENCIES="phpstan/phpstan" TEST_COMMAND="./vendor/bin/phpstan"
 
 before_install:
     - if ! [ -v "$DEPENDENCIES" ]; then composer require --no-update ${DEPENDENCIES}; fi;
