@@ -37,6 +37,7 @@ final class Request implements RequestInterface
             $this->updateHostFromUri();
         }
 
+        // If we got no body, defer initialization of the stream until Request::getBody()
         if ('' !== $body && null !== $body) {
             $this->stream = Stream::create($body);
         }
