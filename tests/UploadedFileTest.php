@@ -5,6 +5,7 @@ namespace Tests\Nyholm\Psr7;
 use Nyholm\Psr7\Stream;
 use Nyholm\Psr7\UploadedFile;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * @covers \Nyholm\Psr7\UploadedFile
@@ -126,6 +127,14 @@ class UploadedFileTest extends TestCase
         $uploadStream = $upload->getStream()->detach();
 
         $this->assertSame($stream, $uploadStream);
+    }
+
+    public function testGetStream()
+    {
+        $upload = new UploadedFile(__DIR__.'/Resources/foo.txt', 0, UPLOAD_ERR_OK);
+        $stream = $upload->getStream();
+        $this->assertInstanceOf(StreamInterface::class, $stream);
+        $this->assertEquals("Foobar\n", $stream->__toString());
     }
 
     public function testSuccessful()

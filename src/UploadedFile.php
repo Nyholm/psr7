@@ -40,7 +40,7 @@ final class UploadedFile implements UploadedFileInterface
     /** @var bool */
     private $moved = false;
 
-    /** @var int|null */
+    /** @var int */
     private $size;
 
     /** @var StreamInterface|null */
@@ -184,7 +184,7 @@ final class UploadedFile implements UploadedFileInterface
         }
     }
 
-    public function getSize(): ?int
+    public function getSize(): int
     {
         return $this->size;
     }
