@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.1.0
+
+### Added
+
+- Improved performance
+- More tests for `UploadedFile` and `HttplugFactory`
+
+### Removed
+
+- Dead code
+
 ## 1.0.1
 
 ### Fixed
