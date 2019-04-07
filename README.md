@@ -42,9 +42,9 @@ the [PSR-7 specification](https://www.php-fig.org/psr/psr-7/).
 Use the PSR-17 factory to create requests, streams, URIs etc.  
 
 ```php
-$factory = new \Nyholm\Psr7\Factory\Psr17Factory();
-$request = $factory->createRequest('GET', 'http://tnyholm.se');
-$stream = $factory->createStream('foobar');
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+$request = $psr17Factory->createRequest('GET', 'http://tnyholm.se');
+$stream = $psr17Factory->createStream('foobar');
 ```
 
 ### Sending a request
@@ -58,9 +58,9 @@ composer require kriswallsmith/buzz
 
 ```php
 $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
-$psr18Client = new Buzz\Client\Curl($psr17Factory);
+$psr18Client = new \Buzz\Client\Curl($psr17Factory);
 
-$request = (new Psr17Factory())->createRequest('GET', 'http://tnyholm.se');
+$request = $psr17Factory->createRequest('GET', 'http://tnyholm.se');
 $response = $psr18Client->sendRequest($request);
 ```
 
@@ -74,9 +74,7 @@ composer require nyholm/psr7-server
 ```
 
 ```php
-use Nyholm\Psr7\Factory\Psr17Factory;
-
-$psr17Factory = new Psr17Factory();
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 
 $creator = new ServerRequestCreator(
     $psr17Factory, // ServerRequestFactory
@@ -95,7 +93,10 @@ composer require zendframework/zend-httphandlerrunner
 ```
 
 ```php
-$response = (new Psr17Factory())->createReponse('200', 'Hello world');
+$psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
+
+$responseBody = $psr17Factory->createStream('Hello world');
+$response = $psr17Factory->createResponse(200)->withBody($responseBody);
 (new \Zend\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
 ```
 
