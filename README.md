@@ -34,7 +34,7 @@ If you are using Symfony Flex then you get all message factories registered as s
 
 ## Usage
 
-The PSR-7 objects do not contain any other public methods then those defined in
+The PSR-7 objects do not contain any other public methods than those defined in
 the [PSR-7 specification](https://www.php-fig.org/psr/psr-7/). 
 
 ### Create objects
