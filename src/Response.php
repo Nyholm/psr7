@@ -45,12 +45,13 @@ final class Response implements ResponseInterface
         }
 
         $this->statusCode = $status;
-        $this->setHeaders($headers);
-        if (null === $reason && isset(self::PHRASES[$this->statusCode])) {
-            $this->reasonPhrase = self::PHRASES[$status];
-        } else {
-            $this->reasonPhrase = $reason;
+        $this->reasonPhrase = (string) $reason;
+
+        if ('' === $this->reasonPhrase && isset(self::PHRASES[$this->statusCode])) {
+            $this->reasonPhrase = self::PHRASES[$this->statusCode];
         }
+
+        $this->setHeaders($headers);
 
         $this->protocol = $version;
     }
@@ -77,11 +78,13 @@ final class Response implements ResponseInterface
         }
 
         $new = clone $this;
+
         $new->statusCode = $code;
-        if ((null === $reasonPhrase || '' === $reasonPhrase) && isset(self::PHRASES[$new->statusCode])) {
-            $reasonPhrase = self::PHRASES[$new->statusCode];
+        $new->reasonPhrase = (string) $reasonPhrase;
+
+        if ('' === $new->reasonPhrase && isset(self::PHRASES[$new->statusCode])) {
+            $new->reasonPhrase = self::PHRASES[$new->statusCode];
         }
-        $new->reasonPhrase = $reasonPhrase;
 
         return $new;
     }

@@ -2,6 +2,7 @@
 
 namespace Tests\Nyholm\Psr7;
 
+use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
@@ -251,5 +252,13 @@ class ResponseTest extends TestCase
         $this->assertSame(['OWS' => ['Foo']], $r->getHeaders());
         $this->assertSame('Foo', $r->getHeaderLine('OWS'));
         $this->assertSame(['Foo'], $r->getHeader('OWS'));
+    }
+
+    public function testCanConstructWithFactory()
+    {
+        $f = new Psr17Factory();
+        $r = $f->createResponse(200);
+        $this->assertSame(200, $r->getStatusCode());
+        $this->assertSame('OK', $r->getReasonPhrase());
     }
 }
