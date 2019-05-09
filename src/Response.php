@@ -46,7 +46,7 @@ final class Response implements ResponseInterface
 
         $this->statusCode = $status;
         $this->setHeaders($headers);
-        if (null === $reason && isset(self::PHRASES[$this->statusCode])) {
+        if (($reason === null || $reason === '') && isset(self::PHRASES[$this->statusCode])) {
             $this->reasonPhrase = self::PHRASES[$status];
         } else {
             $this->reasonPhrase = $reason;
