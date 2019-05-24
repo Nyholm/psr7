@@ -49,7 +49,7 @@ final class Response implements ResponseInterface
         if (null === $reason && isset(self::PHRASES[$this->statusCode])) {
             $this->reasonPhrase = self::PHRASES[$status];
         } else {
-            $this->reasonPhrase = $reason;
+            $this->reasonPhrase = $reason ?? '';
         }
 
         $this->protocol = $version;

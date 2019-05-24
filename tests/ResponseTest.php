@@ -30,6 +30,13 @@ class ResponseTest extends TestCase
         $this->assertSame('Not Found', $r->getReasonPhrase());
     }
 
+    public function testCanConstructWithUndefinedStatusCode()
+    {
+        $r = new Response(999);
+        $this->assertSame(999, $r->getStatusCode());
+        $this->assertSame('', $r->getReasonPhrase());
+    }
+
     public function testConstructorDoesNotReadStreamBody()
     {
         $body = $this->getMockBuilder(StreamInterface::class)->getMock();
