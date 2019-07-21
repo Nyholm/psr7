@@ -76,7 +76,7 @@ final class Stream implements StreamInterface
             $new = new self();
             $new->stream = $body;
             $meta = \stream_get_meta_data($new->stream);
-            $new->seekable = $meta['seekable'];
+            $new->seekable = $meta['seekable'] && 0 === \fseek($new->stream, 0, \SEEK_CUR);
             $new->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
             $new->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
             $new->uri = $new->getMetadata('uri');

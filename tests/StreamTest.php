@@ -160,4 +160,34 @@ class StreamTest extends TestCase
         $this->assertNull($stream->getSize());
         $this->assertEmpty($stream->getMetadata());
     }
+
+    public function testUnseekableStreamWrapper()
+    {
+        stream_wrapper_register('nyholm-psr7-test', TestStreamWrapper::class);
+        $handle = fopen('nyholm-psr7-test://', 'r');
+        stream_wrapper_unregister('nyholm-psr7-test');
+
+        $stream = Stream::create($handle);
+        $this->assertFalse($stream->isSeekable());
+    }
+}
+
+class TestStreamWrapper
+{
+    public $context;
+
+    public function stream_open()
+    {
+        return true;
+    }
+
+    public function stream_seek(int $offset, int $whence = SEEK_SET)
+    {
+        return false;
+    }
+
+    public function stream_eof()
+    {
+        return true;
+    }
 }
