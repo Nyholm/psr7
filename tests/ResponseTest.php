@@ -259,4 +259,11 @@ class ResponseTest extends TestCase
         $this->assertSame('Foo', $r->getHeaderLine('OWS'));
         $this->assertSame(['Foo'], $r->getHeader('OWS'));
     }
+
+    public function testCanConstructWithStatusCodeAndEmptyReason()
+    {
+        $r = new Response(404, [], null, '1.1', '');
+        $this->assertSame(404, $r->getStatusCode());
+        $this->assertSame('', $r->getReasonPhrase());
+    }
 }
