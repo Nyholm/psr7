@@ -20,6 +20,11 @@ final class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInte
 
     public function createResponse(int $code = 200, string $reasonPhrase = ''): ResponseInterface
     {
+        if (2 > \func_num_args()) {
+            // This will make the Response class to use a custom reasonPhrase
+            $reasonPhrase = null;
+        }
+
         return new Response($code, [], null, '1.1', $reasonPhrase);
     }
 

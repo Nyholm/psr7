@@ -37,6 +37,13 @@ class ResponseTest extends TestCase
         $this->assertSame('', $r->getReasonPhrase());
     }
 
+    public function testCanConstructWithStatusCodeAndEmptyReason()
+    {
+        $r = new Response(404, [], null, '1.1', '');
+        $this->assertSame(404, $r->getStatusCode());
+        $this->assertSame('', $r->getReasonPhrase());
+    }
+
     public function testConstructorDoesNotReadStreamBody()
     {
         $body = $this->getMockBuilder(StreamInterface::class)->getMock();
