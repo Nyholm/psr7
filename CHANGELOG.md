@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.2.0
+
+### Changed
+
+- Change minimal port number to 0 (unix socket)
+- Updated `Psr17Factory::createResponse` to respect the specification. If second 
+  argument is not used, a standard reason phrase. If an empty string is passed, 
+  then the reason phrase will be empty. 
+
+### Fixed
+
+- Check for seekable on the stream resource.
+- Fixed the `Response::$reason` should never be null.
+
 ## 1.1.0
 
 ### Added
