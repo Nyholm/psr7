@@ -25,14 +25,8 @@ matrix:
           env: COMPOSER_FLAGS="--ignore-platform-reqs"
     include:
         - php: 7.2
-          name: Backward compatibillity check
-          env: DEPENDENCIES="roave/backward-compatibility-check" TEST_COMMAND="./vendor/bin/roave-backward-compatibility-check"
-        - php: 7.2
           name: Lowest version of dependencies
           env: COMPOSER_FLAGS="--prefer-stable --prefer-lowest" COVERAGE=true TEST_COMMAND="composer test-ci"
-        - php: 7.2
-          name: PHPStan
-          env: DEPENDENCIES="phpstan/phpstan" TEST_COMMAND="./vendor/bin/phpstan"
         - php: nightly
           name: PHP 8.0
           env: COMPOSER_FLAGS="--ignore-platform-reqs"
