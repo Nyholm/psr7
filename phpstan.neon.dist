@@ -23,3 +23,7 @@ parameters:
         -
             message: '#Result of && is always false#'
             path: %currentWorkingDirectory%/src/ServerRequest.php
+
+        -
+            message: '#Result of && is always false#'
+            path: %currentWorkingDirectory%/src/UploadedFile.php
