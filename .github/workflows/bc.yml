@@ -1,8 +1,8 @@
 on: [push]
-name: BC
+name: Roave
 jobs:
   roave_bc_check:
-    name: Roave BC Check
+    name: BC Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
