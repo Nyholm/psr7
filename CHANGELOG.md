@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.2.1
+
+### Changed
+
+- Added `.github` and `phpstan.neon.dist` to `.gitattributes`.
+
 ## 1.2.0
 
 ### Changed
