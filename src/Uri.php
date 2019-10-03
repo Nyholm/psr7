@@ -54,7 +54,7 @@ final class Uri implements UriInterface
             // Apply parse_url parts to a URI.
             $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
             $this->userInfo = $parts['user'] ?? '';
-            $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
+            $this->host = isset($parts['host']) ? \preg_replace_callback('/([A-Z])/',static function($cap) { return strtolower($cap[0]); },$parts['host']) : '';
             $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
             $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
             $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
