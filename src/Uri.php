@@ -47,7 +47,7 @@ final class Uri implements UriInterface
     public function __construct(string $uri = '')
     {
         if ('' !== $uri) {
-            if (false === $parts = \parse_url($uri)) {
+            if (false === $parts = self::parse_utf8_url($uri)) {
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
             }
 
@@ -64,7 +64,20 @@ final class Uri implements UriInterface
             }
         }
     }
-
+    
+    static function parse_utf8_url($url) {
+        static $keys = ['scheme' => 0, 'user' => 0, 'pass' => 0, 'host' => 0, 'port' => 0, 'path' => 0, 'query' => 0, 'fragment' => 0];
+        if(is_string($url) && preg_match(
+            '~^((?P<scheme>[^:/?#]+):(//))?((\\3|//)?(?:(?P<user>[^/:]+):(?P<pass>[^/@]+)@)?(?P<host>[^/?:#]*))(:(?P<port>\\d+))?' .
+            '(?P<path>[^?#]*)(\\?(?P<query>[^#]*))?(#(?P<fragment>.*))?~u', $url, $matches)) {
+            foreach($matches as $key => $value)
+            if(!isset($keys[$key]) || strlen($value) === 0)
+                unset($matches[$key]);
+            return $matches;
+        }
+        return false;
+    }
+    
     public function __toString(): string
     {
         return self::createUriString($this->scheme, $this->getAuthority(), $this->path, $this->query, $this->fragment);
