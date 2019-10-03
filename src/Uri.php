@@ -15,8 +15,7 @@ use Psr\Http\Message\UriInterface;
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
  */
-final class Uri implements UriInterface
-{
+final class Uri implements UriInterface {
     private const SCHEMES = ['http' => 80, 'https' => 443];
 
     private const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
@@ -44,22 +43,20 @@ final class Uri implements UriInterface
     /** @var string Uri fragment. */
     private $fragment = '';
 
-    public function __construct(string $uri = '')
-    {
-        if ('' !== $uri) {
-            if (false === $parts = \parse_url($uri)) {
+    public function __construct(string $uri = '') {
+        if('' !== $uri) {
+            if(false === $parts = \parse_url($uri)) {
                 throw new \InvalidArgumentException("Unable to parse URI: $uri");
             }
-
             // Apply parse_url parts to a URI.
             $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
             $this->userInfo = $parts['user'] ?? '';
-            $this->host = isset($parts['host']) ? \preg_replace_callback('/([A-Z])/',static function($cap) { return strtolower($cap[0]); },$parts['host']) : '';
+            $this->host = isset($parts['host']) ? $this->filterHost($parts['host']) : '';
             $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
             $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
             $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
             $this->fragment = isset($parts['fragment']) ? $this->filterQueryAndFragment($parts['fragment']) : '';
-            if (isset($parts['pass'])) {
+            if(isset($parts['pass'])) {
                 $this->userInfo .= ':' . $parts['pass'];
             }
         }
@@ -163,7 +160,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Host must be a string');
         }
 
-        if ($this->host === $host = \strtolower($host)) {
+        if ($this->host === $host = $this->filterHost($host)) {
             return $this;
         }
 
@@ -269,6 +266,17 @@ final class Uri implements UriInterface
     private static function isNonStandardPort(string $scheme, int $port): bool
     {
         return !isset(self::SCHEMES[$scheme]) || $port !== self::SCHEMES[$scheme];
+    }
+
+    private function filterHost($host): string
+    {
+        return \preg_replace_callback(
+            '/([A-Z])/',
+            static function($cap) {
+                return strtolower($cap[0]);
+            },
+            $host
+        );
     }
 
     private function filterPort($port): ?int
