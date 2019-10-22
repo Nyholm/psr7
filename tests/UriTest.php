@@ -295,6 +295,23 @@ class UriTest extends TestCase
         $this->assertSame('//example.com', (string) $uri);
     }
 
+    public function testHostNormalizationLeavesUnicodeIntact()
+    {
+        $resetLocale = false;
+        if (\in_array($currentLocale = \setlocale(\LC_CTYPE, '0'), ['POSIX', 'C'])) {
+            $resetLocale = \setlocale(\LC_CTYPE, ['en_US.UTF-8', 'en_US.US-ASCII', 'en_US']);
+        }
+
+        $testDomain = 'παράδειγμα.δοκιμή';
+        $uri = (new Uri())->withHost($testDomain);
+        $this->assertSame($testDomain, $uri->getHost());
+        $this->assertSame('//' . $testDomain, (string) $uri);
+
+        if (false !== $resetLocale) {
+            \setlocale(\LC_CTYPE, $currentLocale);
+        }
+    }
+
     public function testPortIsNullIfStandardPortForScheme()
     {
         // HTTPS standard port
