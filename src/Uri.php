@@ -54,7 +54,7 @@ final class Uri implements UriInterface
             // Apply parse_url parts to a URI.
             $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
             $this->userInfo = $parts['user'] ?? '';
-            $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
+            $this->host = isset($parts['host']) ? self::safeStrtolower($parts['host']) : '';
             $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
             $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
             $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
@@ -163,7 +163,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Host must be a string');
         }
 
-        if ($this->host === $host = \strtolower($host)) {
+        if ($this->host === $host = self::safeStrtolower($host)) {
             return $this;
         }
 
@@ -306,5 +306,27 @@ final class Uri implements UriInterface
     private static function rawurlencodeMatchZero(array $match): string
     {
         return \rawurlencode($match[0]);
+    }
+
+    private static function safeStrtolower(string $string): string
+    {
+        $resetLocale = false;
+        if (false === \in_array($currentLocale = \setlocale(\LC_CTYPE, '0'), ['POSIX', 'C'])) {
+            if (false === $resetLocale = \setlocale(\LC_CTYPE, ['POSIX', 'C'])) {
+                return \preg_replace_callback(
+                    '@[[:ascii:]]+@',
+                    static function ($matches) {
+                        return \strtolower($matches[0]);
+                    },
+                    $string
+                );
+            }
+        }
+        $lower = \strtolower($string);
+        if (false !== $resetLocale) {
+            \setlocale(\LC_CTYPE, $currentLocale);
+        }
+
+        return $lower;
     }
 }
