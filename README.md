@@ -14,8 +14,8 @@ A super lightweight PSR-7 implementation. Very strict and very fast.
 | Description | Guzzle | Zend | Slim | Nyholm |
 | ---- | ------ | ---- | ---- | ------ |
 | Lines of code | 3 000 | 3 000 | 1 700 | 1 000 |
-| PHP7 | No | Yes | No | Yes |
-| PSR-7* | 66% | 100% | 75% | 100% |
+| PHP7 | No | Yes | Yes | Yes |
+| PSR-7* | 66% | 100% | 100% | 100% |
 | PSR-17 | No | Yes | Yes | Yes |
 | HTTPlug | No | No | No | Yes |
 | Performance** | 1.34x | 1x | 1.16x | 1.75x |
