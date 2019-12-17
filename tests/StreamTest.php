@@ -48,8 +48,6 @@ class StreamTest extends TestCase
         $handle = fopen('php://temp', 'w+');
         fwrite($handle, 'data');
         $stream = Stream::create($handle);
-        $this->assertEquals('', $stream->getContents());
-        $stream->seek(0);
         $this->assertEquals('data', $stream->getContents());
         $this->assertEquals('', $stream->getContents());
     }
