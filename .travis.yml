@@ -1,5 +1,6 @@
 language: php
-sudo: false
+
+dist: bionic
 
 cache:
     directories:
@@ -9,6 +10,7 @@ php:
     - 7.1
     - 7.2
     - 7.3
+    - 7.4
 
 env:
     global:
