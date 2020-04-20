@@ -17,6 +17,8 @@ use Psr\Http\Message\UriInterface;
  */
 final class Uri implements UriInterface
 {
+    use LowercaseTrait;
+
     private const SCHEMES = ['http' => 80, 'https' => 443];
 
     private const CHAR_UNRESERVED = 'a-zA-Z0-9_\-\.~';
@@ -52,9 +54,9 @@ final class Uri implements UriInterface
             }
 
             // Apply parse_url parts to a URI.
-            $this->scheme = isset($parts['scheme']) ? \strtolower($parts['scheme']) : '';
+            $this->scheme = isset($parts['scheme']) ? self::lowercase($parts['scheme']) : '';
             $this->userInfo = $parts['user'] ?? '';
-            $this->host = isset($parts['host']) ? \strtolower($parts['host']) : '';
+            $this->host = isset($parts['host']) ? self::lowercase($parts['host']) : '';
             $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
             $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
             $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
@@ -129,7 +131,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Scheme must be a string');
         }
 
-        if ($this->scheme === $scheme = \strtolower($scheme)) {
+        if ($this->scheme === $scheme = self::lowercase($scheme)) {
             return $this;
         }
 
@@ -163,7 +165,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Host must be a string');
         }
 
-        if ($this->host === $host = \strtolower($host)) {
+        if ($this->host === $host = self::lowercase($host)) {
             return $this;
         }
 
