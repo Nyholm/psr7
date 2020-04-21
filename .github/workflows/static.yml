@@ -1,4 +1,4 @@
-on: [push]
+on: [push, pull_request]
 name: Static analysis
 jobs:
   phpstan:
