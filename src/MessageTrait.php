@@ -17,6 +17,8 @@ use Psr\Http\Message\StreamInterface;
  */
 trait MessageTrait
 {
+    use LowercaseTrait;
+
     /** @var array Map of all registered headers, as original name => array of values */
     private $headers = [];
 
@@ -53,12 +55,12 @@ trait MessageTrait
 
     public function hasHeader($header): bool
     {
-        return isset($this->headerNames[\strtolower($header)]);
+        return isset($this->headerNames[self::lowercase($header)]);
     }
 
     public function getHeader($header): array
     {
-        $header = \strtolower($header);
+        $header = self::lowercase($header);
         if (!isset($this->headerNames[$header])) {
             return [];
         }
@@ -76,7 +78,7 @@ trait MessageTrait
     public function withHeader($header, $value): self
     {
         $value = $this->validateAndTrimHeader($header, $value);
-        $normalized = \strtolower($header);
+        $normalized = self::lowercase($header);
 
         $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
@@ -102,7 +104,7 @@ trait MessageTrait
 
     public function withoutHeader($header): self
     {
-        $normalized = \strtolower($header);
+        $normalized = self::lowercase($header);
         if (!isset($this->headerNames[$normalized])) {
             return $this;
         }
@@ -139,7 +141,7 @@ trait MessageTrait
     {
         foreach ($headers as $header => $value) {
             $value = $this->validateAndTrimHeader($header, $value);
-            $normalized = \strtolower($header);
+            $normalized = self::lowercase($header);
             if (isset($this->headerNames[$normalized])) {
                 $header = $this->headerNames[$normalized];
                 $this->headers[$header] = \array_merge($this->headers[$header], $value);
