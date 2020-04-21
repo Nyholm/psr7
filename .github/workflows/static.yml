@@ -1,4 +1,4 @@
-on: [push]
+on: [push, pull_request]
 name: Static analysis
 jobs:
   phpstan:
@@ -8,6 +8,8 @@ jobs:
       - uses: actions/checkout@master
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga
+        env:
+          REQUIRE_DEV: true
         with:
           args: analyze --no-progress
 
