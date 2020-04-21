@@ -56,8 +56,6 @@ final class Stream implements StreamInterface
      *
      * @param string|resource|StreamInterface $body
      *
-     * @return StreamInterface
-     *
      * @throws \InvalidArgumentException
      */
     public static function create($body = ''): StreamInterface
