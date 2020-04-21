@@ -4,6 +4,7 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\ErrorHandler\ErrorHandler as SymfonyErrorHandler;
 
 /**
  * @covers \Nyholm\Psr7\Stream
@@ -144,7 +145,21 @@ class StreamTest extends TestCase
         $throws(function ($stream) {
             $stream->getContents();
         });
-        $this->assertSame('', (string) $stream);
+        if (\PHP_VERSION_ID >= 70400) {
+            $throws(function ($stream) {
+                (string) $stream;
+            });
+        } else {
+            $this->assertSame('', (string) $stream);
+
+            SymfonyErrorHandler::register();
+            $throws(function ($stream) {
+                (string) $stream;
+            });
+            restore_error_handler();
+            restore_exception_handler();
+        }
+
         $stream->close();
     }
 
