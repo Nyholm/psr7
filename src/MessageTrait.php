@@ -140,6 +140,11 @@ trait MessageTrait
     private function setHeaders(array $headers): void
     {
         foreach ($headers as $header => $value) {
+            if (\is_int($header)) {
+                // If a header name was set to a numeric string, PHP will cast the key to an int.
+                // We must cast it back to a string in order to comply with validation.
+                $header = (string) $header;
+            }
             $value = $this->validateAndTrimHeader($header, $value);
             $normalized = self::lowercase($header);
             if (isset($this->headerNames[$normalized])) {

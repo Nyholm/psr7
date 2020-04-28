@@ -202,6 +202,51 @@ class RequestTest extends TestCase
         $this->assertSame('200', $r->getHeaderLine('Content-Length'));
     }
 
+    public function testSupportNumericHeaderNames()
+    {
+        $r = new Request(
+            'GET', '', [
+                     '200' => 'NumericHeaderValue',
+                     '0'   => 'NumericHeaderValueZero',
+                 ]
+        );
+
+        $this->assertSame(
+            [
+                '200' => ['NumericHeaderValue'],
+                '0'   => ['NumericHeaderValueZero'],
+            ],
+            $r->getHeaders()
+        );
+
+        $this->assertSame(['NumericHeaderValue'], $r->getHeader('200'));
+        $this->assertSame('NumericHeaderValue', $r->getHeaderLine('200'));
+
+        $this->assertSame(['NumericHeaderValueZero'], $r->getHeader('0'));
+        $this->assertSame('NumericHeaderValueZero', $r->getHeaderLine('0'));
+
+        $r = $r->withHeader('300', 'NumericHeaderValue2')
+               ->withAddedHeader('200', ['A', 'B']);
+
+        $this->assertSame(
+            [
+                '200' => ['NumericHeaderValue', 'A', 'B'],
+                '0'   => ['NumericHeaderValueZero'],
+                '300' => ['NumericHeaderValue2'],
+            ],
+            $r->getHeaders()
+        );
+
+        $r = $r->withoutHeader('300');
+        $this->assertSame(
+            [
+                '200' => ['NumericHeaderValue', 'A', 'B'],
+                '0'   => ['NumericHeaderValueZero'],
+            ],
+            $r->getHeaders()
+        );
+    }
+
     public function testAddsPortToHeader()
     {
         $r = new Request('GET', 'http://foo.com:8124/bar');
