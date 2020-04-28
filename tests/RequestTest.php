@@ -222,6 +222,9 @@ class RequestTest extends TestCase
         $this->assertSame(['NumericHeaderValue'], $r->getHeader('200'));
         $this->assertSame('NumericHeaderValue', $r->getHeaderLine('200'));
 
+        $this->assertSame(['NumericHeaderValueZero'], $r->getHeader('0'));
+        $this->assertSame('NumericHeaderValueZero', $r->getHeaderLine('0'));
+
         $r = $r->withHeader('300', 'NumericHeaderValue2')
                ->withAddedHeader('200', ['A', 'B']);
 
