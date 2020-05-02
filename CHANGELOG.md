@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Fixed
 
 - Support for UTF-8 hostnames
+- Support for numeric header names
 
 ## 1.2.1
 
