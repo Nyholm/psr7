@@ -240,7 +240,11 @@ final class Stream implements StreamInterface
             throw new \RuntimeException('Cannot read from non-readable stream');
         }
 
-        return \fread($this->stream, $length);
+        if (false === $result = \fread($this->stream, $length)) {
+            throw new \RuntimeException('Unable to read from stream');
+        }
+
+        return $result;
     }
 
     public function getContents(): string
