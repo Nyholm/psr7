@@ -66,15 +66,6 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
-    public function testReadError()
-    {
-        $this->expectException(\RuntimeException::class);
-        $handle = fopen('php://temp', 'a');
-        $stream = Stream::create($handle);
-
-        $stream->read(4);
-    }
-
     public function testGetSize()
     {
         $size = filesize(__FILE__);
