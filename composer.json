@@ -3,7 +3,7 @@
     "description": "A fast PHP7 implementation of PSR-7",
     "license": "MIT",
     "keywords": ["psr-7", "psr-17"],
-    "homepage": "http://tnyholm.se",
+    "homepage": "https://tnyholm.se",
     "authors": [
         {
             "name": "Tobias Nyholm",
@@ -39,10 +39,6 @@
         "psr-4": {
             "Tests\\Nyholm\\Psr7\\": "tests/"
         }
-    },
-    "scripts": {
-        "test": "vendor/bin/phpunit",
-        "test-ci": "vendor/bin/phpunit --coverage-text --coverage-clover=build/coverage.xml"
     },
     "extra": {
         "branch-alias": {
