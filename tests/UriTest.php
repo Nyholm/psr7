@@ -126,12 +126,22 @@ class UriTest extends TestCase
         (new Uri())->withPort(-1);
     }
 
-    public function testParseUriPortCannotBeZero()
+    public function testParseUriPortCannotBeNegative()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Unable to parse URI');
 
-        new Uri('//example.com:0');
+        new Uri('//example.com:-1');
+    }
+
+    public function testParseUriPortCanBeZero()
+    {
+        if (version_compare(PHP_VERSION, '7.4.12') < 0) {
+            self::markTestSkipped('Skipping this on low PHP versions.');
+        }
+
+        $uri = new Uri('//example.com:0');
+        $this->assertEquals(0, $uri->getPort());
     }
 
     public function testSchemeMustHaveCorrectType()
