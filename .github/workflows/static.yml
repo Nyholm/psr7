@@ -15,6 +15,8 @@ jobs:
 
       - name: PHPStan
         uses: docker://oskarstark/phpstan-ga:0.12.48
+        env:
+          REQUIRE_DEV: true
         with:
           entrypoint: /composer/vendor/bin/phpstan
           args: analyze --no-progress
