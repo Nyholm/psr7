@@ -75,6 +75,9 @@ trait MessageTrait
         return \implode(', ', $this->getHeader($header));
     }
 
+    /**
+     * @return static
+     */
     public function withHeader($header, $value): self
     {
         $value = $this->validateAndTrimHeader($header, $value);
@@ -90,6 +93,9 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @return static
+     */
     public function withAddedHeader($header, $value): self
     {
         if (!\is_string($header) || '' === $header) {
@@ -102,6 +108,9 @@ trait MessageTrait
         return $new;
     }
 
+    /**
+     * @return static
+     */
     public function withoutHeader($header): self
     {
         $normalized = self::lowercase($header);
@@ -125,6 +134,9 @@ trait MessageTrait
         return $this->stream;
     }
 
+    /**
+     * @return static
+     */
     public function withBody(StreamInterface $body): self
     {
         if ($body === $this->stream) {

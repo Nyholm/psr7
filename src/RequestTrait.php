@@ -40,6 +40,9 @@ trait RequestTrait
         return $target;
     }
 
+    /**
+     * @return static
+     */
     public function withRequestTarget($requestTarget): self
     {
         if (\preg_match('#\s#', $requestTarget)) {
@@ -57,6 +60,9 @@ trait RequestTrait
         return $this->method;
     }
 
+    /**
+     * @return static
+     */
     public function withMethod($method): self
     {
         if (!\is_string($method)) {
@@ -74,6 +80,9 @@ trait RequestTrait
         return $this->uri;
     }
 
+    /**
+     * @return static
+     */
     public function withUri(UriInterface $uri, $preserveHost = false): self
     {
         if ($uri === $this->uri) {
