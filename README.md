@@ -11,7 +11,7 @@
 
 A super lightweight PSR-7 implementation. Very strict and very fast.
 
-| Description | Guzzle | Zend | Slim | Nyholm |
+| Description | Guzzle | Laminas | Slim | Nyholm |
 | ---- | ------ | ---- | ---- | ------ |
 | Lines of code | 3 000 | 3 000 | 1 700 | 1 000 |
 | PSR-7* | 66% | 100% | 75% | 100% |
@@ -88,7 +88,7 @@ $serverRequest = $creator->fromGlobals();
 ### Emitting a response
 
 ```bash
-composer require zendframework/zend-httphandlerrunner
+composer require laminas/laminas-httphandlerrunner
 ```
 
 ```php
@@ -96,7 +96,7 @@ $psr17Factory = new \Nyholm\Psr7\Factory\Psr17Factory();
 
 $responseBody = $psr17Factory->createStream('Hello world');
 $response = $psr17Factory->createResponse(200)->withBody($responseBody);
-(new \Zend\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
+(new \Laminas\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
 ```
 
 ## Our goal
