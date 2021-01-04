@@ -13,7 +13,7 @@ A super lightweight PSR-7 implementation. Very strict and very fast.
 
 | Description | Guzzle | Laminas | Slim | Nyholm |
 | ---- | ------ | ---- | ---- | ------ |
-| Lines of code | 3 000 | 3 000 | 1 700 | 1 000 |
+| Lines of code | 5 892 | 5 892 | 4 270 | 1 510 |
 | PSR-7* | 66% | 100% | 75% | 100% |
 | PSR-17 | No | Yes | Yes | Yes |
 | HTTPlug | No | No | No | Yes |
