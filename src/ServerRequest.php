@@ -10,8 +10,10 @@ use Psr\Http\Message\{ServerRequestInterface, StreamInterface, UploadedFileInter
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final There is no situation where it is a good idea to extend this class.
  */
-final class ServerRequest implements ServerRequestInterface
+class ServerRequest implements ServerRequestInterface
 {
     use MessageTrait;
     use RequestTrait;

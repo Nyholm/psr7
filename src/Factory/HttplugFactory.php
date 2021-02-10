@@ -11,8 +11,10 @@ use Psr\Http\Message\UriInterface;
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final There is no situation where it is a good idea to extend this class.
  */
-final class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
+class HttplugFactory implements MessageFactory, StreamFactory, UriFactory
 {
     public function createRequest($method, $uri, array $headers = [], $body = null, $protocolVersion = '1.1')
     {

@@ -10,8 +10,10 @@ use Psr\Http\Message\{ResponseInterface, StreamInterface};
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final There is no situation where it is a good idea to extend this class.
  */
-final class Response implements ResponseInterface
+class Response implements ResponseInterface
 {
     use MessageTrait;
 

@@ -9,8 +9,10 @@ use Psr\Http\Message\{RequestInterface, StreamInterface, UriInterface};
 /**
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final There is no situation where it is a good idea to extend this class.
  */
-final class Request implements RequestInterface
+class Request implements RequestInterface
 {
     use MessageTrait;
     use RequestTrait;

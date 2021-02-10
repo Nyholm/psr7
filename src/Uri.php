@@ -14,8 +14,10 @@ use Psr\Http\Message\UriInterface;
  * @author Matthew Weier O'Phinney
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final There is no situation where it is a good idea to extend this class.
  */
-final class Uri implements UriInterface
+class Uri implements UriInterface
 {
     use LowercaseTrait;
 
