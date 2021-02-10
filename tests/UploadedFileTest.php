@@ -134,7 +134,7 @@ class UploadedFileTest extends TestCase
         $upload = new UploadedFile(__DIR__.'/Resources/foo.txt', 0, UPLOAD_ERR_OK);
         $stream = $upload->getStream();
         $this->assertInstanceOf(StreamInterface::class, $stream);
-        $this->assertEquals("Foobar\n", $stream->__toString());
+        $this->assertEquals('Foobar'.PHP_EOL, $stream->__toString());
     }
 
     public function testSuccessful()
