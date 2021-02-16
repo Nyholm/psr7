@@ -17,4 +17,4 @@ the interface yourself.
 ## Mocking classes
 
 The PSR-7 classes are all value objects and they can be used without mocking. If
-one really needs to create a special scenario, one cna mock the interface instead.
+one really needs to create a special scenario, one can mock the interface instead.
