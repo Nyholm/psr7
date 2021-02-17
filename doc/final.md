@@ -12,7 +12,7 @@ implement that solution.
 ## Extending classes
 
 You should never extend the classes, you should rather use composition or implement
-the interface yourself.
+the interface yourself. Please refer to the [decorator pattern](https://refactoring.guru/design-patterns/decorator).
 
 ## Mocking classes
 
