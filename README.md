@@ -11,17 +11,17 @@
 
 A super lightweight PSR-7 implementation. Very strict and very fast.
 
-| Description | Guzzle | Laminas | Slim | Nyholm |
-| ---- | ------ | ---- | ---- | ------ |
-| Lines of code | 3 000 | 3 000 | 1 700 | 1 000 |
-| PSR-7* | 66% | 100% | 75% | 100% |
-| PSR-17 | No | Yes | Yes | Yes |
-| HTTPlug | No | No | No | Yes |
-| Performance** | 1.34x | 1x | 1.16x | 1.75x |
+| Description | Guzzle | Httpsoft | Laminas | Slim | Nyholm |
+| ---- | ------ | ---- | ---- | ---- | ------ |
+| Lines of code | 3.300 | 1.400 | 3.100 | 1.900 | 1.000 |
+| PSR-7* | 66% | 91% | 100% | 75% | 100% |
+| PSR-17 | No | Yes | Yes | Yes | Yes |
+| HTTPlug | No | No | No | No | Yes |
+| Performance (runs per second)** | 14.553 | 17.488 | 14.703 | 13.416 | 17.734 |
 
 \* Percent of completed tests in https://github.com/php-http/psr7-integration-tests
 
-\** See benchmark at https://github.com/Nyholm/http-client-benchmark (higher is better)
+\** Benchmark with 50.000 runs. See https://github.com/devanych/psr-http-benchmark (higher is better)
 
 ## Installation
 
