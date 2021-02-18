@@ -14,8 +14,10 @@ use Psr\Http\Message\UriInterface;
  * @author Matthew Weier O'Phinney
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
+ *
+ * @final This class should never be extended. See https://github.com/Nyholm/psr7/blob/master/doc/final.md
  */
-final class Uri implements UriInterface
+class Uri implements UriInterface
 {
     private const SCHEMES = ['http' => 80, 'https' => 443];
 
