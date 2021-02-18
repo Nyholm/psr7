@@ -15,14 +15,14 @@ final class UploadedFile implements UploadedFileInterface
 {
     /** @var array */
     private const ERRORS = [
-        \UPLOAD_ERR_OK => 1,
-        \UPLOAD_ERR_INI_SIZE => 1,
-        \UPLOAD_ERR_FORM_SIZE => 1,
-        \UPLOAD_ERR_PARTIAL => 1,
-        \UPLOAD_ERR_NO_FILE => 1,
-        \UPLOAD_ERR_NO_TMP_DIR => 1,
-        \UPLOAD_ERR_CANT_WRITE => 1,
-        \UPLOAD_ERR_EXTENSION => 1,
+        UPLOAD_ERR_OK => 1,
+        UPLOAD_ERR_INI_SIZE => 1,
+        UPLOAD_ERR_FORM_SIZE => 1,
+        UPLOAD_ERR_PARTIAL => 1,
+        UPLOAD_ERR_NO_FILE => 1,
+        UPLOAD_ERR_NO_TMP_DIR => 1,
+        UPLOAD_ERR_CANT_WRITE => 1,
+        UPLOAD_ERR_EXTENSION => 1,
     ];
 
     /** @var string */
@@ -76,7 +76,7 @@ final class UploadedFile implements UploadedFileInterface
         $this->clientFilename = $clientFilename;
         $this->clientMediaType = $clientMediaType;
 
-        if (\UPLOAD_ERR_OK === $this->error) {
+        if (UPLOAD_ERR_OK === $this->error) {
             // Depending on the value set file or stream variable.
             if (\is_string($streamOrFile)) {
                 $this->file = $streamOrFile;
@@ -95,7 +95,7 @@ final class UploadedFile implements UploadedFileInterface
      */
     private function validateActive(): void
     {
-        if (\UPLOAD_ERR_OK !== $this->error) {
+        if (UPLOAD_ERR_OK !== $this->error) {
             throw new \RuntimeException('Cannot retrieve stream due to upload error');
         }
 

@@ -27,7 +27,7 @@ final class Stream implements StreamInterface
     /** @var bool */
     private $writable;
 
-    /** @var array|mixed|void|null|bool */
+    /** @var array|mixed|void|bool|null */
     private $uri;
 
     /** @var int|null */
@@ -76,7 +76,7 @@ final class Stream implements StreamInterface
             $new = new self();
             $new->stream = $body;
             $meta = \stream_get_meta_data($new->stream);
-            $new->seekable = $meta['seekable'] && 0 === \fseek($new->stream, 0, \SEEK_CUR);
+            $new->seekable = $meta['seekable'] && 0 === \fseek($new->stream, 0, SEEK_CUR);
             $new->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
             $new->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
 
@@ -116,7 +116,7 @@ final class Stream implements StreamInterface
             \restore_error_handler();
 
             if ($e instanceof \Error || $errorHandler instanceof SymfonyErrorHandler || $errorHandler instanceof SymfonyLegacyErrorHandler) {
-                return \trigger_error((string) $e, \E_USER_ERROR);
+                return \trigger_error((string) $e, E_USER_ERROR);
             }
 
             return '';
@@ -149,7 +149,7 @@ final class Stream implements StreamInterface
 
     private function getUri()
     {
-        if ($this->uri !== false) {
+        if (false !== $this->uri) {
             $this->uri = $this->getMetadata('uri') ?? false;
         }
 
@@ -200,7 +200,7 @@ final class Stream implements StreamInterface
         return $this->seekable;
     }
 
-    public function seek($offset, $whence = \SEEK_SET): void
+    public function seek($offset, $whence = SEEK_SET): void
     {
         if (!$this->seekable) {
             throw new \RuntimeException('Stream is not seekable');
