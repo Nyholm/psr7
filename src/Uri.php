@@ -52,9 +52,9 @@ final class Uri implements UriInterface
             }
 
             // Apply parse_url parts to a URI.
-            $this->scheme = isset($parts['scheme']) ? strtolower($parts['scheme']) : '';
+            $this->scheme = isset($parts['scheme']) ? \strtr($parts['scheme'], 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') : '';
             $this->userInfo = $parts['user'] ?? '';
-            $this->host = isset($parts['host']) ? strtolower($parts['host']) : '';
+            $this->host = isset($parts['host']) ? \strtr($parts['host'], 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') : '';
             $this->port = isset($parts['port']) ? $this->filterPort($parts['port']) : null;
             $this->path = isset($parts['path']) ? $this->filterPath($parts['path']) : '';
             $this->query = isset($parts['query']) ? $this->filterQueryAndFragment($parts['query']) : '';
@@ -129,7 +129,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Scheme must be a string');
         }
 
-        if ($this->scheme === $scheme = strtolower($scheme)) {
+        if ($this->scheme === $scheme = \strtr($scheme, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')) {
             return $this;
         }
 
@@ -163,7 +163,7 @@ final class Uri implements UriInterface
             throw new \InvalidArgumentException('Host must be a string');
         }
 
-        if ($this->host === $host = strtolower($host)) {
+        if ($this->host === $host = \strtr($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')) {
             return $this;
         }
 

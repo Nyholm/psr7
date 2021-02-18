@@ -53,12 +53,12 @@ trait MessageTrait
 
     public function hasHeader($header): bool
     {
-        return isset($this->headerNames[strtolower($header)]);
+        return isset($this->headerNames[\strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')]);
     }
 
     public function getHeader($header): array
     {
-        $header = strtolower($header);
+        $header = \strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         if (!isset($this->headerNames[$header])) {
             return [];
         }
@@ -76,7 +76,7 @@ trait MessageTrait
     public function withHeader($header, $value): self
     {
         $value = $this->validateAndTrimHeader($header, $value);
-        $normalized = strtolower($header);
+        $normalized = \strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
 
         $new = clone $this;
         if (isset($new->headerNames[$normalized])) {
@@ -102,7 +102,7 @@ trait MessageTrait
 
     public function withoutHeader($header): self
     {
-        $normalized = strtolower($header);
+        $normalized = \strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
         if (!isset($this->headerNames[$normalized])) {
             return $this;
         }
@@ -144,7 +144,7 @@ trait MessageTrait
                 $header = (string) $header;
             }
             $value = $this->validateAndTrimHeader($header, $value);
-            $normalized = strtolower($header);
+            $normalized = \strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');
             if (isset($this->headerNames[$normalized])) {
                 $header = $this->headerNames[$normalized];
                 $this->headers[$header] = \array_merge($this->headers[$header], $value);
