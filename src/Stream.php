@@ -27,7 +27,7 @@ final class Stream implements StreamInterface
     /** @var bool */
     private $writable;
 
-    /** @var array|mixed|void|null */
+    /** @var array|mixed|void|null|bool */
     private $uri;
 
     /** @var int|null */
@@ -79,7 +79,6 @@ final class Stream implements StreamInterface
             $new->seekable = $meta['seekable'] && 0 === \fseek($new->stream, 0, \SEEK_CUR);
             $new->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
             $new->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
-            $new->uri = $new->getMetadata('uri');
 
             return $new;
         }
@@ -148,6 +147,15 @@ final class Stream implements StreamInterface
         return $result;
     }
 
+    private function getUri()
+    {
+        if ($this->uri !== false) {
+            $this->uri = $this->getMetadata('uri') ?? false;
+        }
+
+        return $this->uri;
+    }
+
     public function getSize(): ?int
     {
         if (null !== $this->size) {
@@ -159,8 +167,8 @@ final class Stream implements StreamInterface
         }
 
         // Clear the stat cache if the stream has a URI
-        if ($this->uri) {
-            \clearstatcache(true, $this->uri);
+        if ($uri = $this->getUri()) {
+            \clearstatcache(true, $uri);
         }
 
         $stats = \fstat($this->stream);
