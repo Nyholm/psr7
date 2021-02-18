@@ -7,6 +7,7 @@ $config = PhpCsFixer\Config::create()
         '@Symfony:risky' => true,
         'array_syntax' => array('syntax' => 'short'),
         'native_function_invocation' => true,
+        'native_constant_invocation' => true,
         'ordered_imports' => true,
         'declare_strict_types' => true,
         'single_import_per_statement' => false,
