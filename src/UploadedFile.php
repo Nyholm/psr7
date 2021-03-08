@@ -114,9 +114,7 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        $resource = \fopen($this->file, 'r');
-
-        return Stream::create($resource);
+        return Stream::createFromFile($this->file, 'r');
     }
 
     public function moveTo($targetPath): void
@@ -136,7 +134,7 @@ class UploadedFile implements UploadedFileInterface
             }
 
             // Copy the contents of a stream into another stream until end-of-file.
-            $dest = Stream::create(\fopen($targetPath, 'w'));
+            $dest = Stream::createFromFile($targetPath, 'w');
             while (!$stream->eof()) {
                 if (!$dest->write($stream->read(1048576))) {
                     break;

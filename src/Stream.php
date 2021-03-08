@@ -61,6 +61,7 @@ class Stream implements StreamInterface
      * @param string|resource|StreamInterface $body
      *
      * @throws \InvalidArgumentException
+     * @throws \ValueError
      */
     public static function create($body = ''): StreamInterface
     {
@@ -87,6 +88,29 @@ class Stream implements StreamInterface
         }
 
         throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
+    }
+
+    /**
+     * Creates a new PSR-7 stream from path.
+     *
+     * @internal Implements Psr\Http\Message\StreamFactoryInterface::createStreamFromFile for internal use, library users should default to the actual Factory object
+     */
+    public static function createFromFile(string $filename, string $mode = 'r'): StreamInterface
+    {
+        try {
+            $resource = @\fopen($filename, $mode);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('The file ' . $filename . ' cannot be opened.');
+        }
+        if (false === $resource) {
+            if ('' === $mode || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
+                throw new \InvalidArgumentException('The mode ' . $mode . ' is invalid.');
+            }
+
+            throw new \RuntimeException('The file ' . $filename . ' cannot be opened.');
+        }
+
+        return self::create($resource);
     }
 
     /**
