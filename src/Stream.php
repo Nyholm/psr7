@@ -70,8 +70,7 @@ class Stream implements StreamInterface
 
         if (\is_string($body)) {
             $resource = \fopen('php://temp', 'rw+');
-            \fwrite($resource, $body);
-            \rewind($resource);
+            if (\fwrite($resource, $body)) \rewind($resource);
             $body = $resource;
         }
 
