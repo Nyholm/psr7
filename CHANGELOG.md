@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## Unreleased
+
+### Fixed
+
+- `Stream::create` with a string needs to rewind the created memory stream.
+
 ## 1.4.0
 
 ### Removed

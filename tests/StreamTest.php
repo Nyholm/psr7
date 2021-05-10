@@ -44,6 +44,13 @@ class StreamTest extends TestCase
         $stream->close();
     }
 
+    public function testBuildFromString()
+    {
+        $stream = Stream::create('data');
+        $this->assertEquals('data', $stream->getContents());
+        $stream->close();
+    }
+
     public function testGetsContents()
     {
         $handle = fopen('php://temp', 'w+');
