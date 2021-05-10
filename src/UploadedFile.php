@@ -117,7 +117,7 @@ class UploadedFile implements UploadedFileInterface
         try {
             return Stream::create(\fopen($this->file, 'r'));
         } catch (\Throwable $e) {
-            throw new \RuntimeException(sprintf('The file "%s" cannot be opened.', $this->file));
+            throw new \RuntimeException(\sprintf('The file "%s" cannot be opened.', $this->file));
         }
     }
 
