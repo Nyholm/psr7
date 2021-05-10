@@ -37,7 +37,21 @@ class Psr17Factory implements RequestFactoryInterface, ResponseFactoryInterface,
 
     public function createStreamFromFile(string $filename, string $mode = 'r'): StreamInterface
     {
-        return Stream::createFromFile($filename, $mode);
+        try {
+            $resource = @\fopen($filename, $mode);
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('The file ' . $filename . ' cannot be opened.');
+        }
+
+        if (false === $resource) {
+            if ('' === $mode || false === \in_array($mode[0], ['r', 'w', 'a', 'x', 'c'], true)) {
+                throw new \InvalidArgumentException('The mode ' . $mode . ' is invalid.');
+            }
+
+            throw new \RuntimeException('The file ' . $filename . ' cannot be opened.');
+        }
+
+        return Stream::create($resource);
     }
 
     public function createStreamFromResource($resource): StreamInterface
