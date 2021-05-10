@@ -114,9 +114,11 @@ class UploadedFile implements UploadedFileInterface
             return $this->stream;
         }
 
-        $resource = \fopen($this->file, 'r');
-
-        return Stream::create($resource);
+        try {
+            return Stream::create(\fopen($this->file, 'r'));
+        } catch (\Throwable $e) {
+            throw new \RuntimeException('The file ' . $this->file . ' cannot be opened.');
+        }
     }
 
     public function moveTo($targetPath): void
@@ -135,8 +137,13 @@ class UploadedFile implements UploadedFileInterface
                 $stream->rewind();
             }
 
-            // Copy the contents of a stream into another stream until end-of-file.
-            $dest = Stream::create(\fopen($targetPath, 'w'));
+            try {
+                // Copy the contents of a stream into another stream until end-of-file.
+                $dest = Stream::create(\fopen($targetPath, 'w'));
+            } catch (\Throwable $e) {
+                throw new \RuntimeException('The file ' . $targetPath . ' cannot be opened.');
+            }
+
             while (!$stream->eof()) {
                 if (!$dest->write($stream->read(1048576))) {
                     break;
