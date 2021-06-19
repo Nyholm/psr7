@@ -6,7 +6,6 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- `Stream::create` with a string needs to rewind the created memory stream.
 - `Psr17Factory::createStreamFromFile`, `UploadedFile::moveTo`, and
   `UploadedFile::getStream` no longer throw `ValueError` in PHP 8.
 
