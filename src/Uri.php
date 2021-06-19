@@ -50,7 +50,7 @@ class Uri implements UriInterface
     {
         if ('' !== $uri) {
             if (false === $parts = \parse_url($uri)) {
-                throw new \InvalidArgumentException("Unable to parse URI: $uri");
+                throw new \InvalidArgumentException(\sprintf('Unable to parse URI: "%s"', $uri));
             }
 
             // Apply parse_url parts to a URI.

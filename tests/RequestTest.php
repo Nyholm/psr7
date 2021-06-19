@@ -28,7 +28,7 @@ class RequestTest extends TestCase
     public function testValidateRequestUri()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Unable to parse URI: ///');
+        $this->expectExceptionMessage('Unable to parse URI: "///"');
 
         new Request('GET', '///');
     }
