@@ -47,7 +47,8 @@ class StreamTest extends TestCase
     public function testBuildFromString()
     {
         $stream = Stream::create('data');
-        $this->assertEquals('data', $stream->getContents());
+        $this->assertEquals('', $stream->getContents());
+        $this->assertEquals('data', $stream->__toString());
         $stream->close();
     }
 
