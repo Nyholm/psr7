@@ -1,4 +1,5 @@
 .github/               export-ignore
+doc/                   export-ignore
 tests/                 export-ignore
 .editorconfig          export-ignore
 .gitattributes         export-ignore
@@ -9,3 +10,4 @@ tests/                 export-ignore
 phpstan.neon.dist      export-ignore
 phpstan.baseline.dist  export-ignore
 phpunit.xml.dist       export-ignore
+psalm.xml              export-ignore
