@@ -286,6 +286,9 @@ class Stream implements StreamInterface
         return $contents;
     }
 
+    /**
+     * @return mixed
+     */
     public function getMetadata($key = null)
     {
         if (!isset($this->stream)) {
