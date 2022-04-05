@@ -77,7 +77,10 @@ class ServerRequest implements ServerRequestInterface
         return $this->uploadedFiles;
     }
 
-    public function withUploadedFiles(array $uploadedFiles): self
+    /**
+     * @return static
+     */
+    public function withUploadedFiles(array $uploadedFiles)
     {
         $new = clone $this;
         $new->uploadedFiles = $uploadedFiles;
@@ -90,7 +93,10 @@ class ServerRequest implements ServerRequestInterface
         return $this->cookieParams;
     }
 
-    public function withCookieParams(array $cookies): self
+    /**
+     * @return static
+     */
+    public function withCookieParams(array $cookies)
     {
         $new = clone $this;
         $new->cookieParams = $cookies;
@@ -103,7 +109,10 @@ class ServerRequest implements ServerRequestInterface
         return $this->queryParams;
     }
 
-    public function withQueryParams(array $query): self
+    /**
+     * @return static
+     */
+    public function withQueryParams(array $query)
     {
         $new = clone $this;
         $new->queryParams = $query;
@@ -119,7 +128,10 @@ class ServerRequest implements ServerRequestInterface
         return $this->parsedBody;
     }
 
-    public function withParsedBody($data): self
+    /**
+     * @return static
+     */
+    public function withParsedBody($data)
     {
         if (!\is_array($data) && !\is_object($data) && null !== $data) {
             throw new \InvalidArgumentException('First parameter to withParsedBody MUST be object, array or null');
