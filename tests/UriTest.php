@@ -495,13 +495,22 @@ class UriTest extends TestCase
         $this->assertSame('//' . $testDomain, (string) $uri);
     }
 
-    public function testUserInfoWithUrlEncode()
+    public function testWithUserInfoWithSpecialCharacters()
     {
         $uri = new Uri();
         $user = 'foo@';
         $password = 'password';
 
         $uri = $uri->withUserInfo($user, $password);
+        $this->assertEquals(rawurlencode($user) . ':' . rawurlencode($password), $uri->getUserInfo());
+    }
+
+    public function testContructorWithSpecialCharactersInUserInfo()
+    {
+        $user = 'foo@';
+        $password = 'bar';
+        // when passing directly userInfo in URL this must be already encoded
+        $uri = new Uri(sprintf("http://%s:%s@domain.com", rawurlencode($user), rawurlencode($password)));
         $this->assertEquals(rawurlencode($user) . ':' . rawurlencode($password), $uri->getUserInfo());
     }
 }
