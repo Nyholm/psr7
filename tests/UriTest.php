@@ -494,4 +494,14 @@ class UriTest extends TestCase
         $this->assertSame($testDomain, $uri->getHost());
         $this->assertSame('//' . $testDomain, (string) $uri);
     }
+
+    public function testUserInfoWithUrlEncode()
+    {
+        $uri = new Uri();
+        $user = 'foo@';
+        $password = 'password';
+
+        $uri = $uri->withUserInfo($user, $password);
+        $this->assertEquals(rawurlencode($user) . ':' . rawurlencode($password), $uri->getUserInfo());
+    }
 }
