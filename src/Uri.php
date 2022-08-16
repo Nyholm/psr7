@@ -25,6 +25,10 @@ class Uri implements UriInterface
 
     private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
 
+    private const CHAR_HEXDIGIT = 'A-Fa-f0-9';
+
+    private const REGEX_USERINFO = '^(?:[' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . ':]|%[' . self::CHAR_HEXDIGIT . ']{2})+$';
+
     /** @var string Uri scheme. */
     private $scheme = '';
 
@@ -144,17 +148,14 @@ class Uri implements UriInterface
 
     public function withUserInfo($user, $password = null): self
     {
-        if ($user !== \rawurlencode($user)) {
-            throw new \InvalidArgumentException('The user contains invalid URL characters. Please use rawurlencode()');
-        }
         $info = $user;
         if (null !== $password && '' !== $password) {
-            if ($password !== \rawurlencode($password)) {
-                throw new \InvalidArgumentException('The password contains invalid URL characters. Please use rawurlencode()');
-            }
             $info .= ':' . $password;
         }
 
+        if (!\preg_match('/' . self::REGEX_USERINFO . '/', $info)) {
+            throw new \InvalidArgumentException('The user info contains invalid URL characters. Please use rawurlencode()');
+        }
         if ($this->userInfo === $info) {
             return $this;
         }

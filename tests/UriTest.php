@@ -495,24 +495,37 @@ class UriTest extends TestCase
         $this->assertSame('//' . $testDomain, (string) $uri);
     }
 
-    public function testWithUserInfoWithInvalidUserCharacters()
+    public function getUserInfoCases()
     {
-        $uri = new Uri();
-        $user = 'foo@';
-        $password = 'password';
-
-        $this->expectException(\InvalidArgumentException::class);
-        $uri = $uri->withUserInfo($user, $password);
+        return [
+            ['foo', 'bar', true],
+            ['foo', '@bar', false],
+            ['foo@', 'bar', false],
+            ['foo%40', 'bar', true],
+            ['foo', 'b%40ar', true],
+            ['f_oo%g', 'bar', false],
+            ['foo', 'ba%g0r', false],
+            ['foo.bar~', 'baz_$', true],
+            ['foo_\'bar', null, true],
+            ['foo+()', ';=,', true]
+        ];
     }
 
-    public function testWithUserInfoWithInvalidPasswordCharacters()
+    /**
+     * @dataProvider getUserInfoCases
+     */
+    public function testWithUserInfo($user, $pass, $valid)
     {
         $uri = new Uri();
-        $user = 'foo';
-        $password = 'password@';
-
-        $this->expectException(\InvalidArgumentException::class);
-        $uri = $uri->withUserInfo($user, $password);
+        if (!$valid) {
+            $this->expectException(\InvalidArgumentException::class);
+        }
+        $uri = $uri->withUserInfo($user, $pass);
+        $expected = $user;
+        if (!empty($pass)) {
+            $expected .= ':' . $pass;
+        }
+        $this->assertEquals($expected, $uri->getUserInfo());
     }
 
     public function testContructorWithSpecialCharactersInUserInfo()
