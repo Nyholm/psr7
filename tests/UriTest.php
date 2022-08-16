@@ -495,14 +495,24 @@ class UriTest extends TestCase
         $this->assertSame('//' . $testDomain, (string) $uri);
     }
 
-    public function testWithUserInfoWithSpecialCharacters()
+    public function testWithUserInfoWithInvalidUserCharacters()
     {
         $uri = new Uri();
         $user = 'foo@';
         $password = 'password';
 
+        $this->expectException(\InvalidArgumentException::class);
         $uri = $uri->withUserInfo($user, $password);
-        $this->assertEquals(rawurlencode($user) . ':' . rawurlencode($password), $uri->getUserInfo());
+    }
+
+    public function testWithUserInfoWithInvalidPasswordCharacters()
+    {
+        $uri = new Uri();
+        $user = 'foo';
+        $password = 'password@';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $uri = $uri->withUserInfo($user, $password);
     }
 
     public function testContructorWithSpecialCharactersInUserInfo()

@@ -144,8 +144,14 @@ class Uri implements UriInterface
 
     public function withUserInfo($user, $password = null): self
     {
-        $info = \rawurlencode($user);
+        if ($user !== rawurlencode($user)) {
+            throw new \InvalidArgumentException("The user contains invalid URL characters. Please use rawurlencode()");
+        }
+        $info = $user;
         if (null !== $password && '' !== $password) {
+            if ($password !== rawurlencode($password)) {
+                throw new \InvalidArgumentException("The password contains invalid URL characters. Please use rawurlencode()");
+            }
             $info .= ':' . \rawurlencode($password);
         }
 
