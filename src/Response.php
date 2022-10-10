@@ -10,8 +10,6 @@ use Psr\Http\Message\{ResponseInterface, StreamInterface};
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
- *
- * @final This class should never be extended. See https://github.com/Nyholm/psr7/blob/master/doc/final.md
  */
 class Response implements ResponseInterface
 {
