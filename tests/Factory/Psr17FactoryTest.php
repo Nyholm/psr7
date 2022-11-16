@@ -35,4 +35,24 @@ class Psr17FactoryTest extends TestCase
         $this->assertEquals(567, $r->getStatusCode());
         $this->assertEquals('Foo', $r->getReasonPhrase());
     }
+
+    public function testCreateRequest()
+    {
+        $factory = new Psr17Factory();
+        $req = $factory->createRequest('POST', 'https://nyholm.tech');
+        $body = $factory->createStream('Foo');
+        $req = $req->withBody($body);
+        $this->assertEquals('Foo', $req->getBody()->getContents());
+        $this->assertEquals('', $req->getBody()->getContents());
+        $this->assertEquals('POST', $req->getMethod());
+        $this->assertEquals('https://nyholm.tech', $req->getUri());
+
+        $req = $factory->createRequest('POST', 'https://nyholm.tech');
+        $body = $factory->createStream('');
+        $req = $req->withBody($body);
+        $this->assertEquals('', $req->getBody()->getContents());
+        $this->assertEquals('', $req->getBody()->getContents());
+        $this->assertEquals('POST', $req->getMethod());
+        $this->assertEquals('https://nyholm.tech', $req->getUri());
+    }
 }
