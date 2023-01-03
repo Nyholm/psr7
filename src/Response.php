@@ -87,4 +87,30 @@ class Response implements ResponseInterface
 
         return $new;
     }
+
+    public function __serialize(): array
+    {
+        return [
+            $this->headers,
+            $this->headerNames,
+            $this->protocol,
+            $this->reasonPhrase,
+            $this->statusCode,
+            $this->stream->getContents()
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [
+            $this->headers,
+            $this->headerNames,
+            $this->protocol,
+            $this->reasonPhrase,
+            $this->statusCode,
+            $body
+        ] = $data;
+
+        $this->stream = Stream::create($body);
+    }
 }
