@@ -27,6 +27,7 @@
         "symfony/error-handler": "^4.4"
     },
     "provide": {
+        "php-http/message-factory-implementation": "1.0",
         "psr/http-message-implementation": "1.0",
         "psr/http-factory-implementation": "1.0"
     },

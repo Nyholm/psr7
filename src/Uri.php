@@ -144,9 +144,9 @@ class Uri implements UriInterface
 
     public function withUserInfo($user, $password = null): self
     {
-        $info = $user;
+        $info = \rawurlencode(\rawurldecode($user));
         if (null !== $password && '' !== $password) {
-            $info .= ':' . $password;
+            $info .= ':' . \rawurlencode(\rawurldecode($password));
         }
 
         if ($this->userInfo === $info) {
