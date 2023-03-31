@@ -23,6 +23,8 @@ class Uri implements UriInterface
 
     private const CHAR_SUB_DELIMS = '!\$&\'\(\)\*\+,;=';
 
+    private const CHAR_GEN_DELIMS = ':\/\?#\[\]@';
+
     /** @var string Uri scheme. */
     private $scheme = '';
 
@@ -159,13 +161,13 @@ class Uri implements UriInterface
             throw new \InvalidArgumentException('User must be a string');
         }
 
-        $info = \rawurlencode(\rawurldecode($user));
+        $info = \preg_replace_callback('/[' . self::CHAR_GEN_DELIMS . self::CHAR_SUB_DELIMS . ']++/', [__CLASS__, 'rawurlencodeMatchZero'], $user);
         if (null !== $password && '' !== $password) {
             if (!\is_string($password)) {
                 throw new \InvalidArgumentException('Password must be a string');
             }
 
-            $info .= ':' . \rawurlencode(\rawurldecode($password));
+            $info .= ':' . \preg_replace_callback('/[' . self::CHAR_GEN_DELIMS . self::CHAR_SUB_DELIMS . ']++/', [__CLASS__, 'rawurlencodeMatchZero'], $password);
         }
 
         if ($this->userInfo === $info) {
