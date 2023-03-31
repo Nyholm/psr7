@@ -42,6 +42,10 @@ trait RequestTrait
 
     public function withRequestTarget($requestTarget): self
     {
+        if (!\is_string($requestTarget)) {
+            throw new \InvalidArgumentException('Request target must be a string');
+        }
+
         if (\preg_match('#\s#', $requestTarget)) {
             throw new \InvalidArgumentException('Invalid request target provided; cannot contain whitespace');
         }

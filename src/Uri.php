@@ -155,8 +155,16 @@ class Uri implements UriInterface
 
     public function withUserInfo($user, $password = null): self
     {
+        if (!\is_string($user)) {
+            throw new \InvalidArgumentException('User must be a string');
+        }
+
         $info = \rawurlencode(\rawurldecode($user));
         if (null !== $password && '' !== $password) {
+            if (!\is_string($password)) {
+                throw new \InvalidArgumentException('Password must be a string');
+            }
+
             $info .= ':' . \rawurlencode(\rawurldecode($password));
         }
 
