@@ -49,14 +49,14 @@ class ServerRequestTest extends TestCase
 
     public function testQueryParams()
     {
-        $request1 = new ServerRequest('GET', '/');
+        $request1 = new ServerRequest('GET', '/?foo=bar');
 
         $params = ['name' => 'value'];
 
         $request2 = $request1->withQueryParams($params);
 
         $this->assertNotSame($request2, $request1);
-        $this->assertEmpty($request1->getQueryParams());
+        $this->assertSame(['foo' => 'bar'], $request1->getQueryParams());
         $this->assertSame($params, $request2->getQueryParams());
     }
 
