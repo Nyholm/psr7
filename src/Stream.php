@@ -55,7 +55,7 @@ class Stream implements StreamInterface
     public function __construct($body)
     {
         if (!\is_resource($body)) {
-            throw new \InvalidArgumentException('First argument to Stream::__construct() must be resource.');
+            throw new \InvalidArgumentException('First argument to Stream::__construct() must be resource');
         }
 
         $this->stream = $body;
@@ -86,7 +86,7 @@ class Stream implements StreamInterface
         }
 
         if (!\is_resource($body)) {
-            throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
+            throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface');
         }
 
         return new self($body);
@@ -295,6 +295,10 @@ class Stream implements StreamInterface
      */
     public function getMetadata($key = null)
     {
+        if (null !== $key && !\is_string($key)) {
+            throw new \InvalidArgumentException('Metadata key must be a string');
+        }
+
         if (!isset($this->stream)) {
             return $key ? null : [];
         }

@@ -152,6 +152,10 @@ class ServerRequest implements ServerRequestInterface
      */
     public function getAttribute($attribute, $default = null)
     {
+        if (!\is_string($attribute)) {
+            throw new \InvalidArgumentException('Attribute name must be a string');
+        }
+
         if (false === \array_key_exists($attribute, $this->attributes)) {
             return $default;
         }
@@ -161,6 +165,10 @@ class ServerRequest implements ServerRequestInterface
 
     public function withAttribute($attribute, $value): self
     {
+        if (!\is_string($attribute)) {
+            throw new \InvalidArgumentException('Attribute name must be a string');
+        }
+
         $new = clone $this;
         $new->attributes[$attribute] = $value;
 
@@ -169,6 +177,10 @@ class ServerRequest implements ServerRequestInterface
 
     public function withoutAttribute($attribute): self
     {
+        if (!\is_string($attribute)) {
+            throw new \InvalidArgumentException('Attribute name must be a string');
+        }
+
         if (false === \array_key_exists($attribute, $this->attributes)) {
             return $this;
         }
