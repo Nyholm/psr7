@@ -440,7 +440,7 @@ class UriTest extends TestCase
         // If the path is rootless and an authority is present, the path MUST
         // be prefixed by "/".
         $uri = (new Uri())->withPath('foo')->withHost('example.com');
-        $this->assertSame('foo', $uri->getPath());
+        $this->assertSame('/foo', $uri->getPath());
         // concatenating a relative path with a host doesn't work: "//example.comfoo" would be wrong
         $this->assertSame('//example.com/foo', (string) $uri);
     }
@@ -450,7 +450,7 @@ class UriTest extends TestCase
         // If the path is starting with more than one "/" and no authority is
         // present, the starting slashes MUST be reduced to one.
         $uri = (new Uri())->withPath('//foo');
-        $this->assertSame('//foo', $uri->getPath());
+        $this->assertSame('/foo', $uri->getPath());
         // URI "//foo" would be interpreted as network reference and thus change the original path to the host
         $this->assertSame('/foo', (string) $uri);
     }

@@ -112,7 +112,20 @@ class Uri implements UriInterface
 
     public function getPath(): string
     {
-        return $this->path;
+        $path = $this->path;
+
+        if ('' !== $path && '/' !== $path[0]) {
+            if ('' !== $this->host) {
+                // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
+                $path = '/' . $path;
+            }
+        } elseif (isset($path[1]) && '/' === $path[1]) {
+            // If the path is starting with more than one "/", the
+            // starting slashes MUST be reduced to one.
+            $path = '/' . \ltrim($path, '/');
+        }
+
+        return $path;
     }
 
     public function getQuery(): string
