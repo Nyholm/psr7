@@ -12,8 +12,6 @@ use Symfony\Component\ErrorHandler\ErrorHandler as SymfonyErrorHandler;
  * @author Michael Dowling and contributors to guzzlehttp/psr7
  * @author Tobias Nyholm <tobias.nyholm@gmail.com>
  * @author Martijn van der Ven <martijn@vanderven.se>
- *
- * @final This class should never be extended. See https://github.com/Nyholm/psr7/blob/master/doc/final.md
  */
 class Stream implements StreamInterface
 {
@@ -51,8 +49,20 @@ class Stream implements StreamInterface
         ],
     ];
 
-    private function __construct()
+    /**
+     * @param resource $body
+     */
+    public function __construct($body)
     {
+        if (!\is_resource($body)) {
+            throw new \InvalidArgumentException('First argument to Stream::__construct() must be resource.');
+        }
+
+        $this->stream = $body;
+        $meta = \stream_get_meta_data($this->stream);
+        $this->seekable = $meta['seekable'] && 0 === \fseek($this->stream, 0, \SEEK_CUR);
+        $this->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
+        $this->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
     }
 
     /**
@@ -74,18 +84,11 @@ class Stream implements StreamInterface
             $body = $resource;
         }
 
-        if (\is_resource($body)) {
-            $new = new self();
-            $new->stream = $body;
-            $meta = \stream_get_meta_data($new->stream);
-            $new->seekable = $meta['seekable'] && 0 === \fseek($new->stream, 0, \SEEK_CUR);
-            $new->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
-            $new->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
-
-            return $new;
+        if (!\is_resource($body)) {
+            throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
         }
 
-        throw new \InvalidArgumentException('First argument to Stream::create() must be a string, resource or StreamInterface.');
+        return new self($body);
     }
 
     /**
