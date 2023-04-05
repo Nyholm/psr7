@@ -290,12 +290,8 @@ class Stream implements StreamInterface
     /**
      * @return mixed
      */
-    public function getMetadata(string $key = null)
+    public function getMetadata(?string $key = null)
     {
-        if (null !== $key && !\is_string($key)) {
-            throw new \InvalidArgumentException('Metadata key must be a string');
-        }
-
         if (!isset($this->stream)) {
             return $key ? null : [];
         }

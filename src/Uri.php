@@ -140,10 +140,6 @@ class Uri implements UriInterface
 
     public function withScheme(string $scheme): self
     {
-        if (!\is_string($scheme)) {
-            throw new \InvalidArgumentException('Scheme must be a string');
-        }
-
         if ($this->scheme === $scheme = \strtr($scheme, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')) {
             return $this;
         }
@@ -157,10 +153,6 @@ class Uri implements UriInterface
 
     public function withUserInfo(string $user, ?string $password = null): self
     {
-        if (!\is_string($user)) {
-            throw new \InvalidArgumentException('User must be a string');
-        }
-
         $info = \preg_replace_callback('/[' . self::CHAR_GEN_DELIMS . self::CHAR_SUB_DELIMS . ']++/', [__CLASS__, 'rawurlencodeMatchZero'], $user);
         if (null !== $password && '' !== $password) {
             if (!\is_string($password)) {
@@ -182,10 +174,6 @@ class Uri implements UriInterface
 
     public function withHost(string $host): self
     {
-        if (!\is_string($host)) {
-            throw new \InvalidArgumentException('Host must be a string');
-        }
-
         if ($this->host === $host = \strtr($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')) {
             return $this;
         }
