@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5 || 8.5 || 9.4",
-        "php-http/psr7-integration-tests": "^1.0",
+        "php-http/psr7-integration-tests": "dev-feature/psr-7-type-hints as 1.3.0",
         "http-interop/http-factory-tests": "^0.9",
         "symfony/error-handler": "^4.4"
     },
@@ -41,6 +41,12 @@
             "Tests\\Nyholm\\Psr7\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/weierophinney/psr7-integration-tests"
+        }
+    ],
     "extra": {
         "branch-alias": {
             "dev-master": "1.5-dev"
