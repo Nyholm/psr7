@@ -59,7 +59,7 @@ class UriTest extends TestCase
         $this->assertSame($input, (string) $uri);
     }
 
-    public function getValidUris()
+    public static function getValidUris()
     {
         return [
             ['urn:path-rootless'],
@@ -99,7 +99,7 @@ class UriTest extends TestCase
         new Uri($invalidUri);
     }
 
-    public function getInvalidUris()
+    public static function getInvalidUris()
     {
         return [
             // parse_url() requires the host component which makes sense for http(s)
@@ -368,7 +368,7 @@ class UriTest extends TestCase
         $this->assertSame('', $uri->getAuthority());
     }
 
-    public function uriComponentsEncodingProvider()
+    public static function uriComponentsEncodingProvider()
     {
         $unreserved = 'a-zA-Z0-9.-_~!$&\'()*+,;=:@';
 
