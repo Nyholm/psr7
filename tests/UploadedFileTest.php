@@ -28,7 +28,7 @@ class UploadedFileTest extends TestCase
         }
     }
 
-    public function invalidStreams()
+    public static function invalidStreams()
     {
         return [
             'null' => [null],
@@ -52,7 +52,7 @@ class UploadedFileTest extends TestCase
         new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
     }
 
-    public function invalidErrorStatuses()
+    public static function invalidErrorStatuses()
     {
         return [
             'null' => [null],
@@ -78,7 +78,7 @@ class UploadedFileTest extends TestCase
         new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
     }
 
-    public function invalidFilenamesAndMediaTypes()
+    public static function invalidFilenamesAndMediaTypes()
     {
         return [
             'true' => [true],
@@ -152,7 +152,7 @@ class UploadedFileTest extends TestCase
         $this->assertEquals($stream->__toString(), file_get_contents($to));
     }
 
-    public function invalidMovePaths()
+    public static function invalidMovePaths()
     {
         return [
             'null' => [null],
@@ -209,7 +209,7 @@ class UploadedFileTest extends TestCase
         $upload->getStream();
     }
 
-    public function nonOkErrorStatus()
+    public static function nonOkErrorStatus()
     {
         return [
             'UPLOAD_ERR_INI_SIZE' => [UPLOAD_ERR_INI_SIZE],
