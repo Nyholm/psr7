@@ -138,7 +138,7 @@ class Uri implements UriInterface
         return $this->fragment;
     }
 
-    public function withScheme($scheme): self
+    public function withScheme(string $scheme): self
     {
         if (!\is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -155,7 +155,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withUserInfo($user, $password = null): self
+    public function withUserInfo(string $user, ?string $password = null): self
     {
         if (!\is_string($user)) {
             throw new \InvalidArgumentException('User must be a string');
@@ -180,7 +180,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withHost($host): self
+    public function withHost(string $host): self
     {
         if (!\is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -196,7 +196,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPort($port): self
+    public function withPort(?int $port): self
     {
         if ($this->port === $port = $this->filterPort($port)) {
             return $this;
@@ -208,7 +208,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPath($path): self
+    public function withPath(string $path): self
     {
         if ($this->path === $path = $this->filterPath($path)) {
             return $this;
@@ -220,7 +220,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withQuery($query): self
+    public function withQuery(string $query): self
     {
         if ($this->query === $query = $this->filterQueryAndFragment($query)) {
             return $this;
@@ -232,7 +232,7 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withFragment($fragment): self
+    public function withFragment(string $fragment): self
     {
         if ($this->fragment === $fragment = $this->filterQueryAndFragment($fragment)) {
             return $this;

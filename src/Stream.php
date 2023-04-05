@@ -100,10 +100,7 @@ class Stream implements StreamInterface
         $this->close();
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             if ($this->isSeekable()) {
@@ -210,7 +207,7 @@ class Stream implements StreamInterface
         return $this->seekable;
     }
 
-    public function seek($offset, $whence = \SEEK_SET): void
+    public function seek(int $offset, int $whence = \SEEK_SET): void
     {
         if (!isset($this->stream)) {
             throw new \RuntimeException('Stream is detached');
@@ -235,7 +232,7 @@ class Stream implements StreamInterface
         return $this->writable;
     }
 
-    public function write($string): int
+    public function write(string $string): int
     {
         if (!isset($this->stream)) {
             throw new \RuntimeException('Stream is detached');
@@ -260,7 +257,7 @@ class Stream implements StreamInterface
         return $this->readable;
     }
 
-    public function read($length): string
+    public function read(int $length): string
     {
         if (!isset($this->stream)) {
             throw new \RuntimeException('Stream is detached');
@@ -293,7 +290,7 @@ class Stream implements StreamInterface
     /**
      * @return mixed
      */
-    public function getMetadata($key = null)
+    public function getMetadata(string $key = null)
     {
         if (null !== $key && !\is_string($key)) {
             throw new \InvalidArgumentException('Metadata key must be a string');

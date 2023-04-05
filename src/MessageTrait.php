@@ -34,18 +34,14 @@ trait MessageTrait
         return $this->protocol;
     }
 
-    public function withProtocolVersion($version): self
+    public function withProtocolVersion(string $version): self
     {
-        if (!\is_scalar($version)) {
-            throw new \InvalidArgumentException('Protocol version must be a string');
-        }
-
         if ($this->protocol === $version) {
             return $this;
         }
 
         $new = clone $this;
-        $new->protocol = (string) $version;
+        $new->protocol = $version;
 
         return $new;
     }
@@ -81,7 +77,7 @@ trait MessageTrait
         return \implode(', ', $this->getHeader($header));
     }
 
-    public function withHeader($header, $value): self
+    public function withHeader(string $header, $value): self
     {
         $value = $this->validateAndTrimHeader($header, $value);
         $normalized = \strtr($header, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz');

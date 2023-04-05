@@ -144,46 +144,6 @@ class UriTest extends TestCase
         $this->assertEquals(0, $uri->getPort());
     }
 
-    public function testSchemeMustHaveCorrectType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Scheme must be a string');
-
-        (new Uri())->withScheme([]);
-    }
-
-    public function testHostMustHaveCorrectType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Host must be a string');
-
-        (new Uri())->withHost([]);
-    }
-
-    public function testPathMustHaveCorrectType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Path must be a string');
-
-        (new Uri())->withPath([]);
-    }
-
-    public function testQueryMustHaveCorrectType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Query and fragment must be a string');
-
-        (new Uri())->withQuery([]);
-    }
-
-    public function testFragmentMustHaveCorrectType()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Query and fragment must be a string');
-
-        (new Uri())->withFragment([]);
-    }
-
     public function testCanParseFalseyUriParts()
     {
         $uri = new Uri('0://0:0@0/0?0#0');
