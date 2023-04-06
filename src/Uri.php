@@ -301,12 +301,8 @@ class Uri implements UriInterface
         return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $path);
     }
 
-    private function filterQueryAndFragment($str): string
+    private function filterQueryAndFragment(string $str): string
     {
-        if (!\is_string($str)) {
-            throw new \InvalidArgumentException('Query and fragment must be a string');
-        }
-
         return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/\?]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $str);
     }
 
