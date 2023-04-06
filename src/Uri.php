@@ -155,10 +155,6 @@ class Uri implements UriInterface
     {
         $info = \preg_replace_callback('/[' . self::CHAR_GEN_DELIMS . self::CHAR_SUB_DELIMS . ']++/', [__CLASS__, 'rawurlencodeMatchZero'], $user);
         if (null !== $password && '' !== $password) {
-            if (!\is_string($password)) {
-                throw new \InvalidArgumentException('Password must be a string');
-            }
-
             $info .= ':' . \preg_replace_callback('/[' . self::CHAR_GEN_DELIMS . self::CHAR_SUB_DELIMS . ']++/', [__CLASS__, 'rawurlencodeMatchZero'], $password);
         }
 
@@ -296,12 +292,8 @@ class Uri implements UriInterface
         return self::isNonStandardPort($this->scheme, $port) ? $port : null;
     }
 
-    private function filterPath($path): string
+    private function filterPath(string $path): string
     {
-        if (!\is_string($path)) {
-            throw new \InvalidArgumentException('Path must be a string');
-        }
-
         return \preg_replace_callback('/(?:[^' . self::CHAR_UNRESERVED . self::CHAR_SUB_DELIMS . '%:@\/]++|%(?![A-Fa-f0-9]{2}))/', [__CLASS__, 'rawurlencodeMatchZero'], $path);
     }
 
