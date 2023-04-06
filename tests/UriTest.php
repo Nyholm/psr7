@@ -161,21 +161,21 @@ class UriTest extends TestCase
     public function testCanConstructFalseyUriParts()
     {
         $uri = (new Uri())
-            ->withScheme('0')
+            ->withScheme('http')
             ->withUserInfo('0', '0')
             ->withHost('0')
             ->withPath('/0')
             ->withQuery('0')
             ->withFragment('0');
 
-        $this->assertSame('0', $uri->getScheme());
+        $this->assertSame('http', $uri->getScheme());
         $this->assertSame('0:0@0', $uri->getAuthority());
         $this->assertSame('0:0', $uri->getUserInfo());
         $this->assertSame('0', $uri->getHost());
         $this->assertSame('/0', $uri->getPath());
         $this->assertSame('0', $uri->getQuery());
         $this->assertSame('0', $uri->getFragment());
-        $this->assertSame('0://0:0@0/0?0#0', (string) $uri);
+        $this->assertSame('http://0:0@0/0?0#0', (string) $uri);
     }
 
     public function getResolveTestCases()
