@@ -144,6 +144,10 @@ class Uri implements UriInterface
             return $this;
         }
 
+        if (!preg_match('/^[a-zA-Z][a-zA-Z0-9+.-]*$/', $scheme)) {
+            throw new \InvalidArgumentException(\sprintf('Invalid scheme: %s. Must comply with `ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )`', $scheme));
+        }
+
         $new = clone $this;
         $new->scheme = $scheme;
         $new->port = $new->filterPort($new->port);
