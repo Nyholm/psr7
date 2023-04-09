@@ -33,7 +33,7 @@ class StreamTest extends TestCase
         $this->assertTrue($stream->isReadable());
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
-        $this->assertEquals('php://temp', $stream->getMetadata('uri'));
+        $this->assertEquals('Nyholm-Psr7-Zval://', $stream->getMetadata('uri'));
         $this->assertTrue(\is_array($stream->getMetadata()));
         $this->assertSame(5, $stream->getSize());
         $this->assertFalse($stream->eof());

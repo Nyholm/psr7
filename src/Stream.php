@@ -81,10 +81,7 @@ class Stream implements StreamInterface
         }
 
         if (\is_string($body)) {
-            $resource = \fopen('php://temp', 'rw+');
-            \fwrite($resource, $body);
-            \fseek($resource, 0);
-            $body = $resource;
+            $body = self::openZvalStream($body);
         }
 
         if (!\is_resource($body)) {
@@ -283,5 +280,105 @@ class Stream implements StreamInterface
         }
 
         return $meta[$key] ?? null;
+    }
+
+    private static function openZvalStream(string $body)
+    {
+        static $wrapper;
+
+        $wrapper ?? \stream_wrapper_register('Nyholm-Psr7-Zval', $wrapper = \get_class(new class() {
+            public $context;
+
+            private $data;
+            private $position = 0;
+
+            public function stream_open(): bool
+            {
+                $this->data = \stream_context_get_options($this->context)['Nyholm-Psr7-Zval']['data'];
+                \stream_context_set_option($this->context, 'Nyholm-Psr7-Zval', 'data', null);
+
+                return true;
+            }
+
+            public function stream_read(int $count): string
+            {
+                $result = \substr($this->data, $this->position, $count);
+                $this->position += \strlen($result);
+
+                return $result;
+            }
+
+            public function stream_write(string $data): int
+            {
+                $this->data = \substr_replace($this->data, $data, $this->position, \strlen($data));
+                $this->position += \strlen($data);
+
+                return \strlen($data);
+            }
+
+            public function stream_tell(): int
+            {
+                return $this->position;
+            }
+
+            public function stream_eof(): bool
+            {
+                return \strlen($this->data) <= $this->position;
+            }
+
+            public function stream_stat(): array
+            {
+                return [
+                    'mode' => 33206, // POSIX_S_IFREG | 0666
+                    'nlink' => 1,
+                    'rdev' => -1,
+                    'size' => \strlen($this->data),
+                    'blksize' => -1,
+                    'blocks' => -1,
+                ];
+            }
+
+            public function stream_seek(int $offset, int $whence): bool
+            {
+                if (\SEEK_SET === $whence && (0 <= $offset && \strlen($this->data) >= $offset)) {
+                    $this->position = $offset;
+                } elseif (\SEEK_CUR === $whence && 0 <= $offset) {
+                    $this->position += $offset;
+                } elseif (\SEEK_END === $whence && (0 > $offset && 0 <= $offset = \strlen($this->data) + $offset)) {
+                    $this->position = $offset;
+                } else {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public function stream_set_option(): bool
+            {
+                return true;
+            }
+
+            public function stream_truncate(int $new_size): bool
+            {
+                if ($new_size) {
+                    $this->data = \substr($this->data, 0, $new_size);
+                    $this->position = \min($this->position, $new_size);
+                } else {
+                    $this->data = '';
+                    $this->position = 0;
+                }
+
+                return true;
+            }
+        }));
+
+        $context = \stream_context_create(['Nyholm-Psr7-Zval' => ['data' => $body]]);
+
+        if (!$stream = @\fopen('Nyholm-Psr7-Zval://', 'r+', false, $context)) {
+            \stream_wrapper_register('Nyholm-Psr7-Zval', $wrapper);
+            $stream = \fopen('Nyholm-Psr7-Zval://', 'r+', false, $context);
+        }
+
+        return $stream;
     }
 }
