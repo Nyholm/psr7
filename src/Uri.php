@@ -261,20 +261,7 @@ class Uri implements UriInterface
         }
 
         if ('' !== $path) {
-            if ('/' !== $path[0]) {
-                if ('' !== $authority) {
-                    // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
-                    $path = '/' . $path;
-                }
-            } elseif (isset($path[1]) && '/' === $path[1]) {
-                if ('' === $authority) {
-                    // If the path is starting with more than one "/" and no authority is present, the
-                    // starting slashes MUST be reduced to one.
-                    $path = '/' . \ltrim($path, '/');
-                }
-            }
-
-            $uri .= $path;
+            $uri .= self::normalizePath($path, $authority);
         }
 
         if ('' !== $query) {
@@ -286,6 +273,27 @@ class Uri implements UriInterface
         }
 
         return $uri;
+    }
+
+    /**
+     * Normalize leading slashes in path.
+     */
+    private static function normalizePath(string $path, string $authority): string
+    {
+        if ('/' !== $path[0]) {
+            if ('' !== $authority) {
+                // If the path is rootless and an authority is present, the path MUST be prefixed by "/"
+                $path = '/' . $path;
+            }
+        } elseif (isset($path[1]) && '/' === $path[1]) {
+            if ('' === $authority) {
+                // If the path is starting with more than one "/" and no authority is present, the
+                // starting slashes MUST be reduced to one.
+                $path = '/' . \ltrim($path, '/');
+            }
+        }
+
+        return $path;
     }
 
     /**
