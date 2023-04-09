@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.6.0
+
+### Changed
+
+- Seek to the begining of the string when using Stream::create()
+- Populate ServerRequest::getQueryParams() on instantiation
+- Encode [reserved characters](https://www.rfc-editor.org/rfc/rfc3986#appendix-A) in userinfo in Uri
+- Normalize leading slashes for Uri::getPath()
+- Make Stream's constructor public
+- Add some missing type checks on arguments
+
 ## 1.5.1
 
 ### Fixed
