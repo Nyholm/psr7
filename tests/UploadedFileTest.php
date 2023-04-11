@@ -14,12 +14,12 @@ class UploadedFileTest extends TestCase
 {
     protected $cleanup;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->cleanup = [];
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         foreach ($this->cleanup as $file) {
             if (is_scalar($file) && file_exists($file)) {
@@ -131,10 +131,10 @@ class UploadedFileTest extends TestCase
 
     public function testGetStream()
     {
-        $upload = new UploadedFile(__DIR__.'/Resources/foo.txt', 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile(__DIR__ . '/Resources/foo.txt', 0, UPLOAD_ERR_OK);
         $stream = $upload->getStream();
         $this->assertInstanceOf(StreamInterface::class, $stream);
-        $this->assertEquals('Foobar'.PHP_EOL, $stream->__toString());
+        $this->assertEquals('Foobar' . PHP_EOL, $stream->__toString());
     }
 
     public function testSuccessful()
@@ -239,7 +239,7 @@ class UploadedFileTest extends TestCase
         $uploadedFile = new UploadedFile('not ok', 0, $status);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('upload error');
-        $uploadedFile->moveTo(__DIR__.'/'.uniqid());
+        $uploadedFile->moveTo(__DIR__ . '/' . uniqid());
     }
 
     /**

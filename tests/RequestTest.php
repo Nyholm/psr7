@@ -207,14 +207,14 @@ class RequestTest extends TestCase
         $r = new Request(
             'GET', '', [
                      '200' => 'NumericHeaderValue',
-                     '0'   => 'NumericHeaderValueZero',
+                     '0' => 'NumericHeaderValueZero',
                  ]
         );
 
         $this->assertSame(
             [
                 '200' => ['NumericHeaderValue'],
-                '0'   => ['NumericHeaderValueZero'],
+                '0' => ['NumericHeaderValueZero'],
             ],
             $r->getHeaders()
         );
@@ -231,7 +231,7 @@ class RequestTest extends TestCase
         $this->assertSame(
             [
                 '200' => ['NumericHeaderValue', 'A', 'B'],
-                '0'   => ['NumericHeaderValueZero'],
+                '0' => ['NumericHeaderValueZero'],
                 '300' => ['NumericHeaderValue2'],
             ],
             $r->getHeaders()
@@ -241,7 +241,7 @@ class RequestTest extends TestCase
         $this->assertSame(
             [
                 '200' => ['NumericHeaderValue', 'A', 'B'],
-                '0'   => ['NumericHeaderValueZero'],
+                '0' => ['NumericHeaderValueZero'],
             ],
             $r->getHeaders()
         );

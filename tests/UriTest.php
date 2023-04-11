@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UriTest extends TestCase
 {
-    const RFC3986_BASE = 'http://a/b/c/d;p?q';
+    public const RFC3986_BASE = 'http://a/b/c/d;p?q';
 
     public function testParsesProvidedUri()
     {
