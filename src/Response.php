@@ -75,7 +75,7 @@ class Response implements ResponseInterface
 
         $code = (int) $code;
         if ($code < 100 || $code > 599) {
-            throw new \InvalidArgumentException(\sprintf('Status code has to be an integer between 100 and 599. A status code of %d was given', $code));
+            throw new \InvalidArgumentException(sprintf('Status code has to be an integer between 100 and 599. A status code of %d was given', $code));
         }
 
         $new = clone $this;

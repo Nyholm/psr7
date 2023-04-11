@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Tests\Nyholm\Psr7;
 
@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
  */
 class UriTest extends TestCase
 {
-    const RFC3986_BASE = 'http://a/b/c/d;p?q';
+    public const RFC3986_BASE = 'http://a/b/c/d;p?q';
 
     public function testParsesProvidedUri()
     {
@@ -158,7 +158,7 @@ class UriTest extends TestCase
 
     public function testParseUriPortCanBeZero()
     {
-        if (version_compare(PHP_VERSION, '7.4.12') < 0) {
+        if (version_compare(\PHP_VERSION, '7.4.12') < 0) {
             self::markTestSkipped('Skipping this on low PHP versions.');
         }
 
