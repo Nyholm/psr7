@@ -45,7 +45,7 @@ class StreamTest extends TestCase
         $handle = fopen('php://temp', 'r');
         $stream = Stream::create($handle);
         unset($stream);
-        $this->assertFalse(is_resource($handle));
+        $this->assertFalse(\is_resource($handle));
     }
 
     public function testConvertsToString()
@@ -218,7 +218,7 @@ class TestStreamWrapper
         return true;
     }
 
-    public function stream_seek(int $offset, int $whence = SEEK_SET)
+    public function stream_seek(int $offset, int $whence = \SEEK_SET)
     {
         return false;
     }

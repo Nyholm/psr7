@@ -16,7 +16,7 @@ class ServerRequestTest extends TestCase
         $request1 = new ServerRequest('GET', '/');
 
         $files = [
-            'file' => new UploadedFile('test', 123, UPLOAD_ERR_OK),
+            'file' => new UploadedFile('test', 123, \UPLOAD_ERR_OK),
         ];
 
         $request2 = $request1->withUploadedFiles($files);

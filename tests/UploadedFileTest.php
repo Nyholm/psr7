@@ -22,7 +22,7 @@ class UploadedFileTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->cleanup as $file) {
-            if (is_scalar($file) && file_exists($file)) {
+            if (\is_scalar($file) && file_exists($file)) {
                 unlink($file);
             }
         }
@@ -49,7 +49,7 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid stream or file provided for UploadedFile');
 
-        new UploadedFile($streamOrFile, 0, UPLOAD_ERR_OK);
+        new UploadedFile($streamOrFile, 0, \UPLOAD_ERR_OK);
     }
 
     public static function invalidErrorStatuses()
@@ -98,7 +98,7 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('filename');
 
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, $filename);
+        new UploadedFile(fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, $filename);
     }
 
     /**
@@ -109,13 +109,13 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('media type');
 
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
+        new UploadedFile(fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
 
     public function testGetStreamReturnsOriginalStreamObject()
     {
         $stream = Stream::create('');
-        $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
         $this->assertSame($stream, $upload->getStream());
     }
@@ -123,7 +123,7 @@ class UploadedFileTest extends TestCase
     public function testGetStreamReturnsWrappedPhpStream()
     {
         $stream = fopen('php://temp', 'wb+');
-        $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
         $uploadStream = $upload->getStream()->detach();
 
         $this->assertSame($stream, $uploadStream);
@@ -131,16 +131,16 @@ class UploadedFileTest extends TestCase
 
     public function testGetStream()
     {
-        $upload = new UploadedFile(__DIR__ . '/Resources/foo.txt', 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile(__DIR__ . '/Resources/foo.txt', 0, \UPLOAD_ERR_OK);
         $stream = $upload->getStream();
         $this->assertInstanceOf(StreamInterface::class, $stream);
-        $this->assertEquals('Foobar' . PHP_EOL, $stream->__toString());
+        $this->assertEquals('Foobar' . \PHP_EOL, $stream->__toString());
     }
 
     public function testSuccessful()
     {
         $stream = Stream::create('Foo bar!');
-        $upload = new UploadedFile($stream, $stream->getSize(), UPLOAD_ERR_OK, 'filename.txt', 'text/plain');
+        $upload = new UploadedFile($stream, $stream->getSize(), \UPLOAD_ERR_OK, 'filename.txt', 'text/plain');
 
         $this->assertEquals($stream->getSize(), $upload->getSize());
         $this->assertEquals('filename.txt', $upload->getClientFilename());
@@ -172,7 +172,7 @@ class UploadedFileTest extends TestCase
     public function testMoveRaisesExceptionForInvalidPath($path)
     {
         $stream = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('Foo bar!');
-        $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
         $this->cleanup[] = $path;
 
@@ -184,7 +184,7 @@ class UploadedFileTest extends TestCase
     public function testMoveCannotBeCalledMoreThanOnce()
     {
         $stream = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('Foo bar!');
-        $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
         $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
@@ -198,7 +198,7 @@ class UploadedFileTest extends TestCase
     public function testCannotRetrieveStreamAfterMove()
     {
         $stream = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('Foo bar!');
-        $upload = new UploadedFile($stream, 0, UPLOAD_ERR_OK);
+        $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
         $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
@@ -212,13 +212,13 @@ class UploadedFileTest extends TestCase
     public static function nonOkErrorStatus()
     {
         return [
-            'UPLOAD_ERR_INI_SIZE' => [UPLOAD_ERR_INI_SIZE],
-            'UPLOAD_ERR_FORM_SIZE' => [UPLOAD_ERR_FORM_SIZE],
-            'UPLOAD_ERR_PARTIAL' => [UPLOAD_ERR_PARTIAL],
-            'UPLOAD_ERR_NO_FILE' => [UPLOAD_ERR_NO_FILE],
-            'UPLOAD_ERR_NO_TMP_DIR' => [UPLOAD_ERR_NO_TMP_DIR],
-            'UPLOAD_ERR_CANT_WRITE' => [UPLOAD_ERR_CANT_WRITE],
-            'UPLOAD_ERR_EXTENSION' => [UPLOAD_ERR_EXTENSION],
+            'UPLOAD_ERR_INI_SIZE' => [\UPLOAD_ERR_INI_SIZE],
+            'UPLOAD_ERR_FORM_SIZE' => [\UPLOAD_ERR_FORM_SIZE],
+            'UPLOAD_ERR_PARTIAL' => [\UPLOAD_ERR_PARTIAL],
+            'UPLOAD_ERR_NO_FILE' => [\UPLOAD_ERR_NO_FILE],
+            'UPLOAD_ERR_NO_TMP_DIR' => [\UPLOAD_ERR_NO_TMP_DIR],
+            'UPLOAD_ERR_CANT_WRITE' => [\UPLOAD_ERR_CANT_WRITE],
+            'UPLOAD_ERR_EXTENSION' => [\UPLOAD_ERR_EXTENSION],
         ];
     }
 
@@ -260,7 +260,7 @@ class UploadedFileTest extends TestCase
 
         copy(__FILE__, $from);
 
-        $uploadedFile = new UploadedFile($from, 100, UPLOAD_ERR_OK, basename($from), 'text/plain');
+        $uploadedFile = new UploadedFile($from, 100, \UPLOAD_ERR_OK, basename($from), 'text/plain');
         $uploadedFile->moveTo($to);
 
         $this->assertFileEquals(__FILE__, $to);

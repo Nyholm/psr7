@@ -158,7 +158,7 @@ class UriTest extends TestCase
 
     public function testParseUriPortCanBeZero()
     {
-        if (version_compare(PHP_VERSION, '7.4.12') < 0) {
+        if (version_compare(\PHP_VERSION, '7.4.12') < 0) {
             self::markTestSkipped('Skipping this on low PHP versions.');
         }
 
