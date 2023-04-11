@@ -2,9 +2,9 @@
 
 namespace Tests\Nyholm\Psr7\Integration;
 
-use Psr\Http\Message\UriInterface;
 use Http\Psr7Test\UriIntegrationTest;
 use Nyholm\Psr7\Uri;
+use Psr\Http\Message\UriInterface;
 
 class UriTest extends UriIntegrationTest
 {
