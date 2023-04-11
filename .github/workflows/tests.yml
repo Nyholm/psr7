@@ -77,8 +77,3 @@ jobs:
 
       - name: Run PHPUnit
         run: ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
-
-      - name: Upload coverage
-        run: |
-          wget https://scrutinizer-ci.com/ocular.phar
-          php ocular.phar code-coverage:upload --format=php-clover coverage.xml
