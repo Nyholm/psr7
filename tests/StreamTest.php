@@ -4,6 +4,7 @@ namespace Tests\Nyholm\Psr7;
 
 use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\StreamInterface;
 use Symfony\Component\ErrorHandler\ErrorHandler as SymfonyErrorHandler;
 
 /**
@@ -171,7 +172,7 @@ class StreamTest extends TestCase
             $throws(function ($stream) {
                 (string) $stream;
             });
-        } else {
+        } elseif (!(new \ReflectionMethod(StreamInterface::class, '__toString'))->hasReturnType()) {
             $this->assertSame('', (string) $stream);
 
             SymfonyErrorHandler::register();

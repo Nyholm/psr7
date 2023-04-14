@@ -21,11 +21,6 @@ parameters:
 			path: src/ServerRequest.php
 
 		-
-			message: "#^Parameter \\#1 \\$callback of function set_error_handler expects \\(callable\\(int, string, string, int\\)\\: bool\\)\\|null, 'var_dump' given\\.$#"
-			count: 1
-			path: src/Stream.php
-
-		-
 			message: "#^Result of && is always false\\.$#"
 			count: 1
 			path: src/Stream.php
