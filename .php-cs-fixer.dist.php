@@ -11,8 +11,7 @@ $config = new PhpCsFixer\Config();
 return $config->setRules([
     '@Symfony' => true,
     '@Symfony:risky' => true,
-    'array_syntax' => array('syntax' => 'short'),
-    'native_function_invocation' => true,
+    'native_function_invocation' => ['include'=> ['@all']],
     'native_constant_invocation' => true,
     'ordered_imports' => true,
     'declare_strict_types' => false,

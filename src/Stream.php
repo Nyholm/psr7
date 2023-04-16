@@ -61,8 +61,8 @@ class Stream implements StreamInterface
         }
 
         $this->stream = $body;
-        $meta = stream_get_meta_data($this->stream);
-        $this->seekable = $meta['seekable'] && 0 === fseek($this->stream, 0, \SEEK_CUR);
+        $meta = \stream_get_meta_data($this->stream);
+        $this->seekable = $meta['seekable'] && 0 === \fseek($this->stream, 0, \SEEK_CUR);
         $this->readable = isset(self::READ_WRITE_HASH['read'][$meta['mode']]);
         $this->writable = isset(self::READ_WRITE_HASH['write'][$meta['mode']]);
     }
@@ -81,9 +81,9 @@ class Stream implements StreamInterface
         }
 
         if (\is_string($body)) {
-            $resource = fopen('php://temp', 'rw+');
-            fwrite($resource, $body);
-            fseek($resource, 0);
+            $resource = \fopen('php://temp', 'rw+');
+            \fwrite($resource, $body);
+            \fseek($resource, 0);
             $body = $resource;
         }
 
@@ -118,13 +118,13 @@ class Stream implements StreamInterface
                 throw $e;
             }
 
-            if (\is_array($errorHandler = set_error_handler('var_dump'))) {
+            if (\is_array($errorHandler = \set_error_handler('var_dump'))) {
                 $errorHandler = $errorHandler[0] ?? null;
             }
-            restore_error_handler();
+            \restore_error_handler();
 
             if ($e instanceof \Error || $errorHandler instanceof SymfonyErrorHandler || $errorHandler instanceof SymfonyLegacyErrorHandler) {
-                return trigger_error((string) $e, \E_USER_ERROR);
+                return \trigger_error((string) $e, \E_USER_ERROR);
             }
 
             return '';
@@ -135,7 +135,7 @@ class Stream implements StreamInterface
     {
         if (isset($this->stream)) {
             if (\is_resource($this->stream)) {
-                fclose($this->stream);
+                \fclose($this->stream);
             }
             $this->detach();
         }
@@ -176,10 +176,10 @@ class Stream implements StreamInterface
 
         // Clear the stat cache if the stream has a URI
         if ($uri = $this->getUri()) {
-            clearstatcache(true, $uri);
+            \clearstatcache(true, $uri);
         }
 
-        $stats = fstat($this->stream);
+        $stats = \fstat($this->stream);
         if (isset($stats['size'])) {
             $this->size = $stats['size'];
 
@@ -195,8 +195,8 @@ class Stream implements StreamInterface
             throw new \RuntimeException('Stream is detached');
         }
 
-        if (false === $result = @ftell($this->stream)) {
-            throw new \RuntimeException('Unable to determine stream position: ' . (error_get_last()['message'] ?? ''));
+        if (false === $result = @\ftell($this->stream)) {
+            throw new \RuntimeException('Unable to determine stream position: ' . (\error_get_last()['message'] ?? ''));
         }
 
         return $result;
@@ -204,7 +204,7 @@ class Stream implements StreamInterface
 
     public function eof(): bool
     {
-        return !isset($this->stream) || feof($this->stream);
+        return !isset($this->stream) || \feof($this->stream);
     }
 
     public function isSeekable(): bool
@@ -222,8 +222,8 @@ class Stream implements StreamInterface
             throw new \RuntimeException('Stream is not seekable');
         }
 
-        if (-1 === fseek($this->stream, $offset, $whence)) {
-            throw new \RuntimeException('Unable to seek to stream position "' . $offset . '" with whence ' . var_export($whence, true));
+        if (-1 === \fseek($this->stream, $offset, $whence)) {
+            throw new \RuntimeException('Unable to seek to stream position "' . $offset . '" with whence ' . \var_export($whence, true));
         }
     }
 
@@ -250,8 +250,8 @@ class Stream implements StreamInterface
         // We can't know the size after writing anything
         $this->size = null;
 
-        if (false === $result = @fwrite($this->stream, $string)) {
-            throw new \RuntimeException('Unable to write to stream: ' . (error_get_last()['message'] ?? ''));
+        if (false === $result = @\fwrite($this->stream, $string)) {
+            throw new \RuntimeException('Unable to write to stream: ' . (\error_get_last()['message'] ?? ''));
         }
 
         return $result;
@@ -272,8 +272,8 @@ class Stream implements StreamInterface
             throw new \RuntimeException('Cannot read from non-readable stream');
         }
 
-        if (false === $result = @fread($this->stream, $length)) {
-            throw new \RuntimeException('Unable to read from stream: ' . (error_get_last()['message'] ?? ''));
+        if (false === $result = @\fread($this->stream, $length)) {
+            throw new \RuntimeException('Unable to read from stream: ' . (\error_get_last()['message'] ?? ''));
         }
 
         return $result;
@@ -285,8 +285,8 @@ class Stream implements StreamInterface
             throw new \RuntimeException('Stream is detached');
         }
 
-        if (false === $contents = @stream_get_contents($this->stream)) {
-            throw new \RuntimeException('Unable to read stream contents: ' . (error_get_last()['message'] ?? ''));
+        if (false === $contents = @\stream_get_contents($this->stream)) {
+            throw new \RuntimeException('Unable to read stream contents: ' . (\error_get_last()['message'] ?? ''));
         }
 
         return $contents;
@@ -305,7 +305,7 @@ class Stream implements StreamInterface
             return $key ? null : [];
         }
 
-        $meta = stream_get_meta_data($this->stream);
+        $meta = \stream_get_meta_data($this->stream);
 
         if (null === $key) {
             return $meta;
