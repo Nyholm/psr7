@@ -13,8 +13,8 @@ class StreamTest extends TestCase
 {
     public function testConstructorInitializesProperties()
     {
-        $handle = fopen('php://temp', 'r+');
-        fwrite($handle, 'data');
+        $handle = \fopen('php://temp', 'r+');
+        \fwrite($handle, 'data');
         $stream = Stream::create($handle);
         $this->assertTrue($stream->isReadable());
         $this->assertTrue($stream->isWritable());
@@ -42,7 +42,7 @@ class StreamTest extends TestCase
 
     public function testStreamClosesHandleOnDestruct()
     {
-        $handle = fopen('php://temp', 'r');
+        $handle = \fopen('php://temp', 'r');
         $stream = Stream::create($handle);
         unset($stream);
         $this->assertFalse(\is_resource($handle));
@@ -50,8 +50,8 @@ class StreamTest extends TestCase
 
     public function testConvertsToString()
     {
-        $handle = fopen('php://temp', 'w+');
-        fwrite($handle, 'data');
+        $handle = \fopen('php://temp', 'w+');
+        \fwrite($handle, 'data');
         $stream = Stream::create($handle);
         $this->assertEquals('data', (string) $stream);
         $this->assertEquals('data', (string) $stream);
@@ -68,8 +68,8 @@ class StreamTest extends TestCase
 
     public function testGetsContents()
     {
-        $handle = fopen('php://temp', 'w+');
-        fwrite($handle, 'data');
+        $handle = \fopen('php://temp', 'w+');
+        \fwrite($handle, 'data');
         $stream = Stream::create($handle);
         $this->assertEquals('', $stream->getContents());
         $stream->seek(0);
@@ -79,8 +79,8 @@ class StreamTest extends TestCase
 
     public function testChecksEof()
     {
-        $handle = fopen('php://temp', 'w+');
-        fwrite($handle, 'data');
+        $handle = \fopen('php://temp', 'w+');
+        \fwrite($handle, 'data');
         $stream = Stream::create($handle);
         $this->assertFalse($stream->eof());
         $stream->read(4);
@@ -90,8 +90,8 @@ class StreamTest extends TestCase
 
     public function testGetSize()
     {
-        $size = filesize(__FILE__);
-        $handle = fopen(__FILE__, 'r');
+        $size = \filesize(__FILE__);
+        $handle = \fopen(__FILE__, 'r');
         $stream = Stream::create($handle);
         $this->assertEquals($size, $stream->getSize());
         // Load from cache
@@ -101,8 +101,8 @@ class StreamTest extends TestCase
 
     public function testEnsuresSizeIsConsistent()
     {
-        $h = fopen('php://temp', 'w+');
-        $this->assertEquals(3, fwrite($h, 'foo'));
+        $h = \fopen('php://temp', 'w+');
+        $this->assertEquals(3, \fwrite($h, 'foo'));
         $stream = Stream::create($h);
         $this->assertEquals(3, $stream->getSize());
         $this->assertEquals(4, $stream->write('test'));
@@ -113,20 +113,20 @@ class StreamTest extends TestCase
 
     public function testProvidesStreamPosition()
     {
-        $handle = fopen('php://temp', 'w+');
+        $handle = \fopen('php://temp', 'w+');
         $stream = Stream::create($handle);
         $this->assertEquals(0, $stream->tell());
         $stream->write('foo');
         $this->assertEquals(3, $stream->tell());
         $stream->seek(1);
         $this->assertEquals(1, $stream->tell());
-        $this->assertSame(ftell($handle), $stream->tell());
+        $this->assertSame(\ftell($handle), $stream->tell());
         $stream->close();
     }
 
     public function testCanDetachStream()
     {
-        $r = fopen('php://temp', 'w+');
+        $r = \fopen('php://temp', 'w+');
         $stream = Stream::create($r);
         $stream->write('foo');
         $this->assertTrue($stream->isReadable());
@@ -178,8 +178,8 @@ class StreamTest extends TestCase
             $throws(function ($stream) {
                 (string) $stream;
             });
-            restore_error_handler();
-            restore_exception_handler();
+            \restore_error_handler();
+            \restore_exception_handler();
         }
 
         $stream->close();
@@ -187,7 +187,7 @@ class StreamTest extends TestCase
 
     public function testCloseClearProperties()
     {
-        $handle = fopen('php://temp', 'r+');
+        $handle = \fopen('php://temp', 'r+');
         $stream = Stream::create($handle);
         $stream->close();
 
@@ -200,9 +200,9 @@ class StreamTest extends TestCase
 
     public function testUnseekableStreamWrapper()
     {
-        stream_wrapper_register('nyholm-psr7-test', TestStreamWrapper::class);
-        $handle = fopen('nyholm-psr7-test://', 'r');
-        stream_wrapper_unregister('nyholm-psr7-test');
+        \stream_wrapper_register('nyholm-psr7-test', TestStreamWrapper::class);
+        $handle = \fopen('nyholm-psr7-test://', 'r');
+        \stream_wrapper_unregister('nyholm-psr7-test');
 
         $stream = Stream::create($handle);
         $this->assertFalse($stream->isSeekable());

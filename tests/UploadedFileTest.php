@@ -22,8 +22,8 @@ class UploadedFileTest extends TestCase
     protected function tearDown(): void
     {
         foreach ($this->cleanup as $file) {
-            if (\is_scalar($file) && file_exists($file)) {
-                unlink($file);
+            if (\is_scalar($file) && \file_exists($file)) {
+                \unlink($file);
             }
         }
     }
@@ -75,7 +75,7 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('status');
 
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, $status);
+        new UploadedFile(\fopen('php://temp', 'wb+'), 0, $status);
     }
 
     public static function invalidFilenamesAndMediaTypes()
@@ -98,7 +98,7 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('filename');
 
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, $filename);
+        new UploadedFile(\fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, $filename);
     }
 
     /**
@@ -109,7 +109,7 @@ class UploadedFileTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('media type');
 
-        new UploadedFile(fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
+        new UploadedFile(\fopen('php://temp', 'wb+'), 0, \UPLOAD_ERR_OK, 'foobar.baz', $mediaType);
     }
 
     public function testGetStreamReturnsOriginalStreamObject()
@@ -122,7 +122,7 @@ class UploadedFileTest extends TestCase
 
     public function testGetStreamReturnsWrappedPhpStream()
     {
-        $stream = fopen('php://temp', 'wb+');
+        $stream = \fopen('php://temp', 'wb+');
         $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
         $uploadStream = $upload->getStream()->detach();
 
@@ -146,10 +146,10 @@ class UploadedFileTest extends TestCase
         $this->assertEquals('filename.txt', $upload->getClientFilename());
         $this->assertEquals('text/plain', $upload->getClientMediaType());
 
-        $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'successful');
+        $this->cleanup[] = $to = \tempnam(\sys_get_temp_dir(), 'successful');
         $upload->moveTo($to);
         $this->assertFileExists($to);
-        $this->assertEquals($stream->__toString(), file_get_contents($to));
+        $this->assertEquals($stream->__toString(), \file_get_contents($to));
     }
 
     public static function invalidMovePaths()
@@ -186,9 +186,9 @@ class UploadedFileTest extends TestCase
         $stream = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('Foo bar!');
         $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
-        $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'diac');
+        $this->cleanup[] = $to = \tempnam(\sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
-        $this->assertTrue(file_exists($to));
+        $this->assertTrue(\file_exists($to));
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('moved');
@@ -200,7 +200,7 @@ class UploadedFileTest extends TestCase
         $stream = (new \Nyholm\Psr7\Factory\Psr17Factory())->createStream('Foo bar!');
         $upload = new UploadedFile($stream, 0, \UPLOAD_ERR_OK);
 
-        $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'diac');
+        $this->cleanup[] = $to = \tempnam(\sys_get_temp_dir(), 'diac');
         $upload->moveTo($to);
         $this->assertFileExists($to);
 
@@ -239,7 +239,7 @@ class UploadedFileTest extends TestCase
         $uploadedFile = new UploadedFile('not ok', 0, $status);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('upload error');
-        $uploadedFile->moveTo(__DIR__ . '/' . uniqid());
+        $uploadedFile->moveTo(__DIR__ . '/' . \uniqid());
     }
 
     /**
@@ -255,12 +255,12 @@ class UploadedFileTest extends TestCase
 
     public function testMoveToCreatesStreamIfOnlyAFilenameWasProvided()
     {
-        $this->cleanup[] = $from = tempnam(sys_get_temp_dir(), 'copy_from');
-        $this->cleanup[] = $to = tempnam(sys_get_temp_dir(), 'copy_to');
+        $this->cleanup[] = $from = \tempnam(\sys_get_temp_dir(), 'copy_from');
+        $this->cleanup[] = $to = \tempnam(\sys_get_temp_dir(), 'copy_to');
 
-        copy(__FILE__, $from);
+        \copy(__FILE__, $from);
 
-        $uploadedFile = new UploadedFile($from, 100, \UPLOAD_ERR_OK, basename($from), 'text/plain');
+        $uploadedFile = new UploadedFile($from, 100, \UPLOAD_ERR_OK, \basename($from), 'text/plain');
         $uploadedFile->moveTo($to);
 
         $this->assertFileEquals(__FILE__, $to);

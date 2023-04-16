@@ -56,7 +56,7 @@ class ServerRequest implements ServerRequestInterface
         $this->uri = $uri;
         $this->setHeaders($headers);
         $this->protocol = $version;
-        parse_str($uri->getQuery(), $this->queryParams);
+        \parse_str($uri->getQuery(), $this->queryParams);
 
         if (!$this->hasHeader('Host')) {
             $this->updateHostFromUri();
