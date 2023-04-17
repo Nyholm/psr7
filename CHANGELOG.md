@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.6.1
+
+- Security fix: CVE-2023-29197
+
 ## 1.6.0
 
 ### Changed
