@@ -187,7 +187,7 @@ trait MessageTrait
      */
     private function validateAndTrimHeader($header, $values): array
     {
-        if (!\is_string($header) || 1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@", $header)) {
+        if (!\is_string($header) || 1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@D", $header)) {
             throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string');
         }
 
@@ -207,7 +207,7 @@ trait MessageTrait
         // Assert Non empty array
         $returnValues = [];
         foreach ($values as $v) {
-            if ((!\is_numeric($v) && !\is_string($v)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $v)) {
+            if ((!\is_numeric($v) && !\is_string($v)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@D", (string) $v)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings');
             }
 
