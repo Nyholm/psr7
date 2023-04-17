@@ -4,7 +4,8 @@
 [![Total Downloads](https://poser.pugx.org/nyholm/psr7/downloads)](https://packagist.org/packages/nyholm/psr7)
 [![Monthly Downloads](https://poser.pugx.org/nyholm/psr7/d/monthly.png)](https://packagist.org/packages/nyholm/psr7)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-
+[![Static analysis](https://github.com/Nyholm/psr7/actions/workflows/static.yml/badge.svg?branch=master)](https://github.com/Nyholm/psr7/actions/workflows/static.yml?query=branch%3Amaster)
+[![Tests](https://github.com/Nyholm/psr7/actions/workflows/tests.yml/badge.svg?branch=master)](https://github.com/Nyholm/psr7/actions/workflows/tests.yml?query=branch%3Amaster)
 
 A super lightweight PSR-7 implementation. Very strict and very fast.
 
