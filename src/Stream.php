@@ -81,7 +81,14 @@ class Stream implements StreamInterface
         }
 
         if (\is_string($body)) {
-            $body = self::openZvalStream($body);
+            if (200000 <= \strlen($body)) {
+                $body = self::openZvalStream($body);
+            } else {
+                $resource = \fopen('php://memory', 'r+');
+                \fwrite($resource, $body);
+                \fseek($resource, 0);
+                $body = $resource;
+            }
         }
 
         if (!\is_resource($body)) {

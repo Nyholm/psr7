@@ -29,16 +29,21 @@ class StreamTest extends TestCase
 
     public function testConstructorSeekWithStringContent()
     {
-        $stream = Stream::create('Hello');
+        $content = \str_repeat('Hello', 50000);
+        $stream = Stream::create($content);
         $this->assertTrue($stream->isReadable());
         $this->assertTrue($stream->isWritable());
         $this->assertTrue($stream->isSeekable());
         $this->assertEquals('Nyholm-Psr7-Zval://', $stream->getMetadata('uri'));
         $this->assertTrue(\is_array($stream->getMetadata()));
-        $this->assertSame(5, $stream->getSize());
+        $this->assertSame(250000, $stream->getSize());
         $this->assertFalse($stream->eof());
-        $this->assertSame('Hello', $stream->getContents());
+        $this->assertSame($content, $stream->getContents());
         $stream->close();
+
+        $stream = Stream::create('Hello');
+        $this->assertEquals('php://memory', $stream->getMetadata('uri'));
+        $this->assertSame('Hello', $stream->getContents());
     }
 
     public function testStreamClosesHandleOnDestruct()
