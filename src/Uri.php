@@ -140,7 +140,10 @@ class Uri implements UriInterface
         return $this->fragment;
     }
 
-    public function withScheme($scheme): self
+    /**
+     * @return static
+     */
+    public function withScheme($scheme): UriInterface
     {
         if (!\is_string($scheme)) {
             throw new \InvalidArgumentException('Scheme must be a string');
@@ -157,7 +160,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withUserInfo($user, $password = null): self
+    /**
+     * @return static
+     */
+    public function withUserInfo($user, $password = null): UriInterface
     {
         if (!\is_string($user)) {
             throw new \InvalidArgumentException('User must be a string');
@@ -182,7 +188,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withHost($host): self
+    /**
+     * @return static
+     */
+    public function withHost($host): UriInterface
     {
         if (!\is_string($host)) {
             throw new \InvalidArgumentException('Host must be a string');
@@ -198,7 +207,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPort($port): self
+    /**
+     * @return static
+     */
+    public function withPort($port): UriInterface
     {
         if ($this->port === $port = $this->filterPort($port)) {
             return $this;
@@ -210,7 +222,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withPath($path): self
+    /**
+     * @return static
+     */
+    public function withPath($path): UriInterface
     {
         if ($this->path === $path = $this->filterPath($path)) {
             return $this;
@@ -222,7 +237,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withQuery($query): self
+    /**
+     * @return static
+     */
+    public function withQuery($query): UriInterface
     {
         if ($this->query === $query = $this->filterQueryAndFragment($query)) {
             return $this;
@@ -234,7 +252,10 @@ class Uri implements UriInterface
         return $new;
     }
 
-    public function withFragment($fragment): self
+    /**
+     * @return static
+     */
+    public function withFragment($fragment): UriInterface
     {
         if ($this->fragment === $fragment = $this->filterQueryAndFragment($fragment)) {
             return $this;
