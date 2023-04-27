@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.8.0
+
+- Deprecate HttplugFactory, use Psr17Factory instead
+- Make depencendy on php-http/message-factory optional
+
 ## 1.7.0
 
 - Bump to PHP 7.2 minimum
