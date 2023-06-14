@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
         with:
-            set-safe-directory: false
+            set-safe-directory: '/github/workspace'
 
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
