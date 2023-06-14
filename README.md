@@ -97,6 +97,8 @@ $response = $psr17Factory->createResponse(200)->withBody($responseBody);
 (new \Laminas\HttpHandlerRunner\Emitter\SapiEmitter())->emit($response);
 ```
 
+Test CI
+
 ## Our goal
 
 This package is currently maintained by [Tobias Nyholm](http://nyholm.se) and
