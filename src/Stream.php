@@ -260,11 +260,19 @@ class Stream implements StreamInterface
             throw new \RuntimeException('Stream is detached');
         }
 
-        if (false === $contents = @\stream_get_contents($this->stream)) {
-            throw new \RuntimeException('Unable to read stream contents: ' . (\error_get_last()['message'] ?? ''));
-        }
+        $exception = null;
 
-        return $contents;
+        \set_error_handler(static function ($type, $message) use (&$exception) {
+            throw $exception = new \RuntimeException('Unable to read stream contents: ' . $message);
+        });
+
+        try {
+            return \stream_get_contents($this->stream);
+        } catch (\Throwable $e) {
+            throw $e === $exception ? $e : new \RuntimeException('Unable to read stream contents: ' . $e->getMessage(), 0, $e);
+        } finally {
+            \restore_error_handler();
+        }
     }
 
     /**
