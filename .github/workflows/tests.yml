@@ -24,6 +24,7 @@ jobs:
           - '8.3'
           - '8.4'
           - '8.5'
+          - '8.6'
         include:
           - operating-system: 'windows-latest'
             php-version: '7.4'
