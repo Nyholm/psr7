@@ -6,6 +6,13 @@ on:
 
 name: Tests
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   phpunit:
     name: PHPUnit with PHP ${{ matrix.php-version }} on ${{ matrix.operating-system }}
@@ -33,7 +40,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -43,10 +50,11 @@ jobs:
 
       - name: Get composer cache directory
         id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+        shell: bash
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ hashFiles('composer.*') }}
@@ -67,7 +75,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -79,4 +87,4 @@ jobs:
         run: composer update --no-interaction --no-progress --optimize-autoloader --prefer-stable --prefer-lowest
 
       - name: Run PHPUnit
-        run: ./vendor/bin/phpunit --coverage-text --coverage-clover=coverage.xml
+        run: ./vendor/bin/phpunit

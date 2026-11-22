@@ -4,6 +4,10 @@ on:
   push:
     tags: ['*']
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   branch-alias:
     name: Update branch alias
@@ -13,13 +17,13 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.4
           coverage: none
 
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
         with:
-          ref: main
+          ref: ${{ github.event.repository.default_branch }}
 
       - name: Find branch alias
         id: find_alias
@@ -28,11 +32,11 @@ jobs:
           echo "Last tag was $TAG"
           ARR=(${TAG//./ })
           ARR[1]=$((${ARR[1]}+1))
-          echo ::set-output name=alias::${ARR[0]}.${ARR[1]}
+          echo "alias=${ARR[0]}.${ARR[1]}" >> "$GITHUB_OUTPUT"
 
       - name: Update branch alias
         run: |
-          CURRENT_ALIAS=$(composer config extra.branch-alias.dev-main | cut -d'-' -f 1)
+          CURRENT_ALIAS=$(composer config extra.branch-alias.dev-master | cut -d'-' -f 1)
 
           # If there is a current value on the branch alias
           if [ ! -z $CURRENT_ALIAS ]; then
@@ -51,12 +55,12 @@ jobs:
             fi
           fi
 
-          composer config extra.branch-alias.dev-main ${{ steps.find_alias.outputs.alias }}-dev
+          composer config extra.branch-alias.dev-master ${{ steps.find_alias.outputs.alias }}-dev
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        uses: peter-evans/create-pull-request@v8
         with:
-          base: main
+          base: ${{ github.event.repository.default_branch }}
           branch: branch-alias-update
           author: GitHub <noreply@github.com>
           committer: GitHub <noreply@github.com>

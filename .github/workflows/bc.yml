@@ -5,12 +5,20 @@ on:
       - "master"
 
 name: Roave
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   roave_bc_check:
     name: BC Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v7
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
         with:
