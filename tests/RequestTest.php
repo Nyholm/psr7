@@ -6,6 +6,7 @@ use Nyholm\Psr7\Request;
 use Nyholm\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @covers \Nyholm\Psr7\Request
@@ -298,12 +299,97 @@ class RequestTest extends TestCase
     /**
      * @dataProvider provideHeaderValuesContainingNotAllowedChars
      */
-    public function testCannotHaveHeaderWithInvalidValue(string $name)
+    public function testCannotHaveHeaderWithInvalidValue(string $value)
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Header name must be an RFC 7230 compatible string');
+        $this->expectExceptionMessage('Header values must be RFC 7230 compatible strings');
         $r = new Request('GET', 'https://example.com/');
-        $r->withHeader($name, 'Bar');
+        $r->withHeader('X-Test', $value);
+    }
+
+    /**
+     * @dataProvider provideHeaderValuesContainingNotAllowedChars
+     */
+    public function testCannotHaveHeaderWithInvalidName(string $name): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Request('GET', '/'))->withHeader($name, 'Bar');
+    }
+
+    public static function invalidMethods(): array
+    {
+        return [[''], ['GET POST'], ["GET\r\nX: y"], ["GET\n"], ["GET\x00"]];
+    }
+
+    /**
+     * @dataProvider invalidMethods
+     */
+    public function testConstructorRejectsInvalidMethod(string $method): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Request($method, '/');
+    }
+
+    /**
+     * @dataProvider invalidMethods
+     */
+    public function testWithMethodRejectsInvalidMethod(string $method): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Request('GET', '/'))->withMethod($method);
+    }
+
+    public function testValidMethods(): void
+    {
+        foreach (['GET', 'POST', 'M-SEARCH', "!#$%&'*+.^_`|~09Az-"] as $method) {
+            $this->assertSame($method, (new Request($method, '/'))->getMethod());
+            $this->assertSame($method, (new Request('GET', '/'))->withMethod($method)->getMethod());
+        }
+    }
+
+    /**
+     * @dataProvider invalidVersions
+     */
+    public function testConstructorRejectsInvalidVersion(string $version): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Request('GET', '/', [], null, $version);
+    }
+
+    public static function invalidVersions(): array
+    {
+        return [["1.1\r\nX: y"], ["1.1\n"], ['HTTP/1.1'], [''], ['1.1 '], ['1.'], ['.1'], ['1.1.1']];
+    }
+
+    /**
+     * @dataProvider invalidVersions
+     */
+    public function testWithProtocolVersionRejectsInvalidVersion(string $version): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Request('GET', '/'))->withProtocolVersion($version);
+    }
+
+    public function testConstructorRejectsInvalidUriHost(): void
+    {
+        $uri = $this->createMock(UriInterface::class);
+        $uri->method('getHost')->willReturn("example.com\r\nX: y");
+        $this->expectException(\InvalidArgumentException::class);
+        new Request('GET', $uri);
+    }
+
+    public function testWithUriRejectsInvalidHost(): void
+    {
+        $uri = $this->createMock(UriInterface::class);
+        $uri->method('getHost')->willReturn("example.com\n");
+        $this->expectException(\InvalidArgumentException::class);
+        (new Request('GET', '/'))->withUri($uri);
+    }
+
+    public function testUriHostWithIpv6AndPort(): void
+    {
+        $uri = (new Uri())->withHost('[::1]')->withPort(8080);
+        $this->assertSame('[::1]:8080', (new Request('GET', $uri))->getHeaderLine('Host'));
     }
 
     public static function provideHeaderValuesContainingNotAllowedChars(): array

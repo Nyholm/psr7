@@ -12,6 +12,85 @@ use Psr\Http\Message\StreamInterface;
  */
 class ResponseTest extends TestCase
 {
+    public function testConstructorRejectsTrailingLineFeedInHeader(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Response(200, ['X-Test' => "a\n"]);
+    }
+
+    public function testWithAddedHeaderRejectsTrailingLineFeed(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Response())->withAddedHeader('X-Test', "a\n");
+    }
+
+    public function testArrayHeaderRejectsTrailingLineFeed(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Response())->withHeader('X-Test', ["a\n"]);
+    }
+
+    public static function invalidVersions(): array
+    {
+        return [["1.1\r\nX: y"], ["1.1\n"], ['HTTP/1.1'], [''], ['1.1 '], ['1.'], ['.1'], ['1.1.1']];
+    }
+
+    /**
+     * @dataProvider invalidVersions
+     */
+    public function testConstructorRejectsInvalidVersion(string $version): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Response(200, [], null, $version);
+    }
+
+    /**
+     * @dataProvider invalidVersions
+     */
+    public function testWithProtocolVersionRejectsInvalidVersion(string $version): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Response())->withProtocolVersion($version);
+    }
+
+    public function testValidVersions(): void
+    {
+        foreach (['1000', '1.1', '2', '3'] as $version) {
+            $this->assertSame($version, (new Response(200, [], null, $version))->getProtocolVersion());
+            $this->assertSame($version, (new Response())->withProtocolVersion($version)->getProtocolVersion());
+        }
+    }
+
+    public static function invalidReasons(): array
+    {
+        return [["OK\r\nX: y"], ["OK\n"], ["OK\x00"], ["OK\x1f"], ["OK\x7f"]];
+    }
+
+    /**
+     * @dataProvider invalidReasons
+     */
+    public function testConstructorRejectsInvalidReason(string $reason): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Response(200, [], null, '1.1', $reason);
+    }
+
+    /**
+     * @dataProvider invalidReasons
+     */
+    public function testWithStatusRejectsInvalidReason(string $reason): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Response())->withStatus(200, $reason);
+    }
+
+    public function testReasonAllowsTabAndObsText(): void
+    {
+        $reason = "OK\t\x80\xff";
+        $this->assertSame($reason, (new Response(200, [], null, '1.1', $reason))->getReasonPhrase());
+        $this->assertSame($reason, (new Response())->withStatus(200, $reason)->getReasonPhrase());
+    }
+
     public function testDefaultConstructor()
     {
         $r = new Response();

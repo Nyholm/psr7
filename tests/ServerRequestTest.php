@@ -11,6 +11,30 @@ use PHPUnit\Framework\TestCase;
  */
 class ServerRequestTest extends TestCase
 {
+    public function testConstructorRejectsInvalidMethod(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new ServerRequest("GET\r\nX: y", '/');
+    }
+
+    public function testWithMethodRejectsInvalidMethod(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new ServerRequest('GET', '/'))->withMethod("GET\n");
+    }
+
+    public function testConstructorRejectsInvalidVersion(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new ServerRequest('GET', '/', [], null, "1.1\r\nX: y");
+    }
+
+    public function testWithProtocolVersionRejectsInvalidVersion(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new ServerRequest('GET', '/'))->withProtocolVersion("1.1\n");
+    }
+
     public function testUploadedFiles()
     {
         $request1 = new ServerRequest('GET', '/');

@@ -182,6 +182,20 @@ class UriTest extends TestCase
         (new Uri())->withHost([]);
     }
 
+    /**
+     * @dataProvider hostControlCharacters
+     */
+    public function testHostRejectsControlCharacters(string $host): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        (new Uri())->withHost($host);
+    }
+
+    public static function hostControlCharacters(): array
+    {
+        return [["example.com\r\nX: y"], ["example.com\n"], ["example.com\x00"], ["example.com\x1f"], ["example.com\x7f"]];
+    }
+
     public function testPathMustHaveCorrectType()
     {
         $this->expectException(\InvalidArgumentException::class);

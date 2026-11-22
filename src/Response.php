@@ -54,6 +54,8 @@ class Response implements ResponseInterface
             $this->reasonPhrase = $reason ?? '';
         }
 
+        $this->assertReasonPhrase($this->reasonPhrase);
+        $this->assertProtocolVersion($version);
         $this->protocol = $version;
     }
 
@@ -86,8 +88,17 @@ class Response implements ResponseInterface
         if ((null === $reasonPhrase || '' === $reasonPhrase) && isset(self::PHRASES[$new->statusCode])) {
             $reasonPhrase = self::PHRASES[$new->statusCode];
         }
+        $reasonPhrase = (string) $reasonPhrase;
+        $this->assertReasonPhrase($reasonPhrase);
         $new->reasonPhrase = $reasonPhrase;
 
         return $new;
+    }
+
+    private function assertReasonPhrase(string $reasonPhrase): void
+    {
+        if (1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@D", $reasonPhrase)) {
+            throw new \InvalidArgumentException('Reason phrase must be a valid HTTP reason phrase');
+        }
     }
 }

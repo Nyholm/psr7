@@ -74,6 +74,8 @@ trait RequestTrait
             throw new \InvalidArgumentException('Method must be a string');
         }
 
+        $this->assertMethod($method);
+
         $new = clone $this;
         $new->method = $method;
 
@@ -104,6 +106,13 @@ trait RequestTrait
         return $new;
     }
 
+    private function assertMethod(string $method): void
+    {
+        if (1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@D", $method)) {
+            throw new \InvalidArgumentException('Method must be a valid HTTP token');
+        }
+    }
+
     private function updateHostFromUri(): void
     {
         if ('' === $host = $this->uri->getHost()) {
@@ -113,6 +122,8 @@ trait RequestTrait
         if (null !== ($port = $this->uri->getPort())) {
             $host .= ':' . $port;
         }
+
+        $host = $this->validateAndTrimHeader('Host', $host)[0];
 
         if (isset($this->headerNames['host'])) {
             $header = $this->headerNames['host'];
