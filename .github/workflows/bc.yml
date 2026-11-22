@@ -13,3 +13,10 @@ jobs:
       - uses: actions/checkout@master
       - name: Roave BC Check
         uses: docker://nyholm/roave-bc-check-ga
+        with:
+          args: --install-development-dependencies
+        env:
+          # The runner's HOME override hides the image's safe.directory config.
+          GIT_CONFIG_COUNT: 1
+          GIT_CONFIG_KEY_0: safe.directory
+          GIT_CONFIG_VALUE_0: /github/workspace
