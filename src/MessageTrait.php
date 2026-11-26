@@ -40,9 +40,7 @@ trait MessageTrait
      */
     public function withProtocolVersion($version): MessageInterface
     {
-        if (!\is_scalar($version)) {
-            throw new \InvalidArgumentException('Protocol version must be a string');
-        }
+        $this->assertProtocolVersion($version);
 
         if ($this->protocol === $version) {
             return $this;
@@ -163,6 +161,13 @@ trait MessageTrait
         return $new;
     }
 
+    private function assertProtocolVersion($version): void
+    {
+        if (!\is_scalar($version) || 1 !== \preg_match('@^[0-9]+(?:\.[0-9]+)?$@D', (string) $version)) {
+            throw new \InvalidArgumentException('Protocol version must be a valid HTTP version number');
+        }
+    }
+
     private function setHeaders(array $headers): void
     {
         foreach ($headers as $header => $value) {
@@ -209,7 +214,7 @@ trait MessageTrait
 
         if (!\is_array($values)) {
             // This is simple, just one value.
-            if ((!\is_numeric($values) && !\is_string($values)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@", (string) $values)) {
+            if ((!\is_numeric($values) && !\is_string($values)) || 1 !== \preg_match("@^[ \t\x21-\x7E\x80-\xFF]*$@D", (string) $values)) {
                 throw new \InvalidArgumentException('Header values must be RFC 7230 compatible strings');
             }
 

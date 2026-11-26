@@ -30,9 +30,11 @@ class Request implements RequestInterface
             $uri = new Uri($uri);
         }
 
+        $this->assertMethod($method);
         $this->method = $method;
         $this->uri = $uri;
         $this->setHeaders($headers);
+        $this->assertProtocolVersion($version);
         $this->protocol = $version;
 
         if (!$this->hasHeader('Host')) {

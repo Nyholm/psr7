@@ -197,6 +197,10 @@ class Uri implements UriInterface
             throw new \InvalidArgumentException('Host must be a string');
         }
 
+        if (1 === \preg_match('/[\x00-\x1F\x7F]/', $host)) {
+            throw new \InvalidArgumentException('Host must not contain control characters');
+        }
+
         if ($this->host === $host = \strtr($host, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')) {
             return $this;
         }

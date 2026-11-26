@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
+## 1.8.3
+
+- Security fix: reject CR/LF in header values passed as strings, request method, protocol version, response reason phrase, and URI host.
+
 ## 1.8.2
 
 - Fix deprecation warnings in PHP 8.4
